@@ -1,0 +1,24 @@
+constructed ML preconditioner in 0.21 s
+ConjGrad converged [iter= 6, time=0.08s, res=4.0e-09, true res=8.1e-09]
+N=8 iter=6 K=1.13
+constructed ML preconditioner in 0.00 s
+ConjGrad converged [iter= 7, time=0.00s, res=3.0e-09, true res=5.8e-09]
+N=16 iter=7 K=1.17
+constructed ML preconditioner in 0.00 s
+ConjGrad converged [iter= 8, time=0.00s, res=2.4e-09, true res=3.9e-09]
+N=32 iter=8 K=1.27
+constructed ML preconditioner in 0.00 s
+ConjGrad converged [iter= 8, time=0.01s, res=4.4e-09, true res=7.5e-09]
+N=64 iter=8 K=1.25
+constructed ML preconditioner in 0.02 s
+ConjGrad converged [iter= 9, time=0.02s, res=1.3e-09, true res=2.1e-09]
+N=128 iter=9 K=1.32
+constructed ML preconditioner in 0.07 s
+ConjGrad converged [iter= 9, time=0.08s, res=4.7e-09, true res=6.8e-09]
+N=256 iter=9 K=1.33
+constructed ML preconditioner in 0.28 s
+ConjGrad converged [iter= 9, time=0.34s, res=8.3e-09, true res=1.3e-08]
+N=512 iter=9 K=1.36
+constructed ML preconditioner in 1.21 s
+ConjGrad converged [iter=13, time=1.95s, res=6.6e-09, true res=9.1e-09]
+N=1024 iter=13 K=2.07

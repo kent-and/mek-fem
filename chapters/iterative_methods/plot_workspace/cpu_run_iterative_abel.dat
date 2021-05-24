@@ -1,0 +1,77 @@
+Starting job 2493180 ("cpu_iterative") on c17-10 at Fri Jun 21 09:57:14 CEST 2013
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  32  dofs  1089
+Time for lu  0.00400400161743
+Time for cg  0.00286412239075
+Time for cg/ilu  0.00153207778931
+Time for cg/amg  0.00507497787476
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  64  dofs  4225
+Time for lu  0.0155980587006
+Time for cg  0.015839099884
+Time for cg/ilu  0.00740194320679
+Time for cg/amg  0.0127878189087
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  128  dofs  16641
+Time for lu  0.0793328285217
+Time for cg  0.119037151337
+Time for cg/ilu  0.0501880645752
+Time for cg/amg  0.0421559810638
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  256  dofs  66049
+Time for lu  0.482635974884
+Time for cg  0.85956287384
+Time for cg/ilu  0.371992111206
+Time for cg/amg  0.175911903381
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  512  dofs  263169
+Time for lu  3.27159714699
+Time for cg  9.34541797638
+Time for cg/ilu  3.67462015152
+Time for cg/amg  0.791210174561
+*** -------------------------------------------------------------------------
+*** Warning: UnitSquare has been deprecated in DOLFIN version 1.1.0.
+*** The class UnitSquare has been replaced by UnitSquareMesh.
+*** -------------------------------------------------------------------------
+
+ N  1024  dofs  1050625
+Time for lu  28.2356829643
+Time for cg  83.0514290333
+Time for cg/ilu  29.5216519833
+Time for cg/amg  3.56511092186
+Traceback (most recent call last):
+  File "cpu_time_comparison.py", line 60, in <module>
+    import pylab
+ImportError: No module named pylab
+
+Job script resource usage:
+       JobID  MaxVMSize     MaxRSS 
+------------ ---------- ---------- 
+2493180.bat+   1775856K   1079892K 
+
+Job step resource usage:
+       JobID    JobName  AllocCPUS  MaxVMSize     MaxRSS    Elapsed ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- -------- 
+2493180      cpu_itera+          6                         00:02:58      0:0 
+
+Job 2493180 ("cpu_iterative") completed on c17-10 at Fri Jun 21 10:00:11 CEST 2013

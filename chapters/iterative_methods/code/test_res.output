@@ -1,0 +1,267 @@
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.662862018660e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.176481811751e-01 true resid norm 3.664400564407e-02 ||r(i)||/||b|| 2.370266181772e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 0.1 0.010729326 0.0133414780084
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.672814842654e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.112274509420e-01 true resid norm 3.619881054526e-02 ||r(i)||/||b|| 2.341469360342e-01
+  2 KSP preconditioned resid norm 5.967621889206e-02 true resid norm 8.696942588425e-03 ||r(i)||/||b|| 5.625495504608e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 0.01 0.01040687 0.00121965063494
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.688447992773e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.049564510697e-01 true resid norm 3.583754779115e-02 ||r(i)||/||b|| 2.318101585074e-01
+  2 KSP preconditioned resid norm 5.838430114609e-02 true resid norm 8.526462239400e-03 ||r(i)||/||b|| 5.515222678576e-02
+  3 KSP preconditioned resid norm 5.403674856906e-03 true resid norm 1.154841498964e-03 ||r(i)||/||b|| 7.469930489829e-03
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 0.001 0.01114882 0.000362847689085
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.654349231726e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.198189266163e-01 true resid norm 3.660245458584e-02 ||r(i)||/||b|| 2.367578509766e-01
+  2 KSP preconditioned resid norm 6.151288753600e-02 true resid norm 8.883187212041e-03 ||r(i)||/||b|| 5.745965230866e-02
+  3 KSP preconditioned resid norm 5.934141921777e-03 true resid norm 1.233524529012e-03 ||r(i)||/||b|| 7.978880649406e-03
+  4 KSP preconditioned resid norm 1.116883364240e-03 true resid norm 2.881643157226e-04 ||r(i)||/||b|| 1.863950516177e-03
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 0.0001 0.011782226 0.000338140661469
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.686052017997e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.034614569286e-01 true resid norm 3.578582253524e-02 ||r(i)||/||b|| 2.314755809342e-01
+  2 KSP preconditioned resid norm 5.805298374264e-02 true resid norm 8.524673656252e-03 ||r(i)||/||b|| 5.514065758617e-02
+  3 KSP preconditioned resid norm 5.666332949269e-03 true resid norm 1.175624222304e-03 ||r(i)||/||b|| 7.604360624938e-03
+  4 KSP preconditioned resid norm 1.023388028487e-03 true resid norm 2.764492541172e-04 ||r(i)||/||b|| 1.788173280985e-03
+  5 KSP preconditioned resid norm 8.492028972687e-05 true resid norm 3.333046788269e-05 ||r(i)||/||b|| 2.155934632593e-04
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 1e-05 0.012482946 0.000337550692215
+ N  64  dofs  4225
+Solving linear system of size 4225 x 4225 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.650417115046e+01 true resid norm 1.545986941293e-01 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 6.199825949508e-01 true resid norm 3.671190639980e-02 ||r(i)||/||b|| 2.374658247055e-01
+  2 KSP preconditioned resid norm 6.153824551525e-02 true resid norm 8.942567777482e-03 ||r(i)||/||b|| 5.784374717941e-02
+  3 KSP preconditioned resid norm 6.147273883865e-03 true resid norm 1.259245528512e-03 ||r(i)||/||b|| 8.145253332214e-03
+  4 KSP preconditioned resid norm 1.149023855169e-03 true resid norm 3.044920030600e-04 ||r(i)||/||b|| 1.969563874876e-03
+  5 KSP preconditioned resid norm 9.833137798077e-05 true resid norm 3.775849334554e-05 ||r(i)||/||b|| 2.442355257799e-04
+  6 KSP preconditioned resid norm 1.430284723629e-05 true resid norm 6.948681358325e-06 ||r(i)||/||b|| 4.494657213931e-05
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+64 1e-06 0.012978418 0.000337646433258
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.000334207798e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.041207523234e+00 true resid norm 3.779003982067e-02 ||r(i)||/||b|| 4.775139623643e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 0.1 0.034724307 0.013642719879
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 2.991789307361e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.046280395464e+00 true resid norm 3.777982717391e-02 ||r(i)||/||b|| 4.773849156249e-01
+  2 KSP preconditioned resid norm 1.595515640309e-01 true resid norm 1.642210220716e-02 ||r(i)||/||b|| 2.075092572674e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 0.01 0.036917845 0.0019861459087
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.084382474330e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.010737367409e+00 true resid norm 3.661111685583e-02 ||r(i)||/||b|| 4.626171223786e-01
+  2 KSP preconditioned resid norm 1.489716545001e-01 true resid norm 1.547574186304e-02 ||r(i)||/||b|| 1.955510725211e-01
+  3 KSP preconditioned resid norm 2.569299677212e-02 true resid norm 3.970936659692e-03 ||r(i)||/||b|| 5.017665256945e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 0.001 0.039054377 0.000313940150229
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.048697633229e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.023873578917e+00 true resid norm 3.709161520856e-02 ||r(i)||/||b|| 4.686886870927e-01
+  2 KSP preconditioned resid norm 1.536515638550e-01 true resid norm 1.585596952894e-02 ||r(i)||/||b|| 2.003556194389e-01
+  3 KSP preconditioned resid norm 2.690311222537e-02 true resid norm 4.115813707267e-03 ||r(i)||/||b|| 5.200731518244e-02
+  4 KSP preconditioned resid norm 4.205011382854e-03 true resid norm 9.586508370389e-04 ||r(i)||/||b|| 1.211348709582e-02
+  5 KSP preconditioned resid norm 6.363880349673e-04 true resid norm 1.645725947389e-04 ||r(i)||/||b|| 2.079535035773e-03
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 0.0001 0.045028674 8.49310062381e-05
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.004452395322e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.040297281461e+00 true resid norm 3.769554206396e-02 ||r(i)||/||b|| 4.763198911631e-01
+  2 KSP preconditioned resid norm 1.589371654274e-01 true resid norm 1.633799643272e-02 ||r(i)||/||b|| 2.064464988845e-01
+  3 KSP preconditioned resid norm 2.822669048636e-02 true resid norm 4.301730789361e-03 ||r(i)||/||b|| 5.435655860645e-02
+  4 KSP preconditioned resid norm 4.479338182762e-03 true resid norm 1.015431999567e-03 ||r(i)||/||b|| 1.283097239182e-02
+  5 KSP preconditioned resid norm 6.890408735303e-04 true resid norm 1.767921105213e-04 ||r(i)||/||b|| 2.233940520052e-03
+  6 KSP preconditioned resid norm 1.210601678228e-04 true resid norm 3.366900555941e-05 ||r(i)||/||b|| 4.254406803972e-04
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 1e-05 0.046745763 8.44569715566e-05
+ N  128  dofs  16641
+Solving linear system of size 16641 x 16641 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.021424778868e+01 true resid norm 7.913913057863e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.035554472322e+00 true resid norm 3.731492006595e-02 ||r(i)||/||b|| 4.715103614750e-01
+  2 KSP preconditioned resid norm 1.557848982946e-01 true resid norm 1.605804070637e-02 ||r(i)||/||b|| 2.029089855924e-01
+  3 KSP preconditioned resid norm 2.727899548927e-02 true resid norm 4.192571834789e-03 ||r(i)||/||b|| 5.297722888961e-02
+  4 KSP preconditioned resid norm 4.253900809854e-03 true resid norm 9.745661367611e-04 ||r(i)||/||b|| 1.231459241004e-02
+  5 KSP preconditioned resid norm 6.488673400568e-04 true resid norm 1.668093358776e-04 ||r(i)||/||b|| 2.107798438749e-03
+  6 KSP preconditioned resid norm 1.152541860694e-04 true resid norm 3.204992218282e-05 ||r(i)||/||b|| 4.049819848726e-04
+  7 KSP preconditioned resid norm 2.723692492582e-05 true resid norm 6.964406898112e-06 ||r(i)||/||b|| 8.800206480904e-05
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+128 1e-06 0.049541017 8.44439476637e-05
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 6.284613360237e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.276471561752e+00 true resid norm 3.556574115693e-02 ||r(i)||/||b|| 7.698197956839e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 0.1 0.14030788 0.00878489261811
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 6.023008718278e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.356585017764e+00 true resid norm 3.742992154571e-02 ||r(i)||/||b|| 8.101699449941e-01
+  2 KSP preconditioned resid norm 1.940289156525e-01 true resid norm 2.311316475186e-02 ||r(i)||/||b|| 5.002840145628e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 0.01 0.151493422 0.00128666020206
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 6.027279241957e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.364045643408e+00 true resid norm 3.730897442234e-02 ||r(i)||/||b|| 8.075520467930e-01
+  2 KSP preconditioned resid norm 1.937350484266e-01 true resid norm 2.295091258262e-02 ||r(i)||/||b|| 4.967720694237e-01
+  3 KSP preconditioned resid norm 3.849605985658e-02 true resid norm 7.259393382262e-03 ||r(i)||/||b|| 1.571294326657e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 0.001 0.159710387 0.000255512087574
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 5.876809703068e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.392370040278e+00 true resid norm 3.864188806029e-02 ||r(i)||/||b|| 8.364029373143e-01
+  2 KSP preconditioned resid norm 2.060279878812e-01 true resid norm 2.444768049071e-02 ||r(i)||/||b|| 5.291695825277e-01
+  3 KSP preconditioned resid norm 4.222521529643e-02 true resid norm 7.887286476179e-03 ||r(i)||/||b|| 1.707201668258e-01
+  4 KSP preconditioned resid norm 9.033562414638e-03 true resid norm 2.177771117843e-03 ||r(i)||/||b|| 4.713781471858e-02
+  5 KSP preconditioned resid norm 1.792370646012e-03 true resid norm 5.166454675873e-04 ||r(i)||/||b|| 1.118278138909e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 0.0001 0.182316721 2.38100856585e-05
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 6.113758393245e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.321550647097e+00 true resid norm 3.682055306925e-02 ||r(i)||/||b|| 7.969801758290e-01
+  2 KSP preconditioned resid norm 1.868365704289e-01 true resid norm 2.245962024676e-02 ||r(i)||/||b|| 4.861380560920e-01
+  3 KSP preconditioned resid norm 3.662397389663e-02 true resid norm 6.906206784552e-03 ||r(i)||/||b|| 1.494847154282e-01
+  4 KSP preconditioned resid norm 7.677147974479e-03 true resid norm 1.856808774036e-03 ||r(i)||/||b|| 4.019059084824e-02
+  5 KSP preconditioned resid norm 1.466511287638e-03 true resid norm 4.342470462326e-04 ||r(i)||/||b|| 9.399269114964e-03
+  6 KSP preconditioned resid norm 2.963449517307e-04 true resid norm 7.372221481849e-05 ||r(i)||/||b|| 1.595715947505e-03
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 1e-05 0.192584359 2.10937990048e-05
+ N  256  dofs  66049
+Solving linear system of size 66049 x 66049 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 6.078929483486e+01 true resid norm 4.620008650899e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.334295793837e+00 true resid norm 3.708774866808e-02 ||r(i)||/||b|| 8.027636195198e-01
+  2 KSP preconditioned resid norm 1.896396523654e-01 true resid norm 2.274797954728e-02 ||r(i)||/||b|| 4.923795877060e-01
+  3 KSP preconditioned resid norm 3.738838791878e-02 true resid norm 7.047237630605e-03 ||r(i)||/||b|| 1.525373254276e-01
+  4 KSP preconditioned resid norm 7.836555469892e-03 true resid norm 1.899192222937e-03 ||r(i)||/||b|| 4.110797979930e-02
+  5 KSP preconditioned resid norm 1.505433746285e-03 true resid norm 4.438066138969e-04 ||r(i)||/||b|| 9.606185776526e-03
+  6 KSP preconditioned resid norm 3.055345397810e-04 true resid norm 7.583498580947e-05 ||r(i)||/||b|| 1.641446835705e-03
+  7 KSP preconditioned resid norm 6.107944075463e-05 true resid norm 1.843822487531e-05 ||r(i)||/||b|| 3.990950292208e-04
+  8 KSP preconditioned resid norm 1.282537827294e-05 true resid norm 2.773883298869e-06 ||r(i)||/||b|| 6.004065161934e-05
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+256 1e-06 0.210711064 2.11140240315e-05
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.543312270278e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.096603757616e+00 true resid norm 3.036873276110e-02 ||r(i)||/||b|| 7.430086025449e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 0.1 0.594317044 0.00338244481289
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.523500093411e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.135104597325e+00 true resid norm 3.100943653622e-02 ||r(i)||/||b|| 7.586842127307e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 0.01 0.583853679 0.00353510378643
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.517476396109e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.132369065670e+00 true resid norm 3.124866652249e-02 ||r(i)||/||b|| 7.645372701888e-01
+  2 KSP preconditioned resid norm 9.461329820986e-02 true resid norm 1.705444871817e-02 ||r(i)||/||b|| 4.172581783029e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 0.001 0.630544239 0.000265885807543
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.551064792348e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.104834036522e+00 true resid norm 3.013284847344e-02 ||r(i)||/||b|| 7.372374017406e-01
+  2 KSP preconditioned resid norm 8.715639998402e-02 true resid norm 1.581598907967e-02 ||r(i)||/||b|| 3.869577317038e-01
+  3 KSP preconditioned resid norm 1.202300110073e-02 true resid norm 3.517085509265e-03 ||r(i)||/||b|| 8.604984639389e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 0.0001 0.672794136 3.36651360658e-05
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.546846790622e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.095774007479e+00 true resid norm 3.026727327923e-02 ||r(i)||/||b|| 7.405262708509e-01
+  2 KSP preconditioned resid norm 8.782048583436e-02 true resid norm 1.597670860391e-02 ||r(i)||/||b|| 3.908899336184e-01
+  3 KSP preconditioned resid norm 1.206796670390e-02 true resid norm 3.550838771012e-03 ||r(i)||/||b|| 8.687566168356e-02
+  4 KSP preconditioned resid norm 1.596889564266e-03 true resid norm 5.528411526763e-04 ||r(i)||/||b|| 1.352594247217e-02
+  5 KSP preconditioned resid norm 2.059311205640e-04 true resid norm 5.282129887001e-05 ||r(i)||/||b|| 1.292338398403e-03
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 1e-05 0.757534732 5.37656550144e-06
+ N  512  dofs  263169
+Solving linear system of size 263169 x 263169 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 1.559705383300e+02 true resid norm 4.087265296402e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 1.079469449118e+00 true resid norm 2.984815012002e-02 ||r(i)||/||b|| 7.302719044516e-01
+  2 KSP preconditioned resid norm 8.506533958994e-02 true resid norm 1.552561604023e-02 ||r(i)||/||b|| 3.798533962036e-01
+  3 KSP preconditioned resid norm 1.137330626987e-02 true resid norm 3.384128288091e-03 ||r(i)||/||b|| 8.279688355610e-02
+  4 KSP preconditioned resid norm 1.489250509548e-03 true resid norm 5.161675912027e-04 ||r(i)||/||b|| 1.262867843830e-02
+  5 KSP preconditioned resid norm 1.895346210108e-04 true resid norm 4.938723893289e-05 ||r(i)||/||b|| 1.208319875306e-03
+  6 KSP preconditioned resid norm 2.694655246022e-05 true resid norm 5.549425466709e-06 ||r(i)||/||b|| 1.357735567494e-04
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+512 1e-06 0.806413919 5.28498388723e-06
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.493752006436e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.434260642521e+00 true resid norm 2.966225424153e-02 ||r(i)||/||b|| 5.717468005357e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 0.1 2.51243861 0.0105308195673
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.511275583629e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.430316999778e+00 true resid norm 2.935352053465e-02 ||r(i)||/||b|| 5.657958870384e-01
+  2 KSP preconditioned resid norm 2.802723434927e-01 true resid norm 1.246546012020e-02 ||r(i)||/||b|| 2.402746225184e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 0.01 2.68688521 0.000368325552154
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.498559565868e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.418617212310e+00 true resid norm 2.957554903933e-02 ||r(i)||/||b|| 5.700755377401e-01
+  2 KSP preconditioned resid norm 2.811741741194e-01 true resid norm 1.270071387313e-02 ||r(i)||/||b|| 2.448091929344e-01
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 0.001 2.663786527 0.000370542328012
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.485275262636e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.356726368196e+00 true resid norm 2.980150721186e-02 ||r(i)||/||b|| 5.744309336971e-01
+  2 KSP preconditioned resid norm 2.832476057176e-01 true resid norm 1.297120077200e-02 ||r(i)||/||b|| 2.500228903747e-01
+  3 KSP preconditioned resid norm 1.115775603771e-02 true resid norm 4.346738079256e-03 ||r(i)||/||b|| 8.378438028832e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 0.0001 2.852519594 1.42586749128e-05
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.517404155495e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.499891193634e+00 true resid norm 2.924996798434e-02 ||r(i)||/||b|| 5.637998877173e-01
+  2 KSP preconditioned resid norm 2.820892214514e-01 true resid norm 1.231463347999e-02 ||r(i)||/||b|| 2.373674041973e-01
+  3 KSP preconditioned resid norm 1.077484121998e-02 true resid norm 3.997300451227e-03 ||r(i)||/||b|| 7.704888931095e-02
+  4 KSP preconditioned resid norm 2.115809682892e-03 true resid norm 6.989319431802e-04 ||r(i)||/||b|| 1.347207461212e-02
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 1e-05 3.089999053 2.76327854175e-06
+ N  1024  dofs  1050625
+Solving linear system of size 1050625 x 1050625 (PETSc Krylov solver).
+  0 KSP preconditioned resid norm 3.496957753534e+02 true resid norm 5.188005287260e-02 ||r(i)||/||b|| 1.000000000000e+00
+  1 KSP preconditioned resid norm 7.412815881306e+00 true resid norm 2.959697877255e-02 ||r(i)||/||b|| 5.704886007968e-01
+  2 KSP preconditioned resid norm 2.829598278406e-01 true resid norm 1.272648196822e-02 ||r(i)||/||b|| 2.453058789179e-01
+  3 KSP preconditioned resid norm 1.101428140699e-02 true resid norm 4.215536446096e-03 ||r(i)||/||b|| 8.125543851021e-02
+  4 KSP preconditioned resid norm 2.198096985422e-03 true resid norm 6.814413711002e-04 ||r(i)||/||b|| 1.313493979610e-02
+  5 KSP preconditioned resid norm 1.268513714279e-04 true resid norm 4.660420609024e-05 ||r(i)||/||b|| 8.983068348965e-04
+*** Warning: Degree of exact solution may be inadequate for accurate result in errornorm.
+1024 1e-06 3.250019802 1.32986522722e-06
+ 1.3e-02 (1.1e-02)   1.2e-03 (1.0e-02)   3.6e-04 (1.1e-02)   3.4e-04 (1.2e-02)   3.4e-04 (1.2e-02)   3.4e-04 (1.3e-02)  
+ 1.4e-02 (3.5e-02)   2.0e-03 (3.7e-02)   3.1e-04 (3.9e-02)   8.5e-05 (4.5e-02)   8.4e-05 (4.7e-02)   8.4e-05 (5.0e-02)  
+ 8.8e-03 (1.4e-01)   1.3e-03 (1.5e-01)   2.6e-04 (1.6e-01)   2.4e-05 (1.8e-01)   2.1e-05 (1.9e-01)   2.1e-05 (2.1e-01)  
+ 3.4e-03 (5.9e-01)   3.5e-03 (5.8e-01)   2.7e-04 (6.3e-01)   3.4e-05 (6.7e-01)   5.4e-06 (7.6e-01)   5.3e-06 (8.1e-01)  
+ 1.1e-02 (2.5e+00)   3.7e-04 (2.7e+00)   3.7e-04 (2.7e+00)   1.4e-05 (2.9e+00)   2.8e-06 (3.1e+00)   1.3e-06 (3.3e+00)  
+
+ 1.3e-02 (1.1e-02)   1.4e-02 (3.5e-02)   8.8e-03 (1.4e-01)   3.4e-03 (5.9e-01)   1.1e-02 (2.5e+00)  
+ 1.2e-03 (1.0e-02)   2.0e-03 (3.7e-02)   1.3e-03 (1.5e-01)   3.5e-03 (5.8e-01)   3.7e-04 (2.7e+00)  
+ 3.6e-04 (1.1e-02)   3.1e-04 (3.9e-02)   2.6e-04 (1.6e-01)   2.7e-04 (6.3e-01)   3.7e-04 (2.7e+00)  
+ 3.4e-04 (1.2e-02)   8.5e-05 (4.5e-02)   2.4e-05 (1.8e-01)   3.4e-05 (6.7e-01)   1.4e-05 (2.9e+00)  
+ 3.4e-04 (1.2e-02)   8.4e-05 (4.7e-02)   2.1e-05 (1.9e-01)   5.4e-06 (7.6e-01)   2.8e-06 (3.1e+00)  
+ 3.4e-04 (1.3e-02)   8.4e-05 (5.0e-02)   2.1e-05 (2.1e-01)   5.3e-06 (8.1e-01)   1.3e-06 (3.3e+00)  

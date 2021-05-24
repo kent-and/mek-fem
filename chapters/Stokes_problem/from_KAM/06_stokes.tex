@@ -1,0 +1,521 @@
+\documentclass[a4paper,11pt]{amsart}
+\usepackage{graphicx,color}
+\usepackage{codehighlight}
+
+
+\long\def\COMMENT#1{\par\vbox{\hrule\vskip1pt \hrule width.125in height0ex #1\vskip1pt\hrule}}
+
+\newcommand{\norm}[1]{ |\!|\!| #1 |\!|\!|}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem{remark}{Remark}[section]
+%\newtheorem{proof}{Proof}[section]
+
+
+\title{Discretization of the Stokes problem}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+The Stokes problem describes the flow of a slowly moving viscous incompressible Newtonian
+fluid.  Let the fluid domain be denoted $\Omega$. We assume that $\Omega$ is a bounded domain in $\mathbb{R}^n$ with a smooth boundary. Furthermore, let $u : \Omega \rightarrow \mathbb{R}^n$ be
+the fluid velocity and $p:\Omega \rightarrow \mathbb{R}$ be the fluid pressure.
+The strong form of the Stokes problem can then be written as
+\begin{eqnarray}
+-\Delta u + \nabla p &=& f, \mbox{ in } \Omega,   \\
+\nabla \cdot u &=& 0, \mbox{ in } \Omega, \\
+u &=& g, \mbox{ on } \partial \Omega_D, \\
+\frac{\partial u}{\partial n} - p n  &=& h, \mbox{ on } \partial \Omega_N.
+\end{eqnarray}
+Here, $f$ is the body force, $\partial \Omega_D$ is the Dirichlet
+boundary, while $\partial \Omega_N$ is the Neumann
+boundary. Furthermore, $g$ is the prescribed fluid velocity on the
+Dirichlet boundary, and $h$ is the surface force or stress on the
+Neumann boundary. These boundary condition leads to a well-posed
+problem provided that neither the Dirichlet nor Neumann boundaries are
+empty.  In case of only Dirichlet conditions the pressure is only
+determined up to a constant, while only Neumann conditions leads to
+the velocity only being determined up to a constant.
+
+These equations are simplifications of the Navier-Stokes equations for
+very slowly moving flow.  In contrast to elliptic equations, many
+discretizations of this problem will lead to instabilities.  These
+instabilities are particularly visible as non-physical oscillations in
+the pressure. The following example illustrate such oscillations.
+
+\begin{example}{Poiseuille flow} \\
+One of the most common examples of flow problems that can be solved
+analytically is Poiseuille flow. It describes flow in a straight
+channel (or cylinder in 3D).  The analytical solution is $u=(y\,
+(1-y), 0)$ and $p = 1-x$.  Since the solution is know, this flow
+problem is particularly useful for verifying that the code or
+numerical method. We therefore begin by discretizing the problem in
+the simplest way possible, i.e., linear continuous/Lagrange elements
+for both velocity and pressure. The results is shown Figure
+\ref{fig:stokes1}. Clearly, the velocity is approximated satisfactory,
+but the pressure oscillate widely and is nowhere near the actual
+solution.
+\begin{figure}
+\begin{center}
+\includegraphics[width=6cm]{../pics/stokes_velocity.png}
+\includegraphics[width=6cm]{../pics/stokes_pressure_instabilities.png}
+\caption{Poiseuille flow solution obtained with linear continuous elements for
+both velocity and pressure. The left figure shows the (well-represented) velocity while the right shows
+the pressure (with the wild oscillations).}
+\label{fig:stokes1}
+\end{center}
+\end{figure}
+
+% inf56xx-2013/code/stokes/stokes_p1p1.py
+\begin{python}
+from dolfin import *
+
+def u_boundary(x):
+  return x[0] < DOLFIN_EPS or x[1] > 1.0 - DOLFIN_EPS or x[1] < DOLFIN_EPS
+
+def p_boundary(x):
+  return  x[0] > 1.0 - DOLFIN_EPS
+
+mesh = UnitSquare(40,40)
+V = VectorFunctionSpace(mesh, "Lagrange", 1)
+Q = FunctionSpace(mesh, "Lagrange", 1)
+#Q = FunctionSpace(mesh, "DG", 0)
+W = MixedFunctionSpace([V, Q])
+
+u, p = TrialFunctions(W)
+v, q = TestFunctions(W)
+
+f = Constant([0,0])
+
+u_analytical = Expression(["x[1]*(1-x[1])", "0.0"])
+p_analytical = Expression("-2+2*x[0]")
+
+bc_u = DirichletBC(W.sub(0), u_analytical, u_boundary)
+bc = [bc_u]
+
+a = inner(grad(u), grad(v))*dx + div(u)*q*dx + div(v)*p*dx
+L = inner(f, v)*dx
+
+UP = Function(W)
+A, b = assemble_system(a, L, bc)
+solve(A, UP.vector(), b, "lu")
+
+U, P = UP.split()
+
+plot(U, title="Numerical velocity")
+plot(P, title="Numerical pressure")
+
+U_analytical = project(u_analytical, V)
+P_analytical = project(p_analytical, Q)
+
+plot(U_analytical, title="Analytical velocity")
+plot(P_analytical, title="Analytical pressure")
+
+interactive()
+\end{python}
+
+
+
+However, when using the second order continuous elements for the velocity and
+first order continuous elements for the pressure, we obtain the perfect solution
+shown in Figure \ref{fig:stokes2}.
+\begin{figure}
+\begin{center}
+\includegraphics[width=6cm]{../pics/stokes_velocity.png}
+\includegraphics[width=6cm]{../pics/stokes_pressure.png}
+\caption{Poiseuille flow solution obtained with quadratic continuous elements for the
+velocity and linear continuous elements for the pressure. The left figure shows the velocity while the right shows
+the pressure. Both the velocity and the pressure are correct.}
+\label{fig:stokes2}
+\end{center}
+\end{figure}
+\end{example}
+
+The previous example demonstrates that discretizations of the Stokes problem may lead
+to, in particular, strange instabilities in the pressure. In this chapter we will describe why this
+happens and several strategies to circumvent this behaviour.
+
+Let us first start with a weak formulation of Stokes problem:
+Find $u\in H^1_{D,g}$ and $p\in L^2$.
+\begin{eqnarray*}
+a(u,v) + b(p,v) &=& f(v), \quad v\in H_{D,0}^1\\
+b(q,u) &=& 0,\quad q\in L^2,
+\end{eqnarray*}
+where
+\begin{eqnarray*}
+a(u,v) &=& \int\nabla u : \nabla v\ dx, \\
+b(p,v) &=& \int p \, \nabla \cdot v\ dx, \\
+f(v) &=& \int f\, v\ dx + \int_{\Omega_N} h \, v \, ds  .
+\end{eqnarray*}
+Here
+$H^1_{D,g}$ contains functions  in $H^1$ with trace $g$ on $\partial \Omega_D$.
+To obtain symmetry we have substituted $\hat{p} = - p$ for the pressure
+and is referint to $\hat{p}$ as p.
+
+As before the standard finite element formulation follows directly from the weak formulation:
+Find $u_h\in V_{g,h}$ and $p_h\in Q_h$ such that
+\begin{eqnarray}
+\label{eq:stdGalerkin1}
+a(u_h, v_h ) + b(p_h, v_h) &=& f(v_h),\quad \forall v_h\in V_{0,h}, \\
+\label{eq:stdGalerkin2}
+b(q_h, v_H) &=& 0,\quad \forall q_h \in Q_h .
+\end{eqnarray}
+Letting $u_h=\sum_{i=1}^n u_i N_i$, $p_h=\sum_{i=1}^n p_i L_i$, $v_h=N_j$, and $q_h=L_j$
+we obtain a linear system on the form
+\begin{equation}
+\left[ %matrix
+	\begin{array}{cc}
+	A & B\\
+	B^T & 0
+	\end{array}
+\right]
+\left[ %vector
+	\begin{array}{c}
+	v\\
+	p
+	\end{array}
+\right]
+=
+\left[ %vector
+	\begin{array}{c}
+	f\\
+	0
+	\end{array}
+\right]
+\label{la:stokes}
+\end{equation}
+Here
+\begin{eqnarray}
+A_{ij} = a(N_i,N_j) &=& \int\nabla N_i \nabla N_j \ dx, \\
+B_{ij} = b(L_i,N_j) &=& \int\nabla L_i \, N_j \ dx.
+\end{eqnarray}
+Hence, $A$ is $n\times n$, while $B$ is $n\times m$,
+where $n$ is the number of degrees of freedom for the velocity field, while
+$m$ is the number of degrees of freedom for the pressure.
+
+Is the system \eqref{la:stokes} invertible?  For the moment, we assume that the submatrix $A$ is invertible. This is typically the case for
+Stokes problem. We may then perform blockwise Gauss elimination:
+That is,
+we multiply the first equation with $A^{-1}$ to obtain
+\[v = A^{-1}f - A^{-1}Bp\]
+Then, we then insert $v$ in the second equation to get
+\[0 = B^Tv = B^TA^{-1}f - B^TA^{-1}Bp\]
+i.e we have removed $v$ and obtained an equation only involving $p$:
+\[B^TA^{-1}Bp = B^TA^{-1}f\]
+This equation is often called the pressure Schur complement. The question is then reduced to whether $B^TA^{-1}B$ is invertible.
+Consider the follwing two situations:
+
+\begin{tabular}[h]{lcr}
+\setlength{\unitlength}{0.090in}
+\begin{picture}(15,15)
+\thinlines
+\put(1,0){\line(0,3){3}}
+\put(0.7, 0){\line(1,0){0.7}}
+\put(0.7, 3){\line(1,0){0.7}}
+\put(-1,1.5){$m$}
+\thicklines
+\put(2,0){\framebox(9,3){$B^T$}}
+
+\thinlines
+\put(1.9,13.6){\line(9,0){9}}
+\put(1.9, 13.8){\line(0,-1){0.5}}
+\put(11, 13.8){\line(0,-1){0.5}}
+\put(5.5,14){$n$}
+\thicklines
+\put(2,4){\framebox(9,9){$A$}}
+
+\put(12,0){\framebox(3,3){$0$}}
+\put(12,4){\framebox(3,9){$B$}}
+\end{picture}
+\vspace{\unitlength}
+
+\qquad   v.s \qquad
+
+\setlength{\unitlength}{0.090in}
+\begin{picture}(15,15)
+\thinlines
+\put(1,0){\line(0,9){9}}
+\put(0.7, 0){\line(1,0){0.7}}
+\put(0.7, 9){\line(1,0){0.7}}
+\put(-1,4.5){$m$}
+\thicklines
+\put(2,0){\framebox(3,9){$B^T$}}
+
+\thinlines
+\put(1.9,13.6){\line(3,0){3}}
+\put(1.9, 13.8){\line(0,-1){0.5}}
+\put(5, 13.8){\line(0,-1){0.5}}
+\put(2.5,14){$n$}
+\thicklines
+\put(2,10){\framebox(3,3){$A$}}
+
+\put(6,0){\framebox(9,9){$0$}}
+\put(6,10){\framebox(9,3){$B$}}
+\end{picture}
+\vspace{\unitlength}
+\end{tabular}
+
+Clearly, the right most figure is not invertible since $n \ll  m$ and
+the $0$ in the lower right corner dominates. For the left figure on might expect that the
+matrix is non-singular since $n \gg m$, but it will depend on $A$ and $B$. We have already
+assumed that $A$ is invertible, and we therefore ignore $A^{-1}$ in $B^TA^{-1}B$.
+The question is then whether $B^TB$ is invertible.
+
+\setlength{\unitlength}{0.090in}
+\begin{picture}(15,15)
+\thicklines
+\put(0,6){\framebox(9,3){$B^T$}}
+\put(10,0){\framebox(3,9){$B$}}
+\put(14,7){$=$}
+
+\thinlines
+\put(16,9.6){\line(3,0){3}}
+\put(15.9, 9.8){\line(0,-1){0.6}}
+\put(19, 9.8){\line(0,-1){0.6}}
+\put(15.5,11){\small{$m\!\times\!m$}}
+\thicklines
+\put(16,6){\framebox(3,3){}}
+\label{BBinvertible}
+\end{picture}
+\vspace{\unitlength}
+
+As illustrated above, $B^T B$ will be a relatively small matrix compared to
+$B$ and $A$ as long as $n  \gg m$. Therefore, $B^T B$  may therefore be non-singular.
+To ensure that $B^T B$ is invertible, it is necessary that
+\[\operatorname{kernel}(B^T)=0,\ \textrm{where}\ B^T \textrm{is}\ n\times m\]
+An equvialent statement is that
+\begin{equation}
+\max_v\ (v,B^Tp) > 0\quad \forall\ p .
+\label{max1}
+\end{equation}
+Alternatively,
+\begin{equation}
+\max_v\ \frac{(v,B^Tp)}{\|v\| } \ge \beta \|p\| \quad \forall\ p.
+\label{max2}
+\end{equation}
+Here, $\beta > 0$. We remark that \eqref{max1} and \eqref{max2} are equivalent for a finite dimensional matrix.
+However, in the infinite dimentional setting of PDEs \eqref{max1} and \eqref{max2} are different.
+Inequality \eqref{max1} allow $(v, B^T p)$ to approach zero, while \eqref{max2} requires a lower bound.
+For the Stokes problem, the corresponding condition is crucial:
+\begin{equation}
+\sup_{v\in H^1_{D,g}}\ \frac{(p, \nabla\cdot u) }{\|u\|_1\ } \geq \beta \|p\|_0 > 0, \quad  \forall p\in L_2
+\label{infsup:cont}
+\end{equation}
+
+Similarly, to obtain order optimal convergence rates, that is
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \leq Ch^k\|u\|_{k+1} + Dh^{\ell+1}\|p\|_{\ell+1}\]
+where $k$ and $\ell$ are the ploynomial degree of the velocity and the pressure, respectively,
+the celebrated \emph{Babuska-Brezzi condition} has to be satisfied:
+\begin{equation}
+\sup_{v\in V_{h,g}}\ \frac{(p, \nabla\cdot u) }{\|u\|_1\ } \geq \beta \|p\|_0 > 0, \quad  \forall p\in Q_h
+\label{infsup:disk}
+\end{equation}
+We remark that the discrete condition \eqref{infsup:disk} does not follow from \eqref{infsup:cont}.
+In fact, it is has been a major challenge in numerical analysis
+to determine which finite element pairs $V_h$ and $Q_h$ that meet this condition.
+
+\begin{remark}
+For saddle point problems on the form \eqref{eq:stdGalerkin1}-\eqref{eq:stdGalerkin2} four conditions
+have to be satisfied in order to have a well-posed problem: \\
+Boundedness of $a$:
+\begin{equation}
+\label{remark1}
+a(u_h, v_h) \le C_1 \|u_h\|_{V_h} \|v_h\|_{V_h}, \quad \forall u_h, v_h \in V_h,
+\end{equation}
+and boundedness of $b$:
+\begin{equation}
+\label{remark2}
+b(u_h, q_h) \le C_2 \|u_h\|_{V_h} \|q_h\|_{Q_h},  \quad \forall u_h \in V_h,  q_h \in Q_h,
+\end{equation}
+Coersivity of $a$:
+\begin{equation}
+\label{remark3}
+a(u_h, u_h) \ge C_3 \|u_h\|^2_{V_h} , \quad \forall u_h \in V_h,
+\end{equation}
+and "coersivity" of $b$:
+\begin{equation}
+\label{remark4}
+\sup_{u_h\in V_h} \frac{b(u_h, q_h)}{\|u_h\|_{V_h}} \ge C_4 \|q_h\|_{Q_h} , \quad \forall q_h \in Q_h.
+\end{equation}
+For the Stokes problem, \eqref{remark1}-\eqref{remark3} are easily verified, while \eqref{remark4} often
+is remarkably difficult unless the elements are designed to meet this condition.
+\end{remark}
+
+
+
+\section{Examples of elements}
+\subsection{The Taylor-Hoood element}
+The Taylor-Hood elements are quadratic for the velocity and linear for pressure
+\begin{eqnarray*}
+v:\ N_i &=& a_i^v + b_i^vx + c_i^vy + d_i^vxy + e_i^vx^2 + f_i^vy^2 \\
+p:\ L_i &=& a_i^p + b_i^px + c_i^py
+\end{eqnarray*}
+and are continuous across elements
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=4cm]{../pics/TH.pdf}
+\includegraphics[width=4cm]{../pics/linear.pdf}
+\caption{Taylor-Hood: quadratic element for $v$ and linear element for $p$}
+\end{center}
+\end{figure}
+
+For the Taylor-Hood element we have the following error estimate:
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \leq Ch^2 (\|u\|_{3} + \|p\|_{2})\]
+
+\subsection{The Crouzeix-Raviart element}
+This element is linear in velocity and constant in pressure
+\begin{eqnarray*}
+v:\ N_i &=& a_i^v + b_i^vx + c_i^vy\\
+p:\ L_i &=& a_i^p
+\end{eqnarray*}
+The $v$ element is continuous \emph{only} in the mid-point of each side (see \ref{fig:CR_CR}), and the $p$ element is discontinuous. This ensures that it satisfies the Babuska-Brezzi condition.
+
+\begin{figure}[h]
+\begin{center}
+\label{fig:CR_CR}
+\includegraphics[width=4cm]{../pics/CR.pdf}
+\includegraphics[width=4cm]{../pics/const.pdf}
+\caption{Crouzeix-Raviart: mid-point linear element for $v$ and constant element for $p$}
+\end{center}
+\end{figure}
+
+For the Crouzeix-Raviart element we have the following error estimate:
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \leq Ch (\|u\|_{2} + \|p\|_{1})\]
+
+
+\subsection{The P1-P0 element}
+
+If we on the other hand choose to locate the nodal points on the corners in the $v$ element as shown in \ref{fig:PP_lin} (called a $\mathit{P_1-P_0}$ \emph{element}) the inf-sup condition is not satisfied and we get oscillations in the pressure term.
+
+\begin{figure}[h]
+\begin{center}
+\label{fig:PP_lin}
+\includegraphics[width=4cm]{../pics/linear.pdf}
+\includegraphics[width=4cm]{../pics/const.pdf}
+\caption{$P_1-P_0$: linear element for $v$ and constant element for $p$}
+\end{center}
+\end{figure}
+
+\subsection{The Mini element}
+The mini element is linear in both velocity and pressure, but the velocity element contains a qubic bubble. Notice that elements that are linear in both $v$ and $p$ will not satisfy the inf-sup condition.  Thus we add the extra bubble in $v$ to give an extra degree of freedom as depicted in \ref{fig:mini}.
+
+\begin{figure}[h]
+\begin{center}
+\label{fig:mini}
+\includegraphics[width=4cm]{../pics/mini.pdf}
+\includegraphics[width=4cm]{../pics/linear.pdf}
+\caption{Mini: linear element with bubble for $v$ and linear element for $p$}
+\end{center}
+\end{figure}
+
+For the Crouzeix-Raviart element we have the following error estimate:
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \leq Ch (\|u\|_{2} + \|p\|_{1})\]
+
+\section{Stabilization techniques to circumwent the Babuska-Brezzi condition}
+Stabilization techniques typically replace the system:
+\begin{eqnarray*}
+Au + B^Tp &=& f \\
+Bu &=& 0
+\end{eqnarray*}
+with an alternative system
+\begin{eqnarray*}
+Au + B^Tp &=& f \\
+Bu -\epsilon Dp &=& \epsilon d ,
+\end{eqnarray*}
+where $\epsilon$ is properly chosen.
+
+To see that we obtain a nonsingular system we again multiply the first
+equation with $A^{-1}$ and then factorize:
+\begin{eqnarray*}
+u &=& A^{-1}f - A^{-1}B^Tp \\
+Bu &=& BA^{-1}f - BA^{-1}B^Tp  = \epsilon d + \epsilon Dp \\
+(BA^{-1}B^T + \epsilon D)p &=& BA^{-1}f - \epsilon d
+\end{eqnarray*}
+If $D$ is nonsingular then
+$(BA^{-1}B^T + \epsilon D)$ will be is nonsingular since both $D$ and $BA^{-1}B^T$ are positive (only $D$ is positive definite however).
+
+Factorizing for $p$ we end up with a \emph{Velocity-Schur complement}. Solving for $p$ in the second equation and inserting the expression for $p$ into the first equation we have
+\begin{eqnarray*}
+p &=& (-\epsilon D)^{-1}(\epsilon d - Bu)\\
+&\Downarrow&\\
+Au + B^T(-\epsilon D)^{-1}(\epsilon d-Bu) &=& f\\
+(A + \frac{1}{\epsilon}B^TD^{-1}B)u &=& f + D^{-1}d
+\end{eqnarray*}
+$(A + \frac{1}{\epsilon}B^TD^{-1}B)$ is nonsingular since $A$ is nonsingular and $B^TD^{-1}B$ is positive.
+%---end section Alternative Stabilization---
+
+At least, three techniques have been proposed for stabilization. These are:
+\begin{enumerate}
+\item $\nabla\cdot v = \epsilon\Delta p$. Pressure stabilization. Motivated through mathematical intuition (from the convection-diffusion equation).
+\item $\nabla\cdot v = -\epsilon p$. Penalty method. Typically, one uses the Velocity-Schur complement
+\item $\nabla\cdot = -\epsilon\frac{\partial p}{\partial
+  t}$. Artificial compressibility. A practical method as one adds the
+  possibility for time stepping.
+\end{enumerate}
+
+\noindent
+In other words, these techniques sets $D$ to be
+\begin{enumerate}
+	\item $D=A$
+	\item $D=M$
+	\item $D=\frac{1}{\Delta t}M$
+\end{enumerate}
+where $A$ is the stiffness matrix (discrete laplace operator) and $M$ is the mass matrix.
+
+
+\section{Exercises}
+
+\begin{exercise}
+Show that the conditions \eqref{remark1}-\eqref{remark3} are satisfied for
+$V_h = H^1_0$ and $Q_h=L_2$.
+\end{exercise}
+\begin{exercise}
+Show that the conditions \eqref{remark1}-\eqref{remark3} are satisfied for
+Taylor--Hood and Mini discretizations.
+(Note that Crouzeix-Raviart is non-conforming so it is more difficult to prove these conditions
+for this case.)
+\end{exercise}
+\begin{exercise}
+Condition \eqref{remark4} is difficult to prove. However, if we assume that
+$V_h = L_2$ and $Q_h=H^1_0$, you should be able to prove it. (Hint: This
+is closely related to Poincare's inequality.)
+\end{exercise}
+
+\begin{exercise}
+Test other finite elements for the Poiseuille flow problem. Consider $P_1-P_0$, $P_2-P_2$, $P_2-P_0$, as
+well as the Mini and Crouzeix-Raviart element.
+\end{exercise}
+
+\begin{exercise}
+Implement stabilization for the Poiseuille flow problem and use first order linear elements
+for both velocity and pressure.
+\end{exercise}
+
+\begin{exercise}
+In the previous problem the solution was a second order polynomial in the velocity and
+first order in the pressure. We may therefore obtain the exact solution and it
+is therefore difficult to check order of convergence for higher order methods with
+this solution. In this exercise you should therefore
+implement the problem $u=(sin(\pi y), cos( \pi x)$, $p=sin(2 \pi x)$, and $f = -\Delta u - \nabla p$.
+Test whether the approximation is of the expected order for $P_4-P_3$, $P_4-P_2$, $P_3-P_2$, and $P_3-P_1$.
+
+\end{exercise}
+
+\begin{exercise}
+Implement the problem $u=(sin(\pi y), cos( \pi x)$, $p=sin(2 \pi x)$, and $f = -\Delta u - \nabla p$
+and determine the order of the approximation of wall shear stress.
+\end{exercise}
+
+
+
+
+\section{Further reading}
+
+
+
+\end{document}
