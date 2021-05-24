@@ -24,7 +24,7 @@ Furthermore, discretizations often shows unphysical oscillations starting at thi
 The next example shows a 1D convection diffusion problem resulting in non-physical oscillations due to the use
 of a standard Galerkin approximation. 
 
-\begin{example}{\textbf{Standard Galerkin approximation}} \label{ex1} \\
+\begin{example}{\textbf{Standard Galerkin approximation}} \label{ex1} 
 Consider the following 1D problem convection diffusion problem, where $v=-1$ for simplicity: 
 \begin{eqnarray}
 -u_x - \mu u_{xx} = 0, \\ 
@@ -149,7 +149,7 @@ it is closely to adding some kind of diffusion to the scheme.
 The next example shows the solution of the problem in Example \ref{ex1} with 
 artificial diffusion added. 
 
-\begin{example}{\textbf{Stabilization using artificial diffusion}} \label{cd:ex2} \\
+\begin{example}{\textbf{Stabilization using artificial diffusion}} \label{cd:ex2} 
 Consider again the following 1D problem convection diffusion problem: 
 \begin{eqnarray}
 -u_x - \mu u_{xx} = 0, \\ 
@@ -175,8 +175,8 @@ above.  Below is the code for the changed variational form:
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=6cm]{chapters/conv-diff/plots/conv-diff-stab.png}
-\includegraphics[width=6cm]{chapters/conv-diff/plots/conv-diff-hr-stab.png}
+\includegraphics[width=0.45\textwidth]{chapters/conv-diff/plots/conv-diff-stab.png}
+\includegraphics[width=0.45\textwidth]{chapters/conv-diff/plots/conv-diff-hr-stab.png}
 \caption{Solution of the convection diffusion problem obtained with 10 and 100 elements
 using artificial diffusion to stabilize.}
 \label{fig:conv2}

@@ -33,7 +33,7 @@ This is a main reason to consider iterative methods.
 
 %------------------------------------------------------------------------------
 \section{The simplest iterative method: the Richardson iteration}
-\index{Richardson_simple}
+\index{Richardson iteration}
 The Richardson iteration\footnote{
 Richardson developed his method prior to computers. 
 In his 1910 paper, where the focus is to predict stresses in a masonry dam, he 
@@ -175,16 +175,16 @@ for D in [1, 2]:
     print "D=\%d, N=\%3d, min eigenvalue=\%5.3f, max eigenvalue=\%5.3f, cond. number=\%5.3f " \% (D, N, e[0], e[-1], c) 
 \end{python}
 yields the following output:  
-\begin{progoutput}
-D=1, N=  4, min eigenvalue=0.199, max eigenvalue=14.562,  cond. number=73.041 
-D=1, N=  8, min eigenvalue=0.111, max eigenvalue=31.078,  cond. number=279.992 
-D=1, N= 16, min eigenvalue=0.059, max eigenvalue=63.476,  cond. number=1079.408 
-D=1, N= 32, min eigenvalue=0.030, max eigenvalue=127.721, cond. number=4215.105 
-D=2, N=  4, min eigenvalue=0.040, max eigenvalue=7.090,   cond. number=178.444 
-D=2, N=  8, min eigenvalue=0.012, max eigenvalue=7.735,   cond. number=627.873 
-D=2, N= 16, min eigenvalue=0.003, max eigenvalue=7.929,   cond. number=2292.822 
-D=2, N= 32, min eigenvalue=0.001, max eigenvalue=7.982,   cond. number=8693.355 
-\end{progoutput}
+\terminal{
+D=1, N=  4, min eig=0.199, max eig=14.562,  cond. number=73.041 \\ 
+D=1, N=  8, min eig=0.111, max eig=31.078,  cond. number=279.992 \\  
+D=1, N= 16, min eig=0.059, max eig=63.476,  cond. number=1079.408 \\ 
+D=1, N= 32, min eig=0.030, max eig=127.721, cond. number=4215.105 \\ 
+D=2, N=  4, min eig=0.040, max eig=7.090,   cond. number=178.444 \\  
+D=2, N=  8, min eig=0.012, max eig=7.735,   cond. number=627.873 \\  
+D=2, N= 16, min eig=0.003, max eig=7.929,   cond. number=2292.822 \\  
+D=2, N= 32, min eig=0.001, max eig=7.982,   cond. number=8693.355 \\ 
+}
 The output shows that the condition number grows as $h^{-2}$ in both 1D and 2D although
 the behaviour of the eigenvalues clearly are dimension dependent (see Exercise \ref{ex:eig:1D2D3D}). The smallest eigenvalue decrease in both 1D and 2D as $h\rightarrow 0$ but at different rates. To obtain eigenvalues corresponding the
 true eigenvalue we would need to solve a generalized eigenvalue problem 
@@ -318,7 +318,7 @@ to concrete application at hand by trial and error.
 
 
 \section{The idea of preconditioning}
-\index{Richardson_preconditioner}
+\index{Richardson preconditioner}
 The basic idea of preconditioning is to replace 
 \[
 Au = b
@@ -350,7 +350,7 @@ e^n = e^{n-1} - \tau BAe^{n-1}
 \]
 and the iteration is convergent if $\Vert I - \tau BA\Vert < 1$.
 
-\subsection{Spectral equivalence and order optimal algorithms} \index{Spectral_equivalence}
+\subsection{Spectral equivalence and order optimal algorithms} \index{Spectral equivalence}
 
 Previously we stated that a good preconditioner is supposed to be similar to $A^{-1}$. 
 The precise (and most practical) property that is required of a preconditioner

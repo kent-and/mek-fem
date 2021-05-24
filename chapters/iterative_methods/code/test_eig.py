@@ -16,6 +16,6 @@ for D in [1, 2]:
     e.sort()
     c = e[-1] / e[0]
 
-    print "D=%d, N=%3d, min eigenvalue=%5.3f, max eigenvalue=%5.3f, cond. number=%5.3f " % (D, N, e[0], e[-1], c) 
+    print ("D=%d, N=%2d, min eig=%5.3f, max eig=%3.1f, cond=%3.1f " % (D, N, e[0], e[-1], c)) 
 
 
