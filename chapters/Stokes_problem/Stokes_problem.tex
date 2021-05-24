@@ -1,8 +1,4 @@
-        \fenicschapter{Stokes problem}
-              {Stokes problem}
-              {Stokes problem} 
-              {Anders Logg, Kent--Andre Mardal} 
-              {chap-stokes}   
+\chapter{Stokes problem}
 \label{chap-stokes}
 %\long\def\COMMENT#1{\par\vbox{\hrule\vskip1pt \hrule width.125in height0ex #1\vskip1pt\hrule}}
 
@@ -157,9 +153,9 @@ As before the standard finite element formulation follows directly from the weak
 Find $u_h\in V_{g,h}$ and $p_h\in Q_h$ such that
 \begin{eqnarray}
 \label{eq:stdGalerkin1}
-a(u_h, v_h ) + b(p_h, v_h) &=& f(v_h),\quad \foralls v_h\in V_{0,h}, \\
+a(u_h, v_h ) + b(p_h, v_h) &=& f(v_h),\quad \forall v_h\in V_{0,h}, \\
 \label{eq:stdGalerkin2}
-b(q_h, u_h) &=& 0,\quad \foralls q_h \in Q_h .
+b(q_h, u_h) &=& 0,\quad \forall q_h \in Q_h .
 \end{eqnarray}
 Letting $u_h=\sum_{i=1}^n u_i N_i$, $p_h=\sum_{i=1}^m p_i L_i$, $v_h=N_j$, and $q_h=L_j$
 we obtain a linear system on the form
@@ -288,17 +284,17 @@ To ensure that $B B^T$ is invertible, it is necessary that
 \[\operatorname{kernel}(B^T)=0,\ \textrm{where}\ B \ \textrm{is}\ m\times n\]
 An equvialent statement is that
 \begin{equation}
-\max_v\ (v,B^Tp) > 0\quad \foralls p .
+\max_v\ (v,B^Tp) > 0\quad \forall p .
 \label{max1}
 \end{equation}
 Alternatively,
 \begin{equation}
-\max_v\ \frac{(v,B^Tp)}{\|v\| } \ge \beta \|p\| \quad \foralls p.
+\max_v\ \frac{(v,B^Tp)}{\|v\| } \ge \beta \|p\| \quad \forall p.
 \label{max2}
 \end{equation}
 which obviously may be written 
 \begin{equation}
-\max_v\ \frac{(B v,p)}{\|v\| } \ge \beta \|p\| \quad \foralls p.
+\max_v\ \frac{(B v,p)}{\|v\| } \ge \beta \|p\| \quad \forall p.
 \label{max22}
 \end{equation}
 
@@ -307,16 +303,16 @@ However, in the infinite dimentional setting of PDEs \eqref{max1} and \eqref{max
 Inequality \eqref{max1} allow $(v, B^T p)$ to approach zero, while \eqref{max2} requires a lower bound.
 For the Stokes problem, the corresponding condition is crucial:
 \begin{equation}
-\sup_{v\in H^1_{D,g}}\ \frac{(p, \nabla\cdot u) }{\|u\|_1\ } \geqslant \beta \|p\|_0 > 0, \quad  \foralls p\in L^2
+\sup_{v\in H^1_{D,g}}\ \frac{(p, \nabla\cdot u) }{\|u\|_1\ } \ge \beta \|p\|_0 > 0, \quad  \forall p\in L^2
 \label{infsup:cont}
 \end{equation}
 
 Similarly, to obtain order optimal convergence rates, that is
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant Ch^k\|u\|_{k+1} + Dh^{\ell+1}\|p\|_{\ell+1}\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le Ch^k\|u\|_{k+1} + Dh^{\ell+1}\|p\|_{\ell+1}\]
 where $k$ and $\ell$ are the ploynomial degree of the velocity and the pressure, respectively,
 the celebrated \emph{Babuska-Brezzi condition} has to be satisfied:
 \begin{equation}
-\sup_{v\in V_{h,g}}\ \frac{(p, \nabla\cdot v) }{\|v\|_1\ } \geqslant \beta \|p\|_0 > 0, \quad  \foralls p\in Q_h
+\sup_{v\in V_{h,g}}\ \frac{(p, \nabla\cdot v) }{\|v\|_1\ } \ge \beta \|p\|_0 > 0, \quad  \forall p\in Q_h
 \label{infsup:disk}
 \end{equation}
 We remark that the discrete condition \eqref{infsup:disk} does not follow from \eqref{infsup:cont}.
@@ -329,22 +325,22 @@ have to be satisfied in order to have a well-posed problem: \\
 Boundedness of $a$:
 \begin{equation}
 \label{remark1}
-a(u_h, v_h) \le C_1 \|u_h\|_{V_h} \|v_h\|_{V_h}, \quad \foralls u_h, v_h \in V_h,
+a(u_h, v_h) \le C_1 \|u_h\|_{V_h} \|v_h\|_{V_h}, \quad \forall u_h, v_h \in V_h,
 \end{equation}
 and boundedness of $b$:
 \begin{equation}
 \label{remark2}
-b(u_h, q_h) \le C_2 \|u_h\|_{V_h} \|q_h\|_{Q_h},  \quad \foralls u_h \in V_h,  q_h \in Q_h,
+b(u_h, q_h) \le C_2 \|u_h\|_{V_h} \|q_h\|_{Q_h},  \quad \forall u_h \in V_h,  q_h \in Q_h,
 \end{equation}
 Coersivity of $a$:
 \begin{equation}
 \label{remark3}
-a(u_h, u_h) \ge C_3 \|u_h\|^2_{V_h} , \quad \foralls u_h \in Z_h,
+a(u_h, u_h) \ge C_3 \|u_h\|^2_{V_h} , \quad \forall u_h \in Z_h,
 \end{equation}
 where $Z_h=\left\{u_h \in V_h \ | \ b(u_h, q_h) = 0, \  \forall q_h\in Q_h\right\}$ and "coersivity" of $b$:
 \begin{equation}
 \label{remark4}
-\sup_{u_h\in V_h} \frac{b(u_h, q_h)}{\|u_h\|_{V_h}} \ge C_4 \|q_h\|_{Q_h} , \quad \foralls q_h \in Q_h.
+\sup_{u_h\in V_h} \frac{b(u_h, q_h)}{\|u_h\|_{V_h}} \ge C_4 \|q_h\|_{Q_h} , \quad \forall q_h \in Q_h.
 \end{equation}
 For the Stokes problem, \eqref{remark1}-\eqref{remark3} are easily verified, while \eqref{remark4} often
 is remarkably difficult unless the elements are designed to meet this condition.
@@ -364,11 +360,11 @@ p:\ L_i &=& k_i + l_i x + m_i y.
 \end{eqnarray*}
 And the basis functions are continuous across elements.
 For the Taylor-Hood element we have the following error estimate:
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant Ch^2 (\|u\|_{3} + \|p\|_{2}).\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le Ch^2 (\|u\|_{3} + \|p\|_{2}).\]
 The generalization of the Taylor--Hood element to higher order, that is 
 $P_k-P_{k-1}$, satisfies the Brezzi conditions (on reasonable meshes). 
 For the Taylor-Hood element of higher order we have the following error estimate:
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant Ch^k (\|u\|_{k+1} + \|p\|_{k}).\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le Ch^k (\|u\|_{k+1} + \|p\|_{k}).\]
 
 
 \subsection{The Crouzeix--Raviart element}
@@ -384,7 +380,7 @@ $-\Delta u - \nabla p = f$
 is replaced with the more "physically correct"  
 $-\nabla \cdot \epsilon(u) - \nabla p = f$, where $\epsilon=\frac{1}{2}(\nabla + \nabla^T)$ is the symmetric gradient.  
 For the Crouzeix--Raviart element we have the following error estimate:
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant Ch (\|u\|_{2} + \|p\|_{1})\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le Ch (\|u\|_{2} + \|p\|_{1})\]
 The element may be generalized to odd, but not even orders. 
 
 
@@ -401,7 +397,7 @@ $P_2-P_0$ element is a popular element that  satisfies the Brezzi conditions.
 An advantage with this approach is that mass conservation is
 maintained elementwise. However, the approximation properties of the pressure is one order lower than that for the Taylor-Hood element
 and consequently the velocity approximation is also formally, in general,  reduced by one order, i.e.,  
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant C_0 h^2\|u\|_{2} + C_1 h\|p\|_{2}\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le C_0 h^2\|u\|_{2} + C_1 h\|p\|_{2}\]
 The $P_2-P_0$ element can be generalized to higher order. 
 In fact,  $P_k-P_{k-2}$, satisfies the Brezzi conditions for $k\ge 2$. Here, the pressure element $P_{k-2}$
 may in fact consist of both continuous and discontinuous polynomials. 
@@ -417,7 +413,7 @@ $xy(1-x-y)$ is zero at all element faces.
 The barycentric coordinates can be used for this purpose on any element and also in higher dimensions.   
 The function is often called the bubble function as its support is local to one element and is zero at the element faces. 
 For the Mini element we have the following error estimate:
-\[\|u-u_h\|_1 + \|p-p_h\|_0 \leqslant C_0 h\|u\|_{2} + C_1 h^2\|p\|_{2}\]
+\[\|u-u_h\|_1 + \|p-p_h\|_0 \le C_0 h\|u\|_{2} + C_1 h^2\|p\|_{2}\]
 We notice that the convergence rate for the velocity is linear, hence the extra bubbles bring stability but does not increase approximation
 order. 
 

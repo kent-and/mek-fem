@@ -1,8 +1,4 @@
-        \fenicschapter{Discretization of a convection-diffusion problem}
-              {Discretization of a convection-diffusion problem}
-              {Discretization of a convection-diffusion problem} 
-              {Anders Logg, Kent--Andre Mardal} 
-              {chap-conv}   
+\chapter{Discretization of a convection-diffusion problem}
 
 %\long\def\COMMENT#1{\par\vbox{\hrule\vskip1pt \hrule width.125in height0ex #1\vskip1pt\hrule}}
 
@@ -29,7 +25,7 @@ The next example shows a 1D convection diffusion problem resulting in non-physic
 of a standard Galerkin approximation. 
 
 \begin{example}{\textbf{Standard Galerkin approximation}} \label{ex1} \\
-	Consider the following 1D problem convection diffusion problem, where $v=-1$ for simplicity: 
+Consider the following 1D problem convection diffusion problem, where $v=-1$ for simplicity: 
 \begin{eqnarray}
 -u_x - \mu u_{xx} = 0, \\ 
 u(0) = 0, u(1) = 1 . 
@@ -46,7 +42,7 @@ We solve the problem with a standard Galerkin method using linear first
 order Lagrange elements. To be specific, the variational problem is: \\    
 Find $u \in H^1_{(0,1)}$ such that 
 \[
-\int_0^1 -u_x v + \mu u_x v_x \dx   = 0, \quad \foralls v \in H^1_{(0,0)} .  
+\int_0^1 -u_x v + \mu u_x v_x \dx   = 0, \quad \forall v \in H^1_{(0,0)} .  
 \]
 Here, $H^1_{(0,1)}$ contains functions $u\in H^1$ with $u=0$ at $x=0$ and $u=1$ and $x=1$, while
 $H^1_{(0,0)}$ contains functions that are zero both at $x=0$ and $x=1$. We
@@ -164,7 +160,7 @@ We solve the problem with a standard Galerkin method using linear first
 order Lagrange elements as before, but we add artificial diffusion. To be specific, the variational problem is:  \\   
 Find $u \in H^1_{(0,1)}$ such that 
 \[
-\int_0^1 -u_x v + (\mu + \beta h) u_x v_x = 0, \quad \foralls v \in H^1_{(0,0)},    
+\int_0^1 -u_x v + (\mu + \beta h) u_x v_x = 0, \quad \forall v \in H^1_{(0,0)},    
 \]
 where $\beta=0.5$ corresponds to the finite difference scheme with artificial diffusion mentioned
 above.  Below is the code for the changed variational form:
@@ -212,7 +208,7 @@ u&=& g \quad \textrm{on}\ \partial\Omega .
 The \textbf{weak formulation} reads: \\
 Find $u\in H_g^1$ such that 
 \[
-a(u,w) = b(w) \quad \foralls\ w\in H_0^1, 
+a(u,w) = b(w) \quad \forall\ w\in H_0^1, 
 \]
 where
 \begin{eqnarray*}
@@ -225,7 +221,7 @@ The \textit{standard Galerkin} discretization is: \\
 Find $u_h\in V_{h,g}$ such that 
 \begin{equation}
 \label{Galerkin}
-a(u_h, v_h) = (f,v_h)\ \foralls v_h\in V_{h,0}.
+a(u_h, v_h) = (f,v_h)\ \forall v_h\in V_{h,0}.
 \end{equation}
 Here, $V_{h,g}$  and $V_{h,0}$ are the subspaces with traces that equals $g$ and $0$ on 
 the boundary, respectively.  
@@ -236,7 +232,7 @@ as was done in Example \ref{cd:ex2},
 can be done as: \\ 
 Find $u_h\in V_{h,g}$ such that 
 \[
-a(u_h, v_h) + \frac{h}{2}(\nabla u_h, \nabla v_h)  = (f,v_h)\ \foralls v_h\in V_{h,0}.
+a(u_h, v_h) + \frac{h}{2}(\nabla u_h, \nabla v_h)  = (f,v_h)\ \forall v_h\in V_{h,0}.
 \]
 Let
 \[
@@ -254,7 +250,7 @@ However, it is not \emph{strongly consistent} in the sense that $\tau(u) = 0$ fo
 discretization, which is what is obtained with the Galerkin method due
 to Galerkin-orthogonality:   
 \[
-\tau(u, v_h) =  a(u_h, v_h) - (f,v_h) = a(u_h - h, v_h) = 0 \quad \foralls v_h \in V_h. 
+\tau(u, v_h) =  a(u_h, v_h) - (f,v_h) = a(u_h - h, v_h) = 0 \quad \forall v_h \in V_h. 
 \]
 
 
@@ -264,7 +260,7 @@ assume that we have a space of test functions $W_h$.
 Abstractly, the Petrov-Galerkin method appears very similar to the Galerkin method, that is: \\ 
 Find $u_h\in V_{h,g}$ such that 
 \[
-a(u_h, v_h) = (f,v_h) \quad \foralls v_h\in W_{h,0}.
+a(u_h, v_h) = (f,v_h) \quad \forall v_h\in W_{h,0}.
 \]
 Again, $V_{h,g}$  and $W_{h,0}$ are the subspaces with traces that equals $g$ and $0$ on 
 the boundary, respectively.  
@@ -307,7 +303,7 @@ We summarize this derivation by stating the SUPG problem.
 Find $u_{h,sd}\in H_g^1$ such that 
 \begin{equation}
 \label{SUPG} 
-a_{sd} (u,w) = b_{sd}(w) \quad \foralls w\in H_0^1, 
+a_{sd} (u,w) = b_{sd}(w) \quad \forall w\in H_0^1, 
 \end{equation}
 where
 \begin{eqnarray*}
@@ -326,13 +322,13 @@ briefly describe the properties of the continuous problem.
 Let $V$ be a Hilbert space, $a(\cdot, \cdot)$ be 
 a bilinear form, $L(\cdot)$ a linear form, and let the following three conditions be satisfied: 
 \begin{enumerate}
-\item $a(u,u) \ge \alpha \|u\|^2_V, \quad \foralls u \in V$,  \label{LM1} 
-\item $a(u,v) \le C \|u\|_V \|v\|_V, \quad \foralls u, v \in V$,  \label{LM2} 
-\item $L(v) \le D \| v \|_V, \quad \foralls v \in V$ .  \label{LM3} 
+\item $a(u,u) \ge \alpha \|u\|^2_V, \quad \forall u \in V$,  \label{LM1} 
+\item $a(u,v) \le C \|u\|_V \|v\|_V, \quad \forall u, v \in V$,  \label{LM2} 
+\item $L(v) \le D \| v \|_V, \quad \forall v \in V$ .  \label{LM3} 
 \end{enumerate}
 Then the problem: Find $u\in V$ such that 
 \[
-a(u,v) = L(v) \quad \foralls v \in V. 
+a(u,v) = L(v) \quad \forall v \in V. 
 \]
 is well-posed in the sense that there exists a unique solution with the following 
 stability condition
@@ -473,7 +469,7 @@ Suppose the conditions for Lax-Milgram's theorem is satisfied and that
 we solve the linear problem \eqref{Galerkin} on a finite element space
 of order $t$. Then,     
 \[
-\|u-u_h\|_V     \leqslant C_1 \frac{C B}{\alpha}  h^{t} \|u\|_{t+1}.   
+\|u-u_h\|_V     \le C_1 \frac{C B}{\alpha}  h^{t} \|u\|_{t+1}.   
 \]
 Here $C_1 = \frac{C B}{\alpha}$, where $B$ comes from the approximation property 
 and $\alpha$ and $C$ are the constants of Lax-Milgram's theorem.    
@@ -482,7 +478,7 @@ and $\alpha$ and $C$ are the constants of Lax-Milgram's theorem.
 \begin{proof}
 The proof is straightforward and follows from the Galerkin orthogonality: 
 \[
-a(u - u_h, v) = 0, \quad \foralls v \in V_h 
+a(u - u_h, v) = 0, \quad \forall v \in V_h 
 \]
 Since $V_h \subset V$: 
 \begin{eqnarray*}
@@ -492,7 +488,7 @@ Since $V_h \subset V$:
 \end{eqnarray*}
 Since $v-u_h\in V_h$. Furthermore,  $v$ is arbitrary and we may therefore choose $v = I_h u$ and obtain:  
 \[
-	|u-u_h|_1 \leqslant \frac{C}{\alpha} |u - I_h u|_1 \le  \frac{CB}{\alpha} h^{t} \|u\|_t,   
+	|u-u_h|_1 \le \frac{C}{\alpha} |u - I_h u|_1 \le  \frac{CB}{\alpha} h^{t} \|u\|_t,   
 \]
 where $t-1$ is the order of the polynomials of the finite elements. 
 \end{proof}
@@ -516,7 +512,7 @@ in the Hilbert space defined by the SUPG norm \eqref{supg:norm}
 and that
 we solve the SUPG problem \eqref{SUPG} on a finite element space
 of order $1$. Then,  
-\[\|u-u_h\|_{sd} \leqslant Ch^{3/2}\|u\|_{2}\]
+\[\|u-u_h\|_{sd} \le Ch^{3/2}\|u\|_{2}\]
 \end{theorem}
 
 \begin{proof}

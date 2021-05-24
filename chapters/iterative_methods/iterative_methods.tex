@@ -1,11 +1,4 @@
-\fenicschapter{Efficient Solution Algorithms: Iterative methods and Preconditioning}
-              {Efficient Solution Algorithms: Iterative methods and Preconditioning}
-              {Iterative methods and Preconditioning} 
-              {Anders Logg, Kent--Andre Mardal} 
-              {chap-iterative}                          
-
-
-
+\chapter{Efficient Solution Algorithms: Iterative methods and Preconditioning}
 
 To compute the solution of a partial differential equation, we often 
 need to solve a system of linear of equations with a large number of
@@ -74,7 +67,7 @@ e^n = e^{n-1} - \tau A e^{n-1} .
 \]
 We may therefore quantify the error in terms of the $L^2$-norm as
 \[
-\Vert e^n \Vert = \Vert e^{n-1} - \tau A e^{n-1} \Vert \leqslant \Vert I - \tau A \Vert \Vert e^{n-1}\Vert .  
+\Vert e^n \Vert = \Vert e^{n-1} - \tau A e^{n-1} \Vert \le \Vert I - \tau A \Vert \Vert e^{n-1}\Vert .  
 \]
 Clearly, if $\Vert I - \tau A \Vert < 1$ then the iteration will be convergent. 
 \\
@@ -116,7 +109,7 @@ We estimate the error reduction per iteation in terms of the convergence factor 
 \]
 which leads to
 \[
-\Vert e^n \Vert \leqslant (\frac{\kappa - 1}{\kappa + 1})^n\Vert e^0\Vert. 
+\Vert e^n \Vert \le (\frac{\kappa - 1}{\kappa + 1})^n\Vert e^0\Vert. 
 \]
 
 
@@ -130,7 +123,7 @@ Nevertheless, let us assume  that we need to reduce the error by a factor of $\e
 that is, we need $\frac{\Vert e^n\Vert}{\Vert e^0 \Vert} < \epsilon$. From the iteration, we have 
 \begin{equation}
 \label{eq:convergence}
-\Vert e^n \Vert \leqslant \rho \Vert e^{n-1} \Vert \leqslant \rho^n \Vert e^0 \Vert.
+\Vert e^n \Vert \le \rho \Vert e^{n-1} \Vert \le \rho^n \Vert e^0 \Vert.
 \end{equation}
 
 An estimate for the number of iterations is then obtained by assuming
@@ -217,7 +210,7 @@ lenght $\Delta x$. We find the smallest and largest discrete eigenvalues
 \]
 Let $\tau = \frac{2}{\lambda_{max} + \lambda_{min}}$ then from the analysis above,
 \[
-\Vert e^n\Vert \leqslant (\frac{1-K}{1+K})^{n}\Vert e^0 \Vert.
+\Vert e^n\Vert \le (\frac{1-K}{1+K})^{n}\Vert e^0 \Vert.
 \]
 The below code perform the Richardson iteration for various 
 resolution on the 1D Poisson problem and stops when 
@@ -378,10 +371,10 @@ is:
 and positive definite are spectral equivalent if:
 
 \begin{equation}\label{eq:spectral_equivalence}%and order optimal algorithm
-c_1(A^{-1}v,v) \leqslant (Bv,v) \leqslant c_2(A^{-1}v,v) \quad \forall v
+c_1(A^{-1}v,v) \le (Bv,v) \le c_2(A^{-1}v,v) \quad \forall v
 \end{equation}
 If $A^{-1}$ and $B$ are spectral equivalent, then the condition number 
-of the matrix $BA$ is $\kappa(BA) \leqslant \frac{c_2}{c_1}$.
+of the matrix $BA$ is $\kappa(BA) \le \frac{c_2}{c_1}$.
 \end{definition}
 
 If the preconditioner $B$ is spectrally equivalent with $A^{-1}$ 
@@ -391,7 +384,7 @@ To see this, we note that $e^n = (I-\tau BA)e^{n-1}$. We can estimate
 the behavior of $e^n$ by using the A-norm, $\rho_A = \Vert I - \tau BA\Vert_A$. 
 Then we get
 \[
-\Vert e^n\Vert_A \leqslant \rho _A \Vert e^{n-1}\Vert_A.
+\Vert e^n\Vert_A \le \rho _A \Vert e^{n-1}\Vert_A.
 \]
 Hence, if the condition number is independent of the discretization 
 then the number of iterations  as estimated earlier in \eqref{no_iterations} 
