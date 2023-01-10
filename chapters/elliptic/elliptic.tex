@@ -1,0 +1,126 @@
+\chapter{Elliptic equations and the finite element method}
+
+
+%\newcommand{\R}{\mathbb{R}}
+
+
+\label{elliptic}
+\section{Introduction}
+
+As a starting point for the finite element method, let us
+consider the mother problem of partial differential equations, 
+the elliptic problem: Find the solution of 
+
+\begin{eqnarray}
+\label{elliptic}
+-\nabla\cdot(k\nabla u)  &=& f \quad \textrm{in}\ \Omega\\
+\label{Dirichlet}
+u&=& g \quad \textrm{on}\ \partial\Omega_D \\
+\label{Neumann}
+\frac{\partial u}{\partial n}&=& h \quad \textrm{on}\ \partial\Omega_N . 
+\end{eqnarray}
+We include here both Dirichlet \eqref{Dirichlet} and Neumann \eqref{Neumann} boundary conditions
+and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$. 
+
+There are some unusual concepts like weak or variational formulations, trial and test functions, Sobolev
+spaces etc that shows up in the finite element methods that many find troublesome and strange. To motivate
+these concepts we start with some "philosophical considerations" which leads to three observations that
+will be resolved by weak formulations and the finite element method. First, the above equation is 
+the so-called strong formulation and its interpretation is (directly) that for every point in $\Omega$
+the equation $ -\nabla\cdot(k\nabla u)  = f$ should be valid. Hence, $u$, $f$ are functions and
+if we assume that $f$ is a continuous function then $u$ is continuous with two derivatives also continuous.   
+More formally, $f\in C(\Omega)$ directly leads to the requirement that $u\in C^2(\Omega)$. In general 
+it is however well known, and we will meet many of them in this course, that $u \not \in C^2(\Omega)$ are
+solutions to \eqref{elliptic}. 
+
+Secondly, from a linear algebra point of view, let us consider the linear system 
+\begin{equation}
+\label{Aub}
+A u = b 
+\end{equation}
+where $A$ is an $\R^{N\times N}$ matrix whereas $u$, $f$ are vectors in $\R^N$ and 
+$N$ is the number of points in $\Omega$ which could be infinite. Assuming for instance
+that $\Omega$ is the unit square with $n$ points in both the $x-$ and $y-$direction such 
+that $N=n^2$. Then the unknowns of 
+\eqref{Aub} are $u_k = u(x_i, y_i)$ whereas
+the equations are     
+$-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_i)$ and we notice that
+we have $N$ unknowns and $N$ equations leading to a linear system with 
+a square and possibly non-singular matrix, however of infinite size.  
+
+For computational methods, we need to resort to finite resolution and this brings us to our third 
+issue. Triangulated domain. 
+
+The finite element method resolves these three challenges by combining so-called weak formulations
+to reduced the demands of differentiability of the solution with a structured approach of integration
+adjusted to underlying meshes and polynomial approximation to achieve a versatile, practical, accurate
+and efficient method. However, before we start with FEM, let us recap some fundamental results of calculus, 
+Gauss-Green's lemma: 
+\begin{equation}
+\label{gaussgreen}
+\int_\Omega 
+-\nabla\cdot(k\nabla u) v \dx =  
+\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds 
+\end{equation}
+
+With this lemma in mind we transform equation \eqref{elliptic} into an integral version by multiplying
+\eqref{elliptic} with a test function $v$ before we integrate over the domain $\Omega$. Hence, 
+we obtain  
+\begin{equation}
+\label{gaussgreen}
+\int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \int_\Omega f v \dx .  
+\end{equation}
+Here, $v$ plays the role the pointwise evaluation in the strong formulation. That is, 
+if $v$ is the Dirac delta functions corresponding to the points in $\Omega$, i.e.,  $v_k = \delta(x_i, y_j)$
+then we obtain directly the strong formulation. This formulation is often called
+the collocation method and is used e.g. for the Runge-Kutta method. However, it is 
+seldom used for FEM because of the high demands on the differentiability of $u$. 
+
+The weak formulation exploit the Gauss-Green´s lemma together with the boundary conditions. That is,  
+\begin{eqnarray*}
+\label{gaussgreen}
+\int_\Omega f v \dx =  \\ 
+\int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \\ 
+\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds =  
+\end{eqnarray*}
+
+Something about the boundary conditions 
+
+The finite element method directly exploits the weak formulation. 
+Let $u = \sum_i u_i N_i$ and $v=N_j$. 
+Then 
+\[
+A u = b 
+\]
+
+
+A fundamental property in both the theory of partial differential equations and numerical analysis is the
+concept of well-posedness. In Hadamard´s definition a problem is well-posed if a solution exists, is unique
+and depends continuously on the input. Hence, if we have two inputs to our problem, $b_1$ and $b_2$ 
+then the difference between the solutions $u_1$ and $u_2$ should be bounded by the differences
+between $b_1$ and $b_2$. In terms of linear algebra, we directly obtain well-posedness if
+$A$ is a non-singular matrix. That we directly have 
+\[
+\|A(u_1 - u_2) \| = \|b_1 - b_2\|     
+\]
+and 
+\[
+\|(u_1 - u_2) \| = \|A^{-1}b_1 - b_2\|     
+\]
+which we directly can explore to obtain bounds. Neither of these observations are however
+very useful. However, assuming that we have a concept of 
+$A^{1/2}$ and $A^{-1/2}$, which will be more precisely defined later, 
+we will see that the notion 
+\[
+\|A^{1/2}(u_1 - u_2) \| = \|A^{-1/2}b_1 - b_2\|     
+\]
+is extraordinary useful and gives precise estimates in a wide range of situations.  
+We remark that $\Delta=\nabla\cdot\nabla$ and as such $\nabla$ can be interpreted
+as some kind of square root of $\Delta$. However, these things will need to be made
+more precise.  
+
+
+
+
+
+
