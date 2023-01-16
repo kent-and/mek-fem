@@ -79,19 +79,82 @@ seldom used for FEM because of the high demands on the differentiability of $u$.
 The weak formulation exploit the Gauss-Green´s lemma together with the boundary conditions. That is,  
 \begin{eqnarray*}
 \label{gaussgreen}
-\int_\Omega f v \dx =  \\ 
-\int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \\ 
-\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds =  
+\int_\Omega f v \dx =   \int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \\ 
+\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v \ds   
 \end{eqnarray*}
 
-Something about the boundary conditions 
+Finally, to get to the weak formulation, we have to apply boundary conditions. For the Dirichlet
+condition \eqref{Dirichlet} we already know that $u=g$. Since we already know $u$ here it is common 
+to say also that $v=0$ is known. Furthermore, by applying the Neumann condition, we then obtain that  
+\begin{eqnarray}
+\int_{\partial \Omega} k\frac{\partial u} {\partial n} v ds =   
+\int_{\partial \Omega_D} k\frac{\partial u} {\partial n} v ds +   \int_{\partial \Omega_N} k\frac{\partial u} {\partial n} v ds =   
+\int_{\partial \Omega_D} k\frac{\partial u} {\partial n} 0 +   \int_{\partial \Omega_N} h v ds   
+\end{eqnarray}
+As such we arrive at the \emph{weak formulation} of the elliptic problem: 
+Find $u$ such that 
+\[
+\int_\Omega k \nabla u \cdot \nabla v dx = \int_\Omega f v dx + \int_{\Omega_N} h v ds, \quad \forall v  
+\]
+Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$.  
+
 
 The finite element method directly exploits the weak formulation. 
-Let $u = \sum_i u_i N_i$ and $v=N_j$. 
+Let $u = \sum_j u_j N_j$ and $v=N_i$. 
 Then 
+\[
+\int_\Omega k \nabla \sum_j u_j N_j  \cdot \nabla N_i dx = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds  \quad \forall j .    
+\]
+A simple rewrite: 
+\[
+\sum_j u_j  \int_\Omega k \nabla  N_j  \cdot \nabla N_i dx = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds \quad \forall j.    
+\]
+Hence, with  
+\begin{eqnarray*}
+A_{ij} = \int_\Omega k \nabla  N_j  \cdot \nabla N_i dx, \\  
+b_i = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds 
+\end{eqnarray*}
+we arrive at the following linear system 
 \[
 A u = b 
 \]
+
+The following code solves the Poisson problem on the unit square
+consisting of $32\times 32$ rectangles, where each rectangle is divided
+in two and $f=1$, $g=0$ and $h=x$. Dirichlet conditions are set 
+for $y=0$ and Neumann for the rest of $\partial \Omega$.  
+
+\begin{python}
+from dolfin import *
+
+# Create mesh and define function space
+mesh = UnitSquareMesh(32, 32)
+V = FunctionSpace(mesh, "Lagrange", 1)
+
+# Define Dirichlet boundary (x = 0 or x = 1)
+def boundary(x): return x[0] < DOLFIN_EPS 
+
+# Define boundary condition
+u0 = Constant(0.0)
+bc = DirichletBC(V, g, boundary)
+
+# Define variational problem
+u = TrialFunction(V)
+v = TestFunction(V)
+f = Constant(1)
+g = Expression("x[0]")
+a = inner(grad(u), grad(v))*dx
+L = f*v*dx + h*v*ds
+
+# Compute solution
+u = Function(V)
+solve(a == L, u, bc)
+
+# Save solution in VTK format
+file = File("poisson.pvd")
+file << u
+\end{python}
+
 
 
 A fundamental property in both the theory of partial differential equations and numerical analysis is the
