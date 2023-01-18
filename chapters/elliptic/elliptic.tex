@@ -21,7 +21,7 @@ u&=& g \quad \textrm{on}\ \partial\Omega_D, \\
 \end{eqnarray}
 We include here both Dirichlet \eqref{Dirichlet} and Neumann \eqref{Neumann} boundary conditions
 and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$ 
-and $\partial \Omega_D \cap \partial \Omega_N = \Null$.
+and $\partial \Omega_D \cap \partial \Omega_N = \emptyset$.
  
 
 Unusual concepts like weak or variational formulations, trial and test functions, Sobolev
@@ -35,59 +35,79 @@ More formally, $f\in C(\Omega)$ directly leads to the requirement that $u\in C^2
 it is however well known, and we will meet many of them in this course, that $u \not \in C^2(\Omega)$ are
 solutions to \eqref{elliptic}. 
 
-Secondly, from a linear algebra point of view, let us consider the linear system 
+
+
+In this book, it will be sentral to compare differential operators and matrices to build
+intuition. So, let us assume that  
+\eqref{elliptic}-\eqref{Neumann} is represented as a linear system, i.e.,  
 \begin{equation}
 \label{Aub}
 A u = b 
 \end{equation}
-where $A$ is an $\R^{N\times N}$ matrix whereas $u$, $f$ are vectors in $\R^N$ and 
-$N$ is the number of points in $\Omega$ which could be infinite. Assuming for instance
+where $A$ is an $\R^{N\times N}$ matrix whereas $u$, $f$ are vectors in $\R^N$. 
+Then the number of equations or number of rows is $N$, which has to equal the number
+of points in the domain. Hence, we either have to introduce a resolution of else $N$ is 
+infinite. Assuming for instance
 that $\Omega$ is the unit square with $n$ points in both the $x-$ and $y-$direction such 
-that $N=n^2$. Then the unknowns of 
-\eqref{Aub} are $u_k = u(x_i, y_i)$ whereas
+that $N=n^2$. In order to get a non-singular matrix the number of unknowns should
+equal the number of equations. We do obtain $N$ uknowns if we say that for every
+point in the domain we have an unknown $u_k = u(x_i, y_j)$, $k=j+i(N-1)$ whereas
 the equations are     
-$-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_i)$ and we notice that
-we have $N$ unknowns and $N$ equations leading to a linear system with 
-a square and possibly non-singular matrix, however of infinite size.  
+$-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_j)$.    
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.75\textwidth]{chapters/elliptic/pics/dolfin_mesh.png}
+\caption{An example mesh of a swimming dolphin.}
+\label{fig:dolphin}
+\end{center}
+\end{figure}
+
 
 For computational methods, we need to resort to finite resolution and this brings us to our third 
-issue. Triangulated domain. 
+issue. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
+can immediately see that it will be difficult to formulate a finite difference approach on this domain
+as the nodal points does not form squares. Hence, a stencil like: 
+\[
+	\frac{u(x+h,y) + u(x,y+y) -4 u(x,y) + u(x-h,y) + u(x, y-h) }{h^2} (\approx \Delta u) 
+\]
+will not be able to exploit the triangulation. Furhermore, the stencil will cross $\partial \Omega$.   
 
-The finite element method resolves these three challenges by combining so-called weak formulations
-to reduced the demands of differentiability of the solution with a structured approach of integration
-adjusted to underlying meshes and polynomial approximation to achieve a versatile, practical, accurate
+The finite element method (FEM) resolves these three challenges by combining 1) the so-called weak formulations
+to reduced the demands of differentiability of the solution with 2) a structured approach of integration
+adjusted to the underlying meshes and 3) a polynomial approximation to achieve a versatile, practical, accurate
 and efficient method. However, before we start with FEM, let us recap some fundamental results of calculus, 
 Gauss-Green's lemma: 
 \begin{equation}
 \label{gaussgreen}
 \int_\Omega 
 -\nabla\cdot(k\nabla u) v \dx =  
-\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds 
+\int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds 
 \end{equation}
 
-With this lemma in mind we transform equation \eqref{elliptic} into an integral version by multiplying
+With this lemma in mind we transform equation \eqref{elliptic} into an integral integral equation by multiplying
 \eqref{elliptic} with a test function $v$ before we integrate over the domain $\Omega$. Hence, 
 we obtain  
 \begin{equation}
 \label{gaussgreen}
 \int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \int_\Omega f v \dx .  
 \end{equation}
-Here, $v$ plays the role the pointwise evaluation in the strong formulation. That is, 
-if $v$ is the Dirac delta functions corresponding to the points in $\Omega$, i.e.,  $v_k = \delta(x_i, y_j)$
+Here, $v$ plays the role the pointwise evaluation in the strong formulation. That is,
+we may evaluate the above equation with respect to many different $v$'s. 
+For instance, if the $v$'s are the Dirac delta functions corresponding to the points in $\Omega$, i.e.,  $v_k = \delta(x_i, y_j)$
 then we obtain directly the strong formulation. This formulation is often called
 the collocation method and is used e.g. for the Runge-Kutta method. However, it is 
-seldom used for FEM because of the high demands on the differentiability of $u$. 
+seldom used for FEM because of the high demands on the differentiability on $u$. 
 
-The weak formulation exploit the Gauss-Green´s lemma together with the boundary conditions. That is,  
+We arrive at the final weak formulation by two steps. First, we exploite the Gauss-Green´s lemma. That is,  
 \begin{eqnarray*}
 \label{gaussgreen}
 \int_\Omega f v \dx =   \int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \\ 
-\int_\Omega k\nabla u) \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v \ds   
+\int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v \ds  .  
 \end{eqnarray*}
-
-Finally, to get to the weak formulation, we have to apply boundary conditions. For the Dirichlet
-condition \eqref{Dirichlet} we already know that $u=g$. Since we already know $u$ here it is common 
-to say also that $v=0$ is known. Furthermore, by applying the Neumann condition, we then obtain that  
+Second, we apply the boundary conditions. That is, for the Dirichlet
+condition \eqref{Dirichlet} we already know that $u=g$. Hence, $u$ is not an unknown at that part of the boundary.  Therefore, it is common 
+to let $v=0$ at $\partial \Omega_D$. Furthermore, by inserting the Neumann condition, we obtain that  
 \begin{eqnarray}
 \int_{\partial \Omega} k\frac{\partial u} {\partial n} v ds =   
 \int_{\partial \Omega_D} k\frac{\partial u} {\partial n} v ds +   \int_{\partial \Omega_N} k\frac{\partial u} {\partial n} v ds =   
@@ -98,12 +118,36 @@ Find $u$ such that
 \[
 \int_\Omega k \nabla u \cdot \nabla v dx = \int_\Omega f v dx + \int_{\Omega_N} h v ds, \quad \forall v  
 \]
-Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$.  
+Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$. We will come back to what $\forall v$ means in a 
+more precise sense later.  
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.75\textwidth]{chapters/elliptic/pics/fem.png}
+\caption{One finite element basis function /pyramide function associated with a particular node.}
+\label{fig:fembasis}
+\end{center}
+\end{figure}
+
+
 
 
 The finite element method directly exploits the weak formulation. 
-Let $u = \sum_j u_j N_j$ and $v=N_i$. 
-Then 
+Let the trial and test functions be as follows:  
+\begin{equation}
+\label{trialtest}
+u = \sum_j u_j N_j \quad \text{and} \quad v=N_i
+\end{equation}
+	. Here $\{N_i\}$ is a set of basis functions choosen somehow. 
+There are many possibilities and one may target the basis function to the problem at hand. 
+The simplest basis function is shown in 
+Fig \ref{fig:fembasis}. Here, the basis function is chosen as linear functions / pyramides associated with the nodal points, 
+so-called Lagrange element of first order.  
+There are many, many different finite element functions to choose from and they have different properties. 
+Lists of common and unusual elements available in FEniCS can be found in 
+\cite{logg2012automated}. 
+
+The FEM problem is obtained by inserting \eqref{trialtest} into the weak formulation, i.e.   
 \[
 \int_\Omega k \nabla \sum_j u_j N_j  \cdot \nabla N_i dx = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds  \quad \forall j .    
 \]
