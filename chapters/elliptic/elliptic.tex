@@ -64,6 +64,8 @@ $-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_j)$.
 \end{figure}
 
 
+\section{The finite element method in a nutshell}
+
 For computational methods, we need to resort to finite resolution and this brings us to our third 
 issue. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
 can immediately see that it will be difficult to formulate a finite difference approach on this domain
@@ -201,7 +203,7 @@ file = File("poisson.pvd")
 file << u
 \end{python}
 
-
+\section{Brief notes on the Strangeness of partial differential equations }
 
 A fundamental property in both the theory of partial differential equations and numerical analysis is the
 concept of well-posedness. In Hadamard´s definition a problem is well-posed if a solution exists, is unique
@@ -214,20 +216,61 @@ $A$ is a non-singular matrix. That we directly have
 \]
 and 
 \[
-\|(u_1 - u_2) \| = \|A^{-1}b_1 - b_2\|     
+\|(u_1 - u_2) \| = \|A^{-1}b_1 - b_2\| \le  \|A^{-1}\| \|b_1 - b_2\|     
 \]
 which we directly can explore to obtain bounds. Neither of these observations are however
-very useful. However, assuming that we have a concept of 
-$A^{1/2}$ and $A^{-1/2}$, which will be more precisely defined later, 
-we will see that the notion 
+very useful. 
+For instance, an intuitive estimate like  
+\[
+\|(u_1 - u_2) \|_\infty = \|(-\Delta)^{-1} \|_\infty \|f_1 - f_2\|_\infty     
+\]
+requires non-obvious regularity requirements. Here, 
+$\|f \|_\infty = \sup_x |f(x)|$\footnote{Note that $\sup$ is an 
+extension of $\max$ for infinite dimentional sets. In particular, $\sup=max$ for finite dimentional sets.}  
+
+Instead, it is useful to consider the square roots for matrices and operators. 
+We will make it more precise later, but let us assume 
+that we have a concept of 
+$A^{1/2}$ and $A^{-1/2}$. The, as we will see,  the notion 
 \[
 \|A^{1/2}(u_1 - u_2) \| = \|A^{-1/2}b_1 - b_2\|     
 \]
 is extraordinary useful and gives precise estimates in a wide range of situations.  
 We remark that $\Delta=\nabla\cdot\nabla$ and as such $\nabla$ can be interpreted
-as some kind of square root of $\Delta$. However, these things will need to be made
-more precise.  
-
+as some kind of square root of $\Delta$. There are however some difficulties that
+arise with this notion. Let us consider the problem in 1D, using FDM. The stencil 
+is then 
+\[
+- u_{xx} \approx A u =  \frac{-u_{i+1} + 2 u_{i+1}  -u_{i-1}}{h^2}, 
+\]  
+where $u_i= u(x_i)$ and $x_i = ih, \ i=0,\ldots, N$. 
+For a mesh with two internal degrees of freedom, the corresponding matrix 
+is 
+\[
+A = 
+\frac{1}{h^2}\begin{pmatrix}
+2 & -1 \\ -1 & 2 
+\end{pmatrix}
+\]
+Let $B$ 
+\[
+B u = 
+\frac{1}{h}\begin{pmatrix}
+1 & -1 & 0  \\ 0 & 1 & -1  
+\end{pmatrix}
+\]
+Obviously,  
+\[
+A = B^T B 
+\]
+However, $B$ is not unique. Furthermore, it is a rectangular matrix that makes
+it difficult to invert it. Still, the correct and actually where practical 
+variant of the above estimate is    
+\[
+\|\nabla (u_1 - u_2) \| = \|\nabla^(-1)(f_1 - f_2)\|     
+\]
+We do however need to make sense of the 
+$\nabla^(-1)$. For now it is enough to think of it as some form of antiderivative. 
 
 
 
