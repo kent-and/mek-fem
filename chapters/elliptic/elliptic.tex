@@ -9,26 +9,28 @@
 
 As a starting point for the finite element method, let us
 consider the mother problem of partial differential equations, 
-the elliptic problem: Find the solution of 
+the elliptic problem: Find the solution $u$ of the problem
 
 \begin{eqnarray}
 \label{elliptic}
--\nabla\cdot(k\nabla u)  &=& f \quad \textrm{in}\ \Omega\\
+-\nabla\cdot(k\nabla u)  &=& f \quad \textrm{in}\ \Omega,\\
 \label{Dirichlet}
-u&=& g \quad \textrm{on}\ \partial\Omega_D \\
+u&=& g \quad \textrm{on}\ \partial\Omega_D, \\
 \label{Neumann}
 \frac{\partial u}{\partial n}&=& h \quad \textrm{on}\ \partial\Omega_N . 
 \end{eqnarray}
 We include here both Dirichlet \eqref{Dirichlet} and Neumann \eqref{Neumann} boundary conditions
-and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$. 
+and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$ 
+and $\partial \Omega_D \cap \partial \Omega_N = \Null$.
+ 
 
-There are some unusual concepts like weak or variational formulations, trial and test functions, Sobolev
-spaces etc that shows up in the finite element methods that many find troublesome and strange. To motivate
-these concepts we start with some "philosophical considerations" which leads to three observations that
-will be resolved by weak formulations and the finite element method. First, the above equation is 
+Unusual concepts like weak or variational formulations, trial and test functions, Sobolev
+spaces etc. show up in the finite element methods and many find them troublesome and strange. To motivate
+these concepts we start with some "philosophical" considerations that lead to three observations which 
+will be resolved by the finite element method. First, the above equation is 
 the so-called strong formulation and its interpretation is (directly) that for every point in $\Omega$
 the equation $ -\nabla\cdot(k\nabla u)  = f$ should be valid. Hence, $u$, $f$ are functions and
-if we assume that $f$ is a continuous function then $u$ is continuous with two derivatives also continuous.   
+if we assume that $f$ is a continuous function then $u$ is continuous with two derivatives that are also continuous.   
 More formally, $f\in C(\Omega)$ directly leads to the requirement that $u\in C^2(\Omega)$. In general 
 it is however well known, and we will meet many of them in this course, that $u \not \in C^2(\Omega)$ are
 solutions to \eqref{elliptic}. 
