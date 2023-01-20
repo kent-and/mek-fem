@@ -117,9 +117,10 @@ to let $v=0$ at $\partial \Omega_D$. Furthermore, by inserting the Neumann condi
 \end{eqnarray}
 As such we arrive at the \emph{weak formulation} of the elliptic problem: 
 Find $u$ such that 
-\[
+\begin{equation}
+\label{weakform}
 \int_\Omega k \nabla u \cdot \nabla v dx = \int_\Omega f v dx + \int_{\Omega_N} h v ds, \quad \forall v  
-\]
+\end{equation}
 Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$. We will come back to what $\forall v$ means in a 
 more precise sense later.  
 
@@ -264,13 +265,44 @@ Obviously,
 A = B^T B 
 \]
 However, $B$ is not unique. Furthermore, it is a rectangular matrix that makes
-it difficult to invert it. Still, the correct and actually where practical 
+it difficult to invert it. In particular, it has a one-dimentional kernel
+consisting of the constant vector $c (1,1,1)^T$, where $c\in \R$. Likewise
+in the continuous setting $\nabla$ has a kernel of constant functions.  
+However, and withough any mathematical rigour, 
+the correct and actually quite practical 
 variant of the above estimate is    
 \[
 \|\nabla (u_1 - u_2) \| = \|\nabla^{-1}(f_1 - f_2)\|     
 \]
 We do however need to make sense of the 
 $\nabla^{-1}$. For now it is enough to think of it as some form of antiderivative. 
+Here, for instance $u_1, f_1$ may be the actual continuous solution and input data whereas the 
+$u_2, f_2$ are the numerical solution and input data. 
+
+
+\section{Exercises}
+
+\begin{exercise}
+Consider the problem $-u''(x) = x^2$ on the unit interval with $u(0) = u(1) = 0$.  
+Let $u=\sum_{k=1}^{10} u_k \sin(\pi k x )$ and $v=\sin(\pi l x)$ for $l=1, \ldots 10$
+and solve \eqref{weakform}. What is the error in $L_2$ and $\L_\infty$.  
+\end{exercise}
+
+\begin{exercise}
+Consider the same problem as in the previous exercise, but using Bernstein polynomials. 
+That is, the basis for the Bernstein polynomial of order 10 on the unit interval is $B_k(x)=x^k(1-x)^{10-k}$ for $k=0, \ldots, 10$.  
+Let $u=\sum_{k=0}^{10} u_k B_k(x )$ and $v=B_l(x)$ for $0=1, \ldots 10$
+and solve \eqref{weakform}. What is the error in $L_2$ and $\L_\infty$.  
+\end{exercise}
+
+\begin{exercise}
+Consider the same problem as in the previous exercise, but with  
+$-u''(x) = sin(k \pi x)$ for $k=1$ and $k=10$.  
+\end{exercise}
+
+
+
+
 
 
 
