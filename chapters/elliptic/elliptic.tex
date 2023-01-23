@@ -64,7 +64,6 @@ $-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_j)$.
 \end{figure}
 
 
-\section{The finite element method in a nutshell}
 
 For computational methods, we need to resort to finite resolution and this brings us to our third 
 issue. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
@@ -74,6 +73,9 @@ as the nodal points does not form squares. Hence, a stencil like:
 	\frac{u(x+h,y) + u(x,y+y) -4 u(x,y) + u(x-h,y) + u(x, y-h) }{h^2} (\approx \Delta u) 
 \]
 will not be able to exploit the triangulation. Furhermore, the stencil will cross $\partial \Omega$.   
+
+
+\section{The finite element method in a nutshell}
 
 The finite element method (FEM) resolves these three challenges by combining 1) the so-called weak formulations
 to reduced the demands of differentiability of the solution with 2) a structured approach of integration
@@ -278,6 +280,9 @@ We do however need to make sense of the
 $\nabla^{-1}$. For now it is enough to think of it as some form of antiderivative. 
 Here, for instance $u_1, f_1$ may be the actual continuous solution and input data whereas the 
 $u_2, f_2$ are the numerical solution and input data. 
+
+\section{Further reading}
+There are several execellent and highly recommended books on the finite element method~\cite{braess2007finite, brenner2008mathematical}. 
 
 
 \section{Exercises}
