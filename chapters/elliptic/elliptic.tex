@@ -26,8 +26,8 @@ and $\partial \Omega_D \cap \partial \Omega_N = \emptyset$.
 
 Unusual concepts like weak or variational formulations, trial and test functions, Sobolev
 spaces etc. show up in the finite element methods and many find them troublesome and strange. To motivate
-these concepts we start with some "philosophical" considerations that lead to three observations which 
-will be resolved by the finite element method. First, the above equation is 
+these concepts we start with some "philosophical" considerations that lead to three challenges which 
+will be resolved by the finite element method. The first challenge: the above equation is 
 the so-called strong formulation and its interpretation is (directly) that: \\ 
 For every point $x \in \Omega$ the equation 
 \begin{equation}
@@ -49,7 +49,7 @@ intuition. So, let us assume that
 \label{Aub}
 A u = b .  
 \end{equation}
-This leads us to our second observation: In order to have a linear system with a well-defined solution we at least need the same number 
+This leads us to our second challenge: In order to have a linear system with a well-defined solution we at least need the same number 
 of equations and unknows, ie.  
 $A$ is a $\R^{N\times N}$ matrix and $u$, $f$ are vectors in $\R^N$. How can we make numerical methods that ensure
 the same number of equations and uknowns? Is it ensured by the definition in \eqref{strong:elliptic}.  
@@ -74,7 +74,7 @@ explanation of the strong formulation.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.75\textwidth]{chapters/elliptic/pics/dolfin_mesh.png}
+\includegraphics[width=0.75\textwidth]{chapters/elliptic/pics/dolfin_mesh_crop.png}
 \caption{An example mesh of a swimming dolphin.}
 \label{fig:dolphin}
 \end{center}
@@ -82,8 +82,8 @@ explanation of the strong formulation.
 
 
 
-For computational methods, we need to resort to finite resolution and this brings us to our third 
-issue. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
+Computationally, we need to resort to finite resolutions and this brings us to our third 
+challenge. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
 can immediately see that it will be difficult to formulate a finite difference approach on this domain
 as the nodal points does not form squares. Hence, a stencil like: 
 \[
@@ -95,45 +95,30 @@ will not be able to exploit the triangulation. Furhermore, the stencil will cros
 \section{The finite element method in a nutshell}
 
 The finite element method (FEM) resolves these three challenges by combining 1) the so-called weak formulations
-to reduced the demands of differentiability of the solution with 2) a structured approach of integration
-adjusted to the underlying meshes and 3) a polynomial approximation to achieve a versatile, practical, accurate
-and efficient method. However, before we start with FEM, let us recap some fundamental results of calculus, 
+to reduced the demands of differentiability of the solution with 2) 
+trial and test functions constructed by the same apporach leads to $N\times N$ matrices and 3)  
+a structured approach of integration
+adjusted to the underlying meshes. Hence, before we start with FEM, let us recap some fundamental results of calculus that will lead to the weak formulation, the 
 Gauss-Green's lemma: 
 \begin{equation}
 \label{gaussgreen}
 \int_\Omega 
 -\nabla\cdot(k\nabla u) v \dx =  
-\int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} \ds 
+\int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v  \ds .  
 \end{equation}
+Here, we have two functions: the trial function $u$ and the test function $v$, and we are able to move derivatives from $u$ to $v$ and hence reduce the 
+strict requirement of $u\in C^2(\Omega)$. 
 
-With this lemma in mind we transform equation \eqref{elliptic} into an integral integral equation by multiplying
-\eqref{elliptic} with a test function $v$ before we integrate over the domain $\Omega$. Hence, 
-we obtain  
-\begin{equation}
-\label{gaussgreen}
-\int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \int_\Omega f v \dx .  
-\end{equation}
-Here, $v$ plays the role the pointwise evaluation in the strong formulation. That is,
-we may evaluate the above equation with respect to many different $v$'s. 
-For instance, if the $v$'s are the Dirac delta functions corresponding to the points in $\Omega$, i.e.,  $v_k = \delta(x_i, y_j)$
-then we obtain directly the strong formulation. This formulation is often called
-the collocation method and is used e.g. for the Runge-Kutta method. However, it is 
-seldom used for FEM because of the high demands on the differentiability on $u$. 
 
-We arrive at the final weak formulation by two steps. First, we exploite the Gauss-Green's lemma. That is,  
-\begin{eqnarray*}
-\label{gaussgreen}
-\int_\Omega f v \dx =   \int_\Omega -\nabla\cdot(k\nabla u) v \dx =  \\ 
-\int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v \ds  .  
-\end{eqnarray*}
-Second, we apply the boundary conditions. That is, for the Dirichlet
-condition \eqref{Dirichlet} we already know that $u=g$. Hence, $u$ is not an unknown at that part of the boundary.  Therefore, it is common 
-to let $v=0$ at $\partial \Omega_D$. Furthermore, by inserting the Neumann condition, we obtain that  
-\begin{eqnarray}
-\int_{\partial \Omega} k\frac{\partial u} {\partial n} v ds =   
-\int_{\partial \Omega_D} k\frac{\partial u} {\partial n} v ds +   \int_{\partial \Omega_N} k\frac{\partial u} {\partial n} v ds =   
-\int_{\partial \Omega_D} k\frac{\partial u} {\partial n} 0 +   \int_{\partial \Omega_N} h v ds   
-\end{eqnarray}
+Next,   
+we apply the boundary conditions. That is, for the Dirichlet
+condition \eqref{Dirichlet} we already know that $u=g$. Hence, $u$ is not an unknown on that part of the boundary.  Therefore, it is common 
+to let $v=0$ at $\partial \Omega_D$. Hence, by inserting the Neumann condition, we obtain that  
+\begin{align}
+	\int_{\partial \Omega} k\frac{\partial u} {\partial n} v ds &=   
+\int_{\partial \Omega_D} k\frac{\partial u} {\partial n} v ds +   \int_{\partial \Omega_N} k\frac{\partial u} {\partial n} v ds  \\   
+	&= \int_{\partial \Omega_D} k\frac{\partial u} {\partial n} \, 0 +   \int_{\partial \Omega_N} h v ds   
+\end{align}
 As such we arrive at the \emph{weak formulation} of the elliptic problem: 
 Find $u$ such that 
 \begin{equation}
@@ -142,6 +127,10 @@ Find $u$ such that
 \end{equation}
 Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$. We will come back to what $\forall v$ means in a 
 more precise sense later.  
+
+At this point we \emph{summarize how to obtain a weak formulation} as this will be done over and over again throughout this book.  
+First, we multiply with a test function and integrate. Second, the Gauss-Green lemma (or a similar lemma) is applied and third
+we apply the boundary conditions. 
 
 \begin{figure}
 \begin{center}
@@ -152,15 +141,28 @@ more precise sense later.
 \end{figure}
 
 
+\begin{remark}
+We remark that the test function $v$ plays the role of pointwise evaluation in the strong formulation \eqref{strong:elliptic}. That is,
+we evaluate (or test) the above equation with respect to many different test functions, which in the previous formulation corresponded to many different points. 
+We notice that if the test functions are Dirac delta functions then we recover the  strong formulation. However, since but we cannot differentiate the $\delta$ 
+functions (in a classical sense) we are only able to evaluate the left-hand side of \eqref{gaussgreen}.  Using the $\delta$ functions as test functions
+and avoiding the use of Gauss-Green is often called
+the \emph{collocation method} and is used e.g. by the Runge-Kutta method. However, it is 
+seldom used for FEM because of the high demands on the differentiability on $u$. 
+\end{remark}
 
 
-The finite element method directly exploits the weak formulation. 
-Let the trial and test functions be as follows:  
+The second challenge was to find formulations that lead to linear systems with $N\times N$ matrices. 
+The finite element method directly exploits the weak formulation. The finite element method resolves
+this challenge by employing the same basis functions for both the trial and the test functions. 
+That is, let 
+the trial and test functions be as follows:  
 \begin{equation}
 \label{trialtest}
-u = \sum_j u_j N_j \quad \text{and} \quad v=N_i
+	u = \sum_{j=1}^N u_j N_j \quad \text{and} \quad v=N_i, \ i=1\ldots N. 
 \end{equation}
-	. Here $\{N_i\}$ is a set of basis functions choosen somehow. 
+Here $\{N_i\}$ is a set of basis functions that needs to be choosen somehow. Furthermore, as the third challenge above mentioned, the 
+basis functions needs to adapt to a mesh. 
 There are many possibilities and one may target the basis function to the problem at hand. 
 The simplest basis function is shown in 
 Fig \ref{fig:fembasis}. Here, the basis function is chosen as linear functions / pyramides associated with the nodal points, 
@@ -169,11 +171,11 @@ There are many, many different finite element functions to choose from and they 
 Lists of common and unusual elements available in FEniCS can be found in 
 \cite{logg2012automated}. 
 
-The FEM problem is obtained by inserting \eqref{trialtest} into the weak formulation, i.e.   
+The FEM problem is obtained by inserting \eqref{trialtest} into the weak formulation \eqref{weakform}, i.e.   
 \[
 \int_\Omega k \nabla \sum_j u_j N_j  \cdot \nabla N_i dx = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds  \quad \forall j .    
 \]
-A simple rewrite: 
+We pull the summation out: 
 \[
 \sum_j u_j  \int_\Omega k \nabla  N_j  \cdot \nabla N_i dx = \int_\Omega f N_i dx + \int_{\Omega_N} h N_i ds \quad \forall j.    
 \]
@@ -226,34 +228,39 @@ file << u
 \section{Brief remark on the strange world of partial differential equations and their discretizations }
 
 A fundamental property in both the theory of partial differential equations and numerical analysis is the
-concept of well-posedness. In Hadamard's definition a problem is well-posed if a solution exists, is unique
-and depends continuously on the input. Hence, if we have two inputs to our problem, $b_1$ and $b_2$ 
-then the difference between the solutions $u_1$ and $u_2$ should be bounded by the differences
+concept of well-posedness. In Hadamard's definition a problem is well-posed if three conditions are met for the given input.  
+The solution 1) exists, is 2) unique
+and 3) depends continuously on the input. Hence, if we have two inputs to our problem, $b_1$ and $b_2$ 
+then the difference between the unique solutions $u_1$ and $u_2$ should be bounded by the differences
 between $b_1$ and $b_2$. In terms of linear algebra, we directly obtain well-posedness if
-$A$ is a non-singular matrix. That we directly have 
+$A$ is a non-singular matrix. That is, we directly obtain 
 \[
-\|A(u_1 - u_2) \| = \|b_1 - b_2\|     
+A(u_1 - u_2)  = (b_1 - b_2)     
+\]
+which leads to 
+\[
+	\|(u_1 - u_2) \| = \|A^{-1}(b_1 - b_2)\| \le  \|A^{-1}\| \|b_1 - b_2\|     
 \]
 and 
 \[
-\|(u_1 - u_2) \| = \|A^{-1}b_1 - b_2\| \le  \|A^{-1}\| \|b_1 - b_2\|     
+	\|(b_1 - b_2) \| = \|A (u_1 - u_2)\|  \le  \|A\| \|u_1 - u_2\|     
 \]
-which we directly can explore to obtain bounds. Neither of these observations are however
-very useful. 
-For instance, an intuitive estimate like  
+Hence, the difference between the solutions $u_1$ and $u_2$ in the sense 
+$\|u_1 - u_2\|$ is bounded continuously both above and below by the difference in data in the sense $\|b_1 - b_2\|$.    
+In the above, the norms have not been specified, but then, in a finite dimentional setting, all vector norms are equivalent.   
+These rather simple observations on the linear algebra level does not easily extend to the continuous setting of partial differential equations. 
+For instance, an intuitive estimate given a point $x$ is  
 \[
-\|(u_1 - u_2) \|_\infty = \|(-\Delta)^{-1} \|_\infty \|f_1 - f_2\|_\infty     
+	\|(u_1(x) - u_2(x)) \| = \|(-\Delta)^{-1} \| \|f_1(x) - f_2(x)\|     
 \]
-requires non-obvious regularity requirements. Here, 
-$\|f \|_\infty = \sup_x |f(x)|$\footnote{Note that $\sup$ is an 
-extension of $\max$ for infinite dimentional sets. In particular, $\sup=max$ for finite dimentional sets.}  
+This bound is not trivial and in many cases not valid on the continuous level. Here, 
 
 Instead, it is useful to consider the square roots for matrices and operators. 
 We will make it more precise later, but let us assume 
 that we have a concept of 
 $A^{1/2}$ and $A^{-1/2}$. The, as we will see,  the notion 
 \[
-\|A^{1/2}(u_1 - u_2) \| = \|A^{-1/2}b_1 - b_2\|     
+	\|A^{1/2}(u_1 - u_2) \| = \|A^{-1/2}(b_1 - b_2)\|     
 \]
 is extraordinary useful and gives precise estimates in a wide range of situations.  
 We remark that $\Delta=\nabla\cdot\nabla$ and as such $\nabla$ can be interpreted
@@ -307,7 +314,7 @@ There are several execellent and highly recommended books on the finite element 
 \begin{exercise}
 Consider the problem $-u''(x) = x^2$ on the unit interval with $u(0) = u(1) = 0$.  
 Let $u=\sum_{k=1}^{10} u_k \sin(\pi k x )$ and $v=\sin(\pi l x)$ for $l=1, \ldots 10$
-and solve \eqref{weakform}. What is the error in $L_2$ and $\L_\infty$.  
+and solve \eqref{weakform}. What is the error in $L_2$ and $L_\infty$.  
 \end{exercise}
 
 \begin{exercise}
