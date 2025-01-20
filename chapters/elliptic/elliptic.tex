@@ -28,32 +28,49 @@ Unusual concepts like weak or variational formulations, trial and test functions
 spaces etc. show up in the finite element methods and many find them troublesome and strange. To motivate
 these concepts we start with some "philosophical" considerations that lead to three observations which 
 will be resolved by the finite element method. First, the above equation is 
-the so-called strong formulation and its interpretation is (directly) that for every point in $\Omega$
-the equation $ -\nabla\cdot(k\nabla u)  = f$ should be valid. Hence, $u$, $f$ are functions and
+the so-called strong formulation and its interpretation is (directly) that: \\ 
+For every point $x \in \Omega$ the equation 
+\begin{equation}
+\label{strong:elliptic}
+-\nabla\cdot(k(x) \nabla u(x))  = f(x),  
+\end{equation}
+should be valid. Hence, $u$, $f$ are functions and
 if we assume that $f$ is a continuous function then $u$ is continuous with two derivatives that are also continuous.   
 More formally, $f\in C(\Omega)$ directly leads to the requirement that $u\in C^2(\Omega)$. In general 
-it is however well known, and we will meet many of them in this course, that $u \not \in C^2(\Omega)$ are
+it is however well known, and we will meet many such solutions in this course, that $u \not \in C^2(\Omega)$ are also
 solutions to \eqref{elliptic}. 
 
 
 
-In this book, it will be sentral to compare differential operators and matrices to build
+In this book, it will be sentral to compare differential operators with matrices in order to build
 intuition. So, let us assume that  
-\eqref{elliptic}-\eqref{Neumann} is represented as a linear system, i.e.,  
+\eqref{strong:elliptic} is somehow (ignoring the boundary conditions for now)  represented as a linear system, i.e.,  
 \begin{equation}
 \label{Aub}
-A u = b 
+A u = b .  
 \end{equation}
-where $A$ is an $\R^{N\times N}$ matrix whereas $u$, $f$ are vectors in $\R^N$. 
-Then the number of equations or number of rows is $N$, which has to equal the number
-of points in the domain. Hence, we either have to introduce a resolution of else $N$ is 
-infinite. Assuming for instance
-that $\Omega$ is the unit square with $n$ points in both the $x-$ and $y-$direction such 
-that $N=n^2$. In order to get a non-singular matrix the number of unknowns should
-equal the number of equations. We do obtain $N$ uknowns if we say that for every
-point in the domain we have an unknown $u_k = u(x_i, y_j)$, $k=j+i(N-1)$ whereas
-the equations are     
-$-\nabla\cdot (k \nabla  u(x_i, y_i) = f(x_i, y_j)$.    
+This leads us to our second observation: In order to have a linear system with a well-defined solution we at least need the same number 
+of equations and unknows, ie.  
+$A$ is a $\R^{N\times N}$ matrix and $u$, $f$ are vectors in $\R^N$. How can we make numerical methods that ensure
+the same number of equations and uknowns? Is it ensured by the definition in \eqref{strong:elliptic}.  
+A direct comparison of \eqref{strong:elliptic} and \eqref{Aub} would for instance be to assume that $i$'th equation of $A u = b$ correspond to the point $x_i$ in
+\eqref{strong:elliptic}. Hence, $\sum_j A_{ij} u_j = b_i$ corresponds
+to $-\nabla\cdot(k(x_i) \nabla u(x_i))  = f(x_i)$.   
+Then the number of equations (or number of rows in $A$) is $N$ and equals the number
+of points in the domain.  Assuming for instance
+that $\Omega$ is the unit square with $n$ internal points (as the boundary is currently ignored) in both the $x-$ and $y-$direction 
+gives that $N=n^2$. With a slight abuse of notation\footnote{We avoid bold face notation for coordinates. }, we may then enumerate the points as
+$x_i = (x_j, y_k)$ where $i = j(N-1) + k$ for $i,j \in (1, N)$.  
+In order to get a non-singular matrix, the number of unknowns should
+equal the number of equations. We do obtain $N$ uknowns if we assume that for every
+point in the domain we have an unknown $u_k = u(x_i, y_j)$, $k=j+i(N-1)$ corresponding to  
+the equations 
+$-\nabla\cdot (k \nabla  u(x_i, y_j) = f(x_i, y_j)$. It is however not clear how to make sense of $u$ outside the points $(x_i, y_j)$.      
+Furtermore, an obvious mathematical question is then to what extent we recover $ u \in C^2(\Omega), f \in C(\Omega)$ as $n$ tends to $\infty$
+with this construction. In general, we will not recover the conditions set by the strong formulation, although a proper mathematical 
+explanation of this is beyond the scope of this book. The reader is refered to \cite{evans2022partial} for a more detailed
+explanation of the strong formulation. 
+
 
 \begin{figure}
 \begin{center}

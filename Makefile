@@ -1,8 +1,6 @@
 
-default: 
-	pdflatex book.tex 
-
-final:
+	
+default:
 	pdflatex book.tex 
 	bibtex book
 	makeindex book.idx	
