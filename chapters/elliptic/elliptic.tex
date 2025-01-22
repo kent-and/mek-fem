@@ -313,15 +313,16 @@ There are several execellent and highly recommended books on the finite element 
 
 \begin{exercise}
 Consider the problem $-u''(x) = x^2$ on the unit interval with $u(0) = u(1) = 0$.  
-Let $u=\sum_{k=1}^{10} u_k \sin(\pi k x )$ and $v=\sin(\pi l x)$ for $l=1, \ldots 10$
+Let $u=\sum_{k=1}^{N} u_k \sin(\pi k x )$ and $v=\sin(\pi l x)$ for $l=1, \ldots N$, for e.g. $N=10, 20, 40$. 
 and solve \eqref{weakform}. What is the error in $L_2$ and $L_\infty$.  
 \end{exercise}
 
 \begin{exercise}
 Consider the same problem as in the previous exercise, but using Bernstein polynomials. 
-That is, the basis for the Bernstein polynomial of order 10 on the unit interval is $B_k(x)=x^k(1-x)^{10-k}$ for $k=0, \ldots, 10$.  
-Let $u=\sum_{k=0}^{10} u_k B_k(x )$ and $v=B_l(x)$ for $0=1, \ldots 10$
-and solve \eqref{weakform}. What is the error in $L_2$ and $L_\infty$.  
+That is, the basis for the Bernstein polynomial of order N on the unit interval is $B_k(x)=x^k(1-x)^{N-k}$ for $k=0, \ldots, N$.  
+Let $u=\sum_{k=0}^{N} u_k B_k(x )$ and $v=B_l(x)$ for $0=1, \ldots N$
+and solve \eqref{weakform}. What is the error in $L_2$ and $L_\infty$ in terms of $N$ for $N=1, 2, \ldots 10$. Remark: Do the
+basis functions satisfy the boundary conditions? Should some of them be removed?  
 \end{exercise}
 
 \begin{exercise}
@@ -331,7 +332,7 @@ $-u''(x) = sin(k \pi x)$ for $k=1$ and $k=10$.
 
 \begin{exercise}
 Consider the same problem as in the previous exercise, but
-with the finite element method in for example FEniCS, using Lagrange 
+with the finite element method in for example FEniCS, FEniCSx or Firedrake, using Lagrange 
 method of order 1, 2 and 3. 
 
 \end{exercise}
