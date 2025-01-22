@@ -3,7 +3,7 @@
 \label{chap-sobolev}
 \section{Introduction}
 
-Sobolev spaces are fundamental tools in the analysis of partial differential equations and also for 
+Sobolev spaces are fundamental in the analysis of partial differential equations and also for 
 finite element methods. Many books provide a detailed and comprehensive analysis of these spaces
 that in themselves deserve significant attention if one wishes to understand the foundation that
 the analysis of partial differential equations relies on. In this chapter we will however not
@@ -14,32 +14,36 @@ We will here provide the definition of these spaces. Further we will show typica
 for finite element methods,  that are in some but not all spaces. We also show how different norms
 capture different characteristics.   
 
-\section{Sobolev spaces, norms and inner products}
+\section{Norms, inner products and Sobolev spaces}
 
 Sobolev spaces are generalizations of $L^p$ spaces. $L^p$ spaces are function spaces defined as follows.  
 Let $u$ be a scalar valued function on the domain $\Omega$, which for 
-the moment will be assumed to be the unit interval $(0,1)$. Then   
+the moment will be assumed to be the unit interval $(0,1)$. Then the $L^p$ norm on $\Omega$ is:    
 \[
-\|u\|_p = (\int_0^1 |u|^p dx)^{1/p} .    
+\|u\|_p = (\int_0^1 |u|^p \, dx)^{1/p} .    
 \]
 $L^p(\Omega)$ consists of all functions for which $\|u\|_p < \infty$. 
 Sobolev spaces generalize $L^p$ spaces by also including the derivatives.  
-On the unit interval, let  
+On the unit interval, the $W^{k,p}$ norm is defined as  
 \begin{equation}
 \label{Wpk}
-\|u\|_{p,k} = (\int_\Omega \sum_{i \le k} |(\frac{\partial u}{\partial x})^i |^p dx)^{1/p} .    
+\|u\|_{p,k} = (\int_\Omega \sum_{i \le k} |(\frac{\partial u}{\partial x})^i |^p \, dx)^{1/p} .    
 \end{equation}
 Then the Sobolev space $W^p_k(\Omega)$ consists of 
 all functions with $\|u\|_{p,k} < \infty$. $W^p_k$ is a so-called Banach space - that is 
-a complete normed vector space. 
+a complete\footnote{We will not go into the details of complete spaces in this book, but remark that
+the space of real numbers is complete, while the space of rational numbers is not. } normed vector space. 
 The corresponding semi-norm, that only include the highest order derivative is 
 \begin{equation}
 \label{semiWpk}
-|u|_{p,k} = (\int_\Omega \sum_{i = k} |(\frac{\partial}{\partial x})^i   u|^p dx)^{1/p} .    
+|u|_{p,k} = (\int_\Omega \sum_{i = k} |(\frac{\partial}{\partial x})^i   u|^p \, dx)^{1/p} .    
 \end{equation}
-The case $p=2$ is special in the sense that \eqref{Wpk} defines an inner product.  
+The case $p=2$ is special in the sense that not only a norm is defined but also an inner product.    
 The Banach space then forms a Hilbert space and these named with $H$ in Hilbert's honor. 
-That is $H^k(\Omega) = W^{2,k}(\Omega)$. 
+That is $H^k(\Omega) = W^{2,k}(\Omega)$. The inner product between the functions $u$ and $v$ is:  
+\[
+	(u, v)_{k} = \sum_{i \le k} \int_\Omega (\frac{\partial u}{\partial x})^i (\frac{\partial v}{\partial x})^i \,  dx.    
+\]
 
 For the most part, we will employ the two spaces $L^2(\Omega)$ and $H^1(\Omega)$, but also $H^2$ and $H^{-1}$ 
 will be used. The difference between the norm in $L^2(\Omega)$ and $H^1(\Omega)$ is illustrated in the following example.   
@@ -67,7 +71,7 @@ for k in [1, 100]:
   L7_norm = pow(assemble(abs(u)**7*dx), 1.0/7)
   print "L7 norm of sin(%d pi x) %e " % (k, L7_norm) 
 
-  H1_norm = sqrt(assemble(u*u*dx + inner(grad(u), grad(u))*dx ))
+  H1_norm = sqrt(assemble(u*u*dx+inner(grad(u), grad(u))*dx))
   print "H1 norm of sin(%d pi x) %e" % (k, H1_norm) 
 \end{python}
 
@@ -100,7 +104,7 @@ the right picture shows $\sin(10 \pi x)$. }\label{fig:sin}
 \end{figure}
 
 
-\section{Spaces and sub-spaces}
+\section{Spaces and sub-spaces, norms and semi-norms}
 
 The Sobolev space with $k$ derivatives in $L_2(\Omega)$ was denoted by $H^k(\Omega)$. The subspace
 of $H^k$ with $k-1$ derivatives equal to zero at the boundary is denoted 
@@ -109,20 +113,13 @@ at the boundary. Similarly, we may also defined a subspace
 $H^1_g(\Omega)$ which consists of all functions in $H^1(\Omega)$ that are equal to the function $g$ 
 on the boundary. 
 
-Mathematically, it is somewhat tricky to defined that a function in $H^1$ is 
-equal to another function as it can not be done in a pointwise sense. This difficulty is resolved by
-the concept of a trace usually denoted by $T$. The concept of a trace is tricky, for example
-if $T$ takes a function $u$ in $H^1(\Omega)$ and restrict it to $\partial\Omega$ then $Tu\not\in H^1(\partial\Omega)$.
-In fact, in general we only have $Tu\in H^{1/2}(\partial\Omega)$.    
-
-\section{Norms and Semi-norms}
-The norm $\|\cdot\|_{p,k}$ defined in \ref{Wpk} is a norm
+The norm $\|\cdot\|_{p,k}$ defined in \eqref{Wpk} is a norm
 which means that $\|u\|_{p,k} > 0$ for all $u\not=0$.    
 On the other hand  $|\cdot|_{p,k}$ is a semi-norm, meaning 
 that $|u|_{p,k} \ge  0$ for all $u$.   
 The space $H^1(\Omega)$ is defined by the norm 
 \[
-\|u\|_1 = (\int_\Omega u^2 + (\nabla u)^2 dx)^{1/2}  
+\|u\|_1 = (\int_\Omega u^2 + (\nabla u)^2 \, dx)^{1/2}  
 \]
 and contains all functions for which $\|u\|_1 \le \infty$. 
 Often we consider subspaces of $H^1$ satisfying the Dirichlet boundary conditions. 
@@ -130,10 +127,10 @@ The most common space is denoted $H^1_0$. This space contains all functions
 in $H^1$ that are zero on the boundary.  
 The semi-norm $|\cdot|_1$ defined as 
 \[
-|u|_1 = (\int_\Omega  (\nabla u)^2 dx)^{1/2}  
+|u|_1 = (\int_\Omega  (\nabla u)^2 \, dx)^{1/2}  
 \]
 is a norm on the subspace $H^1_0$. In fact, as we will see later, Poincare's lemma
-ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on $H^1_0$ (see Exercise \ref{ex:poincare}.  
+ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on $H^1_0$ (see Exercise \ref{ex:poincare}).  
 
 
 
@@ -149,7 +146,7 @@ On the other had, the step function in upper picture in Figure \ref{fig:piecewis
 discontinuous in $x=0.2$ and $x=0.4$. Obviously, the function is in $L^2(0,1)$, but 
 the function is not in $H^1(0,1)$ since the derivative of the function  consists of Dirac's 
 delta functions\footnote{The Dirac's delta function $\delta_x$ is 0 everywhere except at 
-$x$ where it is  $\infty$ and $\int_\Omega \delta_x dx = 1$. Hence, 
+$x$ where it is  $\infty$ and $\int_\Omega \delta_x \, dx = 1$. Hence, 
 Dirac's delta function is in $L^1(\Omega)$ but not in $L^2(\Omega)$.  
 } 
 that are $\infty$ at $x=0.2$ and 
@@ -158,9 +155,18 @@ $-\infty$ in $x=0.4$.
 The hat function in the lower picture in Figure \ref{fig:piecewise} is a typical
 first order finite element function. The function is in both $L^2(0,1)$ and $H^1(0,1)$ (see
 Exercise \ref{ex:piecewise}).         
-In general, functions in $H^q$ are required to be in $C^{q-1}$, where $C^k$ is the
+In general, functions in $H^q(0,1)$ are required to be in $C^{q-1}(0,1)$, where $C^k(0,1)$ is the
 class  where the $k$'th derivatives exist and
-are continuous.  
+are continuous on the unit interval.   
+
+\begin{remark}
+In $C^k(\Omega)$ a function and its $k$ derivatives can be evaluated at any given point in $\Omega$ and  
+the result will be a finite value. How about functions in $H^k(\Omega)$? In general only functions
+in $H^k(\Omega)$ for $k\ge 2$ allow pointwise evaluation. The exact relationship between 
+continous functions and Sobolev spaces are covered by the  Sobolev Embedding Theorem, which will not 
+be covered in this book. 
+Anyways, in $L^2(\Omega)$ or $H^1(\Omega)$ we should make note and be careful when we perform pointwise evaluations. 
+\end{remark}
 
 
 \begin{figure}
@@ -175,27 +181,26 @@ the lower picture shows a linear function that is continuous. }
 \end{figure}
 
 \section{Sobolev Spaces and Polynomial Approximation}
-From Taylor series we know that a $f(x+h)$ may be approximated
+From Taylor series approximation we know that  $f(x+h)$ may be approximated
 by $f(x)$ and a polynomial in $h$ that depends on the derivatives of $f$. 
 To be precise, 
 \[
-|f(x+h) - (P_k f) (x) |  \le  \mathcal{O}(h^{k+1}) .    
+|f(x+h) - P_{h,k} f (x) |  \le  \mathcal{O}(h^{k+1}) .    
 \]
-Here, $(P_k f)(x)$ is a polynomial of degree $k$ in $h$, $f^{(n)}$ denotes 
-the $n$'th derivative of $f$,  and the error will be of order $k+1$ in $h$.     
-To be precise, 
+Here, $P_{h,k} f(x)$ is the following polynomial of degree $k$ in $h$, 
 \[
-(P_k f)(x) = f(x) + \sum_{n=1}^k \frac{f^{(n)}(x)}{n!} h^n . 
+P_{h,k} f(x) = f(x) + \sum_{n=1}^k \frac{f^{(n)}(x)}{n!} h^n . 
 \]
+where $f^{(n)}$ denotes the $n$'th derivative of $f$. 
+
 In general, approximation by Taylor series bears strong requirement on the smoothness 
 of the solution which needs to be differentiable in a point-wise sense.   
-However, in Sobolev spaces we have the very usefull approximation property  
+However, in Sobolev spaces we have the very useful approximation property  
 \[
-|u - P_k u|_{m,p} \le C h^{k-m} |u|_{k,p} \quad \mbox{ for } m=0,1,\ldots,k \mbox{ and } k\ge 1. 
+|u - P_m u|_{k,p} \le C h^{m-k} |u|_{m,p} \quad \mbox{ for } k=0,\ldots,m \mbox{ and }  p\ge 1. 
 \]
-This property is used extensively in analysis of finite element methods. 
-The above approximation property is often called the Bramble-Hilbert lemma for $k\ge 2$ 
-and the case $k=1$ was included by a special interpolation operator by 
+This property is used extensively in analysis of finite element methods and
+is called the Bramble-Hilbert lemma for $k\ge 2$. The case $k=1$ was included by a special interpolation operator by 
 Clement, the so-called Clement interpolant. 
 For proof, see e.g. \cite{braess2007finite, brenner2008mathematical}.  
 
@@ -205,7 +210,7 @@ For proof, see e.g. \cite{braess2007finite, brenner2008mathematical}.
 \section{Eigenvalues and Finite Element Methods}
 \label{sec:eig and fem}
 
-We remember that for $-\Delta$ on the unit interval
+It is well known that for $-\Delta$ on the unit interval
 $(0,1)$, the eigenvalues 
 and eigenvectors
 are $(\pi k)^2$ and $sin(\pi k x)$, $k=1, \ldots, \infty$, respectively. 
@@ -223,8 +228,21 @@ A = assemble_system(inner(grad(u), grad(v))*dx, Constant(0)*v*dx, bc)
 reveals that the eigenvalues are differently scaled. In fact, the minimal 
 eigenvalue is $\approx \pi^2 h$ and that the maximal eigenvalue is  $\approx \pi^2/h$.      
 The reason is that the finite element method introduces a mesh-dependent 
-scaling. To estimate the continuous eigenvalues we instead compute the eigenvalues
-of the generalized eigenvalue problem, 
+scaling due to the fact that it is a variational method. 
+Specifically, if we want to approximate a $f$ as $\sum_j f_j N_j$ we notice
+that we may calculate $f_j$ in a variational sense as follows: 
+\[
+\int_\Omega \sum_j f_j N_j N_i \, dx = \int_\Omega f N_i \, dx   
+\]
+Hence, we notice here that, we are solving a linear system
+\[
+	M f = b, \mbox{ with } M_{ij} = \int_\Omega N_j N_i \, dx \mbox{ and } b_i = \int_\Omega f N_i \, dx  
+\]
+Both $\{f_i\}_i$ and $\{b_i\}_i$ are representations of $f$, often called the nodal and dual representations~\cite{mardal2011preconditioning}. They scale differently since
+the entries of the mass matrix scale with the size of the elements in the mesh. 
+
+To estimate the continuous eigenvalues, we  need to make sure that both the left- and right-hand sides are in the same representation, either nodal
+or dual. Hence, we consider the generalized eigenvalue problem, 
 \begin{equation} 
 \label{geneig}
 A x = \lambda M x,   
@@ -268,8 +286,8 @@ for N in [100, 1000]:
   print "eig min, max ", min(eig), max(eig) 
 
   import pylab 
-  pylab.loglog(l1[2:], linewidth=5)  # exclude the two smallest (they correspond to Dirichlet cond))
-  pylab.loglog(l2[2:], linewidth=5)  # exclude the two smallest again 
+  pylab.loglog(l1[2:], linewidth=5) # exclude Dirichlet values 
+  pylab.loglog(l2[2:], linewidth=5) # exclude again 
   pylab.loglog(eig, linewidth=5)
   pylab.legend(["eig(A)", "eig(A,M)", "cont. eig"], loc="upper left")
   pylab.show()
