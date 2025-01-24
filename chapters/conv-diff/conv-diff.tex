@@ -55,7 +55,9 @@ differences on a relatively coarse mesh.
 \includegraphics[width=0.45\textwidth]{chapters/conv-diff/plots/conv-diff-hr.png}
 \caption{Solution of the convection diffusion problem obtained with 10 and 100 elements. 
 The left figure obtained on a mesh with 10 elements shows wild oscillations, while the 
-mesh with 100 elements demonstrate a nicely converged solution.}
+mesh with 100 elements demonstrate a nicely converged solution.
+\kent{wrong label to the left. Should by solution at N=10, 100 }
+}
 \label{fig:conv1}
 \end{center}
 \end{figure}
@@ -84,7 +86,7 @@ for N in [10, 100]:
   a = (-u.dx(0)*v + mu*u.dx(0)*v.dx(0))*dx  
   L = f*v*dx  
 
-  u_analytical = Expression("(exp(-x[0]/e) - 1)/ (exp(-1/%e) - 1)" % (mu_value, mu_value))  
+  u_analytical = Expression("(exp(-x[0]/%e) - 1)/ (exp(-1/%e) - 1)" % (mu_value, mu_value))  
   def boundary(x):
       return x[0] < DOLFIN_EPS or x[0] > 1.0 - DOLFIN_EPS
 
@@ -103,6 +105,7 @@ for N in [10, 100]:
 \end{python}
 $\square$ 
 \end{example}
+\kent{Coordinates in plotting is probably swapped.}
 
 To understand Example \ref{ex1} we first remark that the discretization corresponds to the following 
 central finite difference scheme: 

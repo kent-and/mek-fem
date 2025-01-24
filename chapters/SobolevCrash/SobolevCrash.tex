@@ -311,11 +311,31 @@ as they correspond to the Dirichlet conditions.
 %"large" linear systems. A description of \emp{pytave} is found in~\cite{mardal2013combining}.  
 
 
+\section{Boundary conditions, Traces and Fractional Sobolev Spaces }
+
+In order to make sense of for instance boundary conditions we need to 
+restrict from a domain $\Omega$ to $\partial \Omega$. Hence, for instance
+if $\Omega$ is the unit square in 2D then $\partial \Omega$ consists of the 1D lines that 
+connect the vertices at the boundary of the unit square. However, a 
+1D line is inifinitely thin and has no measure in 2D. In Sobolev spaces, which
+have extra smoothness in terms of the extra derivatives, the   
+values at lower dimentional manifolds may be used. In fact, their use is required 
+in terms of boundary conditions. In order to make sense of values at lower 
+dimensional manifolds we need the mathematical constructs of traces and fractional 
+Sobolev spaces. Specifically, let $T:\Omega \rightarrow \partial \Omega$ be the 
+the so-called trace operator and $u \in H^k(\Omega)$ then 
+$Tu \in H^{k-1/2} (\partial \Omega)$. Typically, when finite element methods
+are used for single-physics problems then there is no need to pay attention to 
+the fractional norms when implementing the boundary conditions. Boundary conditions
+are assigned at the boundary in a straightforward way as will be discussed in the next
+chapter. However, for multi-physics problems, care may be required for efficient and
+accurate simulation.   
+
 \section{Negative and Fractional Norms}
 
 As will be discussed more thoroughly later, 
 $-\Delta$ is a symmetric positive operator and can be thought of 
-as a infinite dimensional matrix that is symmetric and positive.  
+as an infinite dimensional matrix that is symmetric and positive.  
 It is also know from Riesz representation theorem that if
 $u$ solves the problem
 \begin{eqnarray*}
@@ -333,6 +353,9 @@ For example, in the previous example where
 $u_k = sin(k\pi x)$, we  have already estimated  
 that $|u_k|_1 = \frac{\pi k}{\sqrt{2}}$ and therefore 
 $\|u_k\|_{-1} = |(-\Delta)^{-1} u_k|_1 = \frac{1}{\sqrt{2} k \pi }$.  
+We notice that the $\|\cdot\|_1$ norm weights high frequency oscillations heavily (linear in $k$), whereas
+the $\|\cdot\|_{-1}$ does not (it scales as $1/k$). On the other hand $L^2$ weights oscillations at all frequencies
+equally.   \label{sinkpnorms} 
 
 Let us now generalize these considerations and  consider a matrix 
 (or differential operator) $A$ which is
@@ -404,28 +427,22 @@ as \eqref{qnorm}, namely that
 \|x\|^2_{A,M,q} = x^T M U \Lambda^q (MU)^T x .     
 \]
 
-Defining the negative and fractional norms in terms of eigenvalues and eigenvectors 
-is convenient for small scale problems, but it is an expensive procedure because eigenvalue problems are computationally
-demanding. It may, however, be tractable on subdomains, surfaces, or interfaces 
-of larger problems.   
-We also remark that there are other ways of defining fractional and negative norms. For example, 
-one often used technique is via the Fourier series, c.f. e.g. \cite{rauch}. These different
-definitions do in general \textit{not} coincide, in particular because they typically 
-have different requirement on the domain or boundary conditions. One should also
-be careful when employing the above definition with integer $q>1$,    
-in particular because boundary conditions requirements will deviate from 
-standard conditions in the Sobolev spaces for $q>1$. 
-
+Defining negative and fractional norms in terms of eigenvalues and eigenvectors 
+is convenient for small scale problems, but eigenvalue problems are computationally
+demanding. It may, however, be tractable on subdomains, such as surfaces or interfaces 
+of larger problems. There are however more    
+efficient was of computing such norms and operators, but those are beyond the scope of this
+book. 
 
 
 \begin{example}{Computing the $H^1$, $L^2$, and $H^{-1}$ norms} \label{sc:ex2} 
 
-Let as before $\Omega = (0,1)$ and $u_k = sin(\pi k x)$.  
+Let us consider $\Omega = (0,1)$ and $u_k = sin(\pi k x)$.  
 Table \ref{norms} shows the $H^1$, $L^2$, and $H^{-1}$ norms as computed
 with \eqref{qnorm} with $q=1, 0$, and $-1$, respectively.  Comparing 
 the computed norms with the norms $L^2$ and $H^1$ norms  computed
-in Example \ref{sc:ex1}, we see that the above definition \eqref{qnorm}
-reproduces the $H^1$ and $L^2$ norms with $q=1$ and $q=0$, respectively.  
+in Example \ref{sc:ex1}, or analytically on page \pageref{sinkpnorms}  we see that the above definition \eqref{qnorm}
+reproduces the $H^1$ and $L^2$ norms with $q=1$ and $q=0$, respectively.     
 We also remark that while the $H^1$ norm increases as
 $k$ increases, the  $H^{-1}$ norm demonstrates a corresponding decrease.  
 Below we show the code for computing these norms. 
