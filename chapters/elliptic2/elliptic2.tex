@@ -13,9 +13,9 @@ Find the solution $u$ of the problem
 \label{chp3:Dirichlet}
 u&=& g \quad \textrm{on}\ \partial\Omega_D, \\
 \label{chp3:Neumann}
-k \frac{\partial u}{\partial n}&=& h \quad \textrm{on}\ \partial\Omega_N . 
+k \frac{\partial u}{\partial n}&=& h \quad \textrm{on}\ \partial\Omega_N , 
 \end{eqnarray}
-and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$ 
+where we assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$ 
 and $\partial \Omega_D \cap \partial \Omega_N = \emptyset$.
 
 In order to arrive at the weak formulation, we introduce two Sobolev spaces
@@ -23,24 +23,25 @@ In order to arrive at the weak formulation, we introduce two Sobolev spaces
 H^1_{0, D} (\Omega) &= \{ u \in H^1(\Omega)  | \  T u = 0 \mbox{ on } \partial \Omega_D \}, \\   
 H^1_{g, D} (\Omega) &= \{ u \in H^1(\Omega)  | \  T u = g \mbox{ on } \partial \Omega_D \}  .  
 \end{align}
-Here, both spaces are subspaced of the $H^1$ space introduced in the previous chapter which 
-include only the functions with appropriate values on the Dirichlet part of the boundary $\partial \Omega_D$.  
+Here, both spaces are subspaced of the $H^1$ space introduced in the previous chapter. The 
+subspaces include only the functions with appropriate values on the Dirichlet part of the boundary $\partial \Omega_D$.  
 As detailed in Chapter \ref{elliptic}, we obtain the weak formulation by 1) multiplying
 the equation \eqref{chp3:elliptic} with a test function $v$, 2) employing Gauss-Green's lemma, and 3) employing the 
-boundary conditions. We arrive at (where we now include the precise definitions of the wereabouts of the
-trial and test functions): \\
-Given $f\in H^{-1}_D$, $h\in H^{-1/2}(\partial \Omega_N)$,  
+boundary conditions. 
+
+We arrive at the following, which including the precise definitions of the trial and test functions, source function and boundary conditions: \\
+Given $f\in H^{-1}_D(\Omega)$, $h\in H^{-1/2}(\partial \Omega_N)$,  
 find $u\in  H^1_{g, D} (\Omega)$ such that  
 \begin{equation}
-\label{cp3:weak} 
+\label{chp3:weak} 
 \int_\Omega (k \nabla u) \cdot \nabla v \, dx = \int_\Omega f v \, dx + \int_{\partial \Omega_N} h v \, ds, \quad    \forall v\in  H^1_{0, D} (\Omega).  
 \end{equation} 
 Here, the negative norms are similar to the negative norms introduced in the previous chapter, although we there had Dirichlet conditions
 on the complete boundary. Alernatively, and perhaps simpler from a mathematical point of view is to define it in terms of duality as
-in Remark \ref{dualnorm}. In implementation, we seldom need to pay attention to what space our input functions reside in, but we remark
+in Remark \ref{dualnorm}. When implementing the method, we seldom need to pay attention to what space our source and boundary condition functions reside in, but we remark
 that it is sometimes useful to include functions that are not defined in points but only through integration over elements.  
 
-In order to define a finite element method, let $\Omega_h$ be a mesh consisting of a set $E_h$ of cells. 
+In order to define a finite element method, let $\Omega_h$ be a mesh covering $\Omega$, consisting of a set $E_h$ of cells. 
 For simplicity, we assume that the cells are simplices (triangles in 2D, tetrahedrons in 3D). Simplices 
 fit very well with standard polynomials, so let ${\cal P}_k$ be the space of 
 polynomials of order $k$, i.e., a basis in 2D could be $\{x^i y^{j} \}_{i,j | i+j \le k}$.   
@@ -50,13 +51,17 @@ V_{h, 0}  &= \{ u \in H^1_{0,D}(\Omega) \ | \  \forall e \in E_h, u|_e \in {\cal
 V_{h, g}  &= \{ u \in H^1_{g,D}(\Omega) \ | \  \forall e \in E_h, u|_e \in {\cal P}_k \} .  
 \end{align}
 \kent{perhaps instead introduce Lagrange elements} 
-The corresponding finite element formulation is then 
+The corresponding finite element formulation is then: \\ 
 Given $f\in H^{-1}_D$, $h\in H^{-1/2}(\partial \Omega_N)$,  
 find $u_h\in  V_{h, g} $ such that  
 \begin{equation}
-\label{cp3:weak} 
+\label{chp3:fem} 
 \int_\Omega (k \nabla u_h ) \cdot \nabla v_h \, dx = \int_\Omega f \, v_h \, dx + \int_{\partial \Omega_N} h \, v_h \, ds, \quad    \forall v\in  V_{h, 0} .  
 \end{equation} 
+
+
+\section{What is an elliptic equation ? }
+
 
 In the previous chapter we listed some approximation properties of polynomials in general. We will now employ these results in order to
 derive \emph{a priori} error estimates. However, in order to achieve this we need four concepts: Poincare's inequality, lifting, the positivity of $k$
@@ -67,46 +72,131 @@ Poincare's inequality states that for $u\in  H^1_{0, D}(\Omega)$ we have
 \label{poincare}
 \|u\|_{L^2(\Omega)}  \le C \| \nabla u\|_{L^2(\Omega)} 
 \end{equation} 
-We will not prove this inequality but note that it can be easily motivated by a Taylor approximation 
+We will not prove this inequality in this book (see e.g. ~\cite{evans2022partial},  
+but we note that it can be motivated by considering the Taylor series approximation. 
+From basic calculus we know that: 
 \[
 f(x+h) \le f(x) + h \max_{x \le x^* \le x+h } \,  f'(x^*) 
 \]
-Chosing $x$ on $\partial \Omega_D$ makes $f(x)=0$ and hence $(f(x+h)$ can be bounded by the derivative
+Chosing $x$ on $\partial \Omega_D$ makes $f(x)=0$ and hence $f(x+h)$ can be bounded by the derivative
 of $f$. Of course, Poincare's result provides a bounds on the integral rather than the pointwise sense 
 of Taylor, but the results are similar. 
 
 Lifting, which is often used for theoretical purposes but seldom in implementation, 
 refers to changing the problem from having non-homogenous Dirichlet conditions to homogenous Dirichlet conditions.  
-Let us assume that $G$ is any function in $H^1(\Omega)$ such that $T u |_{\partial \Omega_D} = g$. Then, by linearity, 
+Let us assume that $G$ is a function in $H^1(\Omega)$ such that $T u |_{\partial \Omega_D} = g$. 
+Clearly, there are infinitely many such functions and in many cases it easy to find such a $G$. 
+Then, by linearity, 
 $u= u_0 + G$ solves \eqref{chp3:elliptic}--\eqref{chp3:Neumann} with $u_0$ defined as     
 \begin{eqnarray}
 \label{chp3:elliptic:lift}
--\nabla\cdot(k\nabla u_0 )  &= f -\nabla\cdot(k\nabla G)  &\quad \textrm{in}\ \Omega,\\
+-\nabla\cdot(k\nabla u_0 )  &= f +\nabla\cdot(k\nabla G)  &\quad \textrm{in}\ \Omega,\\
 \label{chp3:Dirichlet:lift}
 u&= 0 &\quad \textrm{on}\ \partial\Omega_D, \\
 \label{chp3:Neumann:lift}
 k \frac{\partial u_0}{\partial n}&= h - k \frac{\partial G}{\partial n} &\quad \textrm{on}\ \partial\Omega_N . 
 \end{eqnarray}
+Hence, the purpose of the lifting is clear: It transforms a problem with non-homogenous Dirichlet conditions, in which the Poincare's lemma
+cannot be applied, to a problem with homogenous Dirichlet conditions where Poincare's lemma can be applied. It is used for theoretical purposes, 
+but since $G$ can be choosen arbitrarily as long as it fit the boundary conditions, the procedure do not impose significant constraints on
+the analysis. Most analysis therefore only deals with the case of homogenous Dirichlet conditions (see e.g.~\cite{braess2007finite} for more 
+detailed coverage). 
 
-In order for \eqref{chp3:element} to be an elliptic problem $k \in \mathbb{R}^{d\times d}$ given $\Omega\in \mathbb{R}^d$  
-$k$ needs to be stricktly positive for all $x\in \Omega$. That is  
-For $\forall \xi\in \mathbb{R}^n$ $\forall x \in \Omega$ there exists a $k_0 > 0$ such that 
+In order for \eqref{chp3:elliptic} (or \eqref{chp3:elliptic:lift}) to be an elliptic problem, with  $k(x) \in \mathbb{R}^{d\times d}$ given $\Omega\in \mathbb{R}^d$,  
+$k$ needs to be stricktly positive and bounded for all $x\in \Omega$. That is: \\  
+For $\forall \xi\in \mathbb{R}^n$ and $\forall x \in \Omega$ there exists a $k_0 > 0$ and $k_1 < \infty$ such that 
 \[
-\xi^T k \, \xi > k_0 |\xi|^2 .   
+k_1 |\xi|^2  \ge    \xi^T k \, \xi \ge k_0 |\xi|^2 .   
 \]
 
-Given that Poincare's inequality applies and that $k$ is stricktly positive, as defined above, 
+Given that Poincare's inequality applies and that $k$ is stricktly positive and bounded as defined above, then 
 \[
 \int_\Omega (k \nabla u) \cdot \nabla v \, dx 
 \]
-defines an inner product 
+defines an inner product. The result is crucial in this book and is hence left as a series of Exerceises \ref{ex:bilinear}--\ref{ex:poincare3}.  
+The exercises show that
+\begin{align}
+	&\int_\Omega (k \nabla u) \cdot \nabla v \, dx,  \\  
+	&\int_\Omega (\nabla u) \cdot \nabla v \, dx,  \\ 
+	&\int_\Omega u v + (k \nabla u) \cdot \nabla v \, dx,  \\ 
+	&\int_\Omega u v + ( \nabla u) \cdot \nabla v \, dx .  
+\end{align}
+are all equivalent inner products on $H^1_{0, D}(\Omega)$ . 
+
+\section{An \emph{a priori} Error Estimate}
+
+Inner products are extraordinary useful as they introduce a geometry of the space. For instance, 
+a function may be orthogonal to another function. This leads us to our fourth concept: 
+Galerkin orthogonality. The concept is simple, let the numerical error be $e_h = u - u_h$. Then we
+remark that $v_h \in V_{h,g} \subset H^1_{g, D}$. Hence, letting 
+$v=v_h$ in \eqref{chp3:weak} and subtracting \eqref{chp3:fem} we obtain:   
+\begin{equation}
+\label{chp3:orth}
+	\int_\Omega (k \nabla (u -  u_h)) \cdot \nabla v_h \, dx = \int_\Omega (f -f) \, v_h \, dx + \int_{\partial \Omega_N} (h -h)  \, v_h \, ds = 0 \quad    \forall v\in  V_{h, 0} .  
+\end{equation}
+That is, the numerical error $e_h = u - u_h$ is orthogonal to all test functions $v_h$ used by the finite element method. This is a strong result and
+perhaps surprising. The solution $u_h$, found by solving \eqref{chp3:fem} is therefore the best possible solution that can be found in $V_{h, g}$.   
+
+Since, $\int_\Omega (k \nabla u) \cdot \nabla v \, dx$ defines an inner product and associated norm, equivalent with 
+the standard $H^1_0$ norm we can employ the approximation result \eqref{bramblehilbert} Chapter \ref{chap-sobolev}. 
+The results is called Cea's lemma, and we will later see it in a more general context. 
+Here, we briefly prove an error estimate. First, we remark that, as found in the Exercises below  
+\[
+k_0 \int_\Omega (\nabla u)^2  \, dx \le   \int_\Omega (k \nabla u) \cdot \nabla u \, dx \le   
+k_1 \int_\Omega (\nabla u)^2  \, dx,  \\  
+\]
+As such 
+\begin{align*}
+k_0 \int_\Omega (\nabla u-u_h)^2  \, dx &\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-u_h) \, dx \\    
+&\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-P_m u + P_m u - u_h) \, dx, \\ 
+&\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-P_m u ) \, dx \\ 
+&\le   k_1 \int_\Omega (\nabla (u -u_h)) \cdot \nabla (u-P_m u ) \, dx 
+\end{align*}
+Here, we use that we may subtract and add $P_m u$ which totals to zero, and remark that both $u_h$ and $P_m u$ 
+are in $V_{h,0}$ and hence both are orthogonal to $u - u_h$ as in \eqref{chp3:orth}. 
+Further, by using Cauchy-Schartz inequality, which in this case states that   
+\begin{align*}
+&  \int_\Omega ( \nabla (u -u_h)) \cdot \nabla (u-P_m u ) \, dx \\ \le  
+&  
+(\int_\Omega ( \nabla (u -u_h))^{2} dx )^{1/2} \,  (\int_\Omega \nabla (u-P_m u )^2 \, dx)^{1/2} 
+\end{align*}
+we immediately have by the Bramble-Hilbert lemma \eqref{bramblehilbert} that 
+\begin{align}
+(\int_\Omega ( \nabla (u -u_h))^{2} dx )^{1/2} \le \frac{k_1}{k_0}   (\int_\Omega \nabla (u-P_m u )^2 \, dx)^{1/2} 
+ \le \frac{k_1}{k_0}  C h^{m-k} |u|_{m,p} 
+\end{align}
+
+
+\section{Exercises}
+
+\begin{exercise}
+\label{ex:bilinear}
+Let $\Omega=(0,1)$.  
+Show that 
+\[  
+a(u, v) = \int_\Omega  u \, v \, dx 
+\]
+is a bilinear form. 
+\end{exercise}
+
+\begin{exercise}
+\label{ex:inner}
+Let $\Omega=(0,1)$.  
+Show that 
+\[  
+a(u, v) = \int_\Omega  u \, v \, dx 
+\]
+forms an inner product.  
+\end{exercise}
+
+
 
 
 \begin{exercise}
 \label{ex:poincare}
 
 Let $\Omega=(0,1)$ then  
-for all functions in $H^1_0(\Omega)$
+for all functions in $H^1_0(\Omega)$ then
 Poincar\'e's inequality states that
 \[
 |u|_{L^2} \le C  |\frac{\partial u}{\partial x}|_{L^2}   
@@ -115,16 +205,6 @@ Use this inequality to show that the $H^1$ semi-norm defines
 a norm equivalent with the standard $H^1$ norm on $H^1_0(\Omega)$.  
 \end{exercise}
 
-\begin{exercise}
-\label{ex:bilinear}
-
-Let $\Omega=(0,1)$.  
-Show that 
-\[  
-a(u, v) = \int_\Omega  u \, v \, dx 
-\]
-is a bilinear form. 
-\end{exercise}
 
 
 \begin{exercise}
@@ -135,7 +215,8 @@ Show that
 \[  
 a(u, v) = \int_\Omega \nabla u \cdot \nabla v \, dx 
 \]
-forms an inner product on $H^1_0(\Omega)$. 
+forms an inner product on $H^1_0(\Omega)$  equivalent with the standard
+$H^1(\Omega)$ inner product. 
 \end{exercise}
 
 \begin{exercise}
@@ -146,7 +227,9 @@ Show that
 \[  
 a(u, v) = \int_\Omega k \nabla u \cdot \nabla v \, dx 
 \]
-forms an inner product on $H^1_0(\Omega)$ given that $k \in \mathbb{R}^{n \times n}$ is stricktly positive.  
+forms an inner product on $H^1_0(\Omega)$ given that $k \in \mathbb{R}^{n \times n}$ is stricktly positive
+and bouded. The inner product is equivalent with the $H^1_0(\Omega)$ inner product.  
+
 \end{exercise}
 
 
