@@ -196,9 +196,10 @@ where $f^{(n)}$ denotes the $n$'th derivative of $f$.
 In general, approximation by Taylor series bears strong requirement on the smoothness 
 of the solution which needs to be differentiable in a point-wise sense.   
 However, in Sobolev spaces we have the very useful approximation property  
-\[
+\begin{equation}
+\label{bramblehilbert}
 |u - P_m u|_{k,p} \le C h^{m-k} |u|_{m,p} \quad \mbox{ for } k=0,\ldots,m \mbox{ and }  p\ge 1. 
-\]
+\end{equation}
 This property is used extensively in analysis of finite element methods and
 is called the Bramble-Hilbert lemma for $k\ge 2$. The case $k=1$ was included by a special interpolation operator by 
 Clement, the so-called Clement interpolant. 
