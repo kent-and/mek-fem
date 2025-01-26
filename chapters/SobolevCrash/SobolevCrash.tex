@@ -27,7 +27,7 @@ Sobolev spaces generalize $L^p$ spaces by also including the derivatives.
 On the unit interval, the $W^{k,p}$ norm is defined as  
 \begin{equation}
 \label{Wpk}
-\|u\|_{p,k} = (\int_\Omega \sum_{i \le k} |(\frac{\partial u}{\partial x})^i |^p \, dx)^{1/p} .    
+\|u\|_{p,k} = (\int_\Omega \sum_{i \le k} |(\frac{\partial^i u}{\partial x^i}) |^p \, dx)^{1/p} .    
 \end{equation}
 Then the Sobolev space $W^p_k(\Omega)$ consists of 
 all functions with $\|u\|_{p,k} < \infty$. $W^p_k$ is a so-called Banach space - that is 
@@ -36,17 +36,18 @@ the space of real numbers is complete, while the space of rational numbers is no
 The corresponding semi-norm, that only include the highest order derivative is 
 \begin{equation}
 \label{semiWpk}
-|u|_{p,k} = (\int_\Omega  |(\frac{\partial}{\partial x})^k   u|^p \, dx)^{1/p} .    
+|u|_{p,k} = (\int_\Omega  |(\frac{\partial^k u}{\partial x^k})   u|^p \, dx)^{1/p} .    
 \end{equation}
 The case $p=2$ is special in the sense that not only a norm is defined but also an inner product.    
 The Banach space then forms a Hilbert space and these named with $H$ in Hilbert's honor. 
 That is $H^k(\Omega) = W^{2,k}(\Omega)$. The inner product between the functions $u$ and $v$ is:  
 \[
-	(u, v)_{k} = \sum_{i \le k} \int_\Omega (\frac{\partial u}{\partial x})^i (\frac{\partial v}{\partial x})^i \,  dx.    
+(u, v)_{k} = \sum_{i \le k} \int_\Omega \frac{\partial^i u}{\partial x^i} \frac{\partial^i v}{\partial x^i} \,  dx.    
 \]
 
-For the most part, we will employ the two spaces $L^2(\Omega)$ and $H^1(\Omega)$, but also $H^2$ and $H^{-1}$ 
-will be used. The difference between the norm in $L^2(\Omega)$ and $H^1(\Omega)$ is illustrated in the following example.   
+For the most part, we will employ the two spaces $L^2(\Omega)$ and $H^1(\Omega)$, but also other
+spaces will be used from time to time.  
+The difference between the norm in $L^2(\Omega)$ and $H^1(\Omega)$ is illustrated in the following example.   
 
 \begin{example}{Norms of $sin(k \pi x)$} \label{sc:ex1} 
 Consider the functions $u_k = \sin(k \pi x)$ on the unit interval. Figure \ref{fig:sin} shows the function for $k=1$ and $k=10$. Clearly, the $L^2$ and $L^7$ behave similarly in the sense
