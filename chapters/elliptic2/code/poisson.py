@@ -6,8 +6,8 @@ P = 2  # order of the polynomial
 
 
 def boundary (x): return x[0] < DOLFIN_EPS or x[0] > 1 -DOLFIN_EPS 
-f = Expression("M_PI*M_PI*sin(M_PI*x[0])", degree=P+2)
-u_analytical = Expression("sin(M_PI*x[0])", degree=P+2)
+f = Expression("M_PI*M_PI*sin(M_PI*x[0])", degree=P+4)
+u_analytical = Expression("sin(M_PI*x[0])", degree=P+4)
 
 
 
@@ -18,6 +18,7 @@ L2_errors = {}
 for P in Ps: 
     for N in Ns: 
         mesh = UnitIntervalMesh(N) 
+        h = mesh.hmax()
         V = FunctionSpace(mesh, "Lagrange", P) 
         u = TrialFunction(V) 
         v = TestFunction(V) 
@@ -35,15 +36,27 @@ for P in Ps:
         L2_error = assemble(pow(U-u_analytical, 2)*dx) 
         L2_error = sqrt(L2_error) 
 
-        L2_errors[(P, N)] = L2_error  
+        L2_errors[(P, N)] = (h, L2_error)  
         print (N, P, L2_error) 
 
+
+for P in Ps: 
+    for i in range(len(Ns)-1):  
+        print ("P ", P, L2_errors[(P, Ns[i])][1] / L2_errors[(P, Ns[i+1])][1])
+
+
+
+from numpy import log
 import matplotlib.pyplot as plt
 for P in Ps: 
+    hs = []
     errors = []
     for N in Ns: 
-        errors.append(L2_errors[(P, N)])
-    plt.loglog(errors)
+        h, error = L2_errors[(P, N)]
+        hs.append(h)
+        errors.append(error)
+        print (list(reversed(errors))) 
+    plt.loglog(list(reversed(errors)))
 plt.show()
 
 
