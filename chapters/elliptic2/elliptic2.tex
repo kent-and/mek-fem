@@ -62,21 +62,21 @@ find $u_h\in  V_{h, g} $ such that
 
 \section{What is an elliptic equation ? }
 
+An elliptic partial differential equation is \emph{stricktly positive} with respect to some inner product. 
+In order to show that \eqref{chp3:weak} is elliptic, we will need three concepts: Poincare's inequality, lifting, the positivity of $k$. 
 
-In the previous chapter we listed some approximation properties of polynomials in general. We will now employ these results in order to
-derive \emph{a priori} error estimates. However, in order to achieve this we need four concepts: Poincare's inequality, lifting, the positivity of $k$
-and Galerkin orthogonality. 
+
 
 Poincare's inequality states that for $u\in  H^1_{0, D}(\Omega)$ we have
 \begin{equation} 
 \label{poincare}
 \|u\|_{L^2(\Omega)}  \le C \| \nabla u\|_{L^2(\Omega)} 
 \end{equation} 
-We will not prove this inequality in this book (see e.g. ~\cite{evans2022partial},  
+We will not prove this inequality in this book (see e.g. ~\cite{evans2022partial}),  
 but we note that it can be motivated by considering the Taylor series approximation. 
 From basic calculus we know that: 
 \[
-f(x+h) \le f(x) + h \max_{x \le x^* \le x+h } \,  f'(x^*) 
+|f(x+h)|  \le |f(x)| + h \max_{x \le x^* \le x+h } \,  |f'(x^*) | 
 \]
 Chosing $x$ on $\partial \Omega_D$ makes $f(x)=0$ and hence $f(x+h)$ can be bounded by the derivative
 of $f$. Of course, Poincare's result provides a bounds on the integral rather than the pointwise sense 
@@ -92,7 +92,7 @@ $u= u_0 + G$ solves \eqref{chp3:elliptic}--\eqref{chp3:Neumann} with $u_0$ defin
 \label{chp3:elliptic:lift}
 -\nabla\cdot(k\nabla u_0 )  &= f +\nabla\cdot(k\nabla G)  &\quad \textrm{in}\ \Omega,\\
 \label{chp3:Dirichlet:lift}
-u&= 0 &\quad \textrm{on}\ \partial\Omega_D, \\
+u_0&= 0 &\quad \textrm{on}\ \partial\Omega_D, \\
 \label{chp3:Neumann:lift}
 k \frac{\partial u_0}{\partial n}&= h - k \frac{\partial G}{\partial n} &\quad \textrm{on}\ \partial\Omega_N . 
 \end{eqnarray}
@@ -106,7 +106,7 @@ In order for \eqref{chp3:elliptic} (or \eqref{chp3:elliptic:lift}) to be an elli
 $k$ needs to be stricktly positive and bounded for all $x\in \Omega$. That is: \\  
 For $\forall \xi\in \mathbb{R}^n$ and $\forall x \in \Omega$ there exists a $k_0 > 0$ and $k_1 < \infty$ such that 
 \[
-k_1 |\xi|^2  \ge    \xi^T k \, \xi \ge k_0 |\xi|^2 .   
+	k_0 |\xi|^2  \le    \xi^T k(x) \, \xi \le k_1 |\xi|^2 .   
 \]
 
 Given that Poincare's inequality applies and that $k$ is stricktly positive and bounded as defined above, then 
@@ -124,6 +124,11 @@ The exercises show that
 are all equivalent inner products on $H^1_{0, D}(\Omega)$ . 
 
 \section{An \emph{a priori} Error Estimate}
+
+In the previous chapter we listed some approximation properties of polynomials in general. We will now employ these results in order to
+derive \emph{a priori} error estimates. To achieve this we will need that the equation is elliptic and in addition 
+the concept of Galerkin orthogonality. 
+
 
 Inner products are extraordinary useful as they introduce a geometry of the space. For instance, 
 a function may be orthogonal to another function. This leads us to our fourth concept: 
@@ -229,6 +234,10 @@ a(u, v) = \int_\Omega k \nabla u \cdot \nabla v \, dx
 \]
 forms an inner product on $H^1_0(\Omega)$ given that $k \in \mathbb{R}^{n \times n}$ is stricktly positive
 and bouded. The inner product is equivalent with the $H^1_0(\Omega)$ inner product.  
+
+\begin{exercise}
+Make a Python code that defines a Lagrange element of arbitrary order on the reference triangle. 
+\end{exercise}
 
 \end{exercise}
 
