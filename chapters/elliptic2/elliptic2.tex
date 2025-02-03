@@ -113,7 +113,9 @@ Given that Poincare's inequality applies and that $k$ is stricktly positive and 
 \[
 \int_\Omega (k \nabla u) \cdot \nabla v \, dx 
 \]
-defines an inner product. The result is crucial in this book and is hence left as a series of Exerceises \ref{ex:bilinear}--\ref{ex:poincare3}.  
+defines an inner product
+on $H^1_{0, D} (\Omega)$. 
+The result is crucial in this book and is hence left as a series of Exerceises \ref{ex:bilinear}--\ref{ex:poincare3}.  
 The exercises show that
 \begin{align}
 	&\int_\Omega (k \nabla u) \cdot \nabla v \, dx,  \\  
@@ -152,7 +154,7 @@ k_1 \int_\Omega (\nabla u)^2  \, dx,  \\
 \]
 As such 
 \begin{align*}
-k_0 \int_\Omega (\nabla u-u_h)^2  \, dx &\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-u_h) \, dx \\    
+	k_0 \int_\Omega (\nabla (u-u_h))^2  \, dx &\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-u_h) \, dx \\    
 &\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-P_m u + P_m u - u_h) \, dx, \\ 
 &\le   \int_\Omega (k \nabla (u -u_h)) \cdot \nabla (u-P_m u ) \, dx \\ 
 &\le   k_1 \int_\Omega (\nabla (u -u_h)) \cdot \nabla (u-P_m u ) \, dx 

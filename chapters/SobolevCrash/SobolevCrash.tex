@@ -27,7 +27,7 @@ Sobolev spaces generalize $L^p$ spaces by also including the derivatives.
 On the unit interval, the $W^{k,p}$ norm is defined as  
 \begin{equation}
 \label{Wpk}
-\|u\|_{p,k} = (\int_\Omega \sum_{i \le k} |(\frac{\partial^i u}{\partial x^i}) |^p \, dx)^{1/p} .    
+\|u\|_{k,p} = (\int_\Omega \sum_{i \le k} |(\frac{\partial^i u}{\partial x^i}) |^p \, dx)^{1/p} .    
 \end{equation}
 Then the Sobolev space $W^p_k(\Omega)$ consists of 
 all functions with $\|u\|_{p,k} < \infty$. $W^p_k$ is a so-called Banach space - that is 
@@ -36,7 +36,7 @@ the space of real numbers is complete, while the space of rational numbers is no
 The corresponding semi-norm, that only include the highest order derivative is 
 \begin{equation}
 \label{semiWpk}
-|u|_{p,k} = (\int_\Omega  |(\frac{\partial^k u}{\partial x^k})   u|^p \, dx)^{1/p} .    
+|u|_{k,p} = (\int_\Omega  |(\frac{\partial^k u}{\partial x^k})   u|^p \, dx)^{1/p} .    
 \end{equation}
 The case $p=2$ is special in the sense that not only a norm is defined but also an inner product.    
 The Banach space then forms a Hilbert space and these named with $H$ in Hilbert's honor. 
@@ -141,7 +141,7 @@ ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on $H^1_0$ (see
 
 The above functions $\sin(k \pi x)$ are smooth functions
 that for any $k$ are infinitely many times differentiable. 
-They are therefore members of any Soblev space. 
+They are therefore members of any Sobolev space. 
 
 On the other had, the step function in upper picture in Figure \ref{fig:piecewise} is 
 discontinuous in $x=0.2$ and $x=0.4$. Obviously, the function is in $L^2(0,1)$, but 
@@ -196,7 +196,8 @@ where $f^{(n)}$ denotes the $n$'th derivative of $f$.
 
 In general, approximation by Taylor series bears strong requirement on the smoothness 
 of the solution which needs to be differentiable in a point-wise sense.   
-However, in Sobolev spaces we have the very useful approximation property  
+Hence, we need to defined the polynomials in an alternative way, but the
+results are similar.  We conclude, without proof, that  in Sobolev spaces we have the very useful approximation property  
 \begin{equation}
 \label{bramblehilbert}
 |u - P_m u|_{k,p} \le C h^{m-k} |u|_{m,p} \quad \mbox{ for } k=0,\ldots,m \mbox{ and }  p\ge 1. 
