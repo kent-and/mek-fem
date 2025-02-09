@@ -29,8 +29,8 @@ On the unit interval, the $W^{k,p}$ norm is defined as
 \label{Wpk}
 \|u\|_{k,p} = (\int_\Omega \sum_{i \le k} |(\frac{\partial^i u}{\partial x^i}) |^p \, dx)^{1/p} .    
 \end{equation}
-Then the Sobolev space $W^p_k(\Omega)$ consists of 
-all functions with $\|u\|_{p,k} < \infty$. $W^p_k$ is a so-called Banach space - that is 
+Then the Sobolev space $W^{k,p}(\Omega)$ consists of 
+all functions with $\|u\|_{k,p} < \infty$. $W^{k,p}$ is a so-called Banach space - that is 
 a complete\footnote{We will not go into the details of complete spaces in this book, but remark that
 the space of real numbers is complete, while the space of rational numbers is not. } normed vector space. 
 The corresponding semi-norm, that only include the highest order derivative is 
@@ -40,7 +40,7 @@ The corresponding semi-norm, that only include the highest order derivative is
 \end{equation}
 The case $p=2$ is special in the sense that not only a norm is defined but also an inner product.    
 The Banach space then forms a Hilbert space and these named with $H$ in Hilbert's honor. 
-That is $H^k(\Omega) = W^{2,k}(\Omega)$. The inner product between the functions $u$ and $v$ is:  
+That is $H^k(\Omega) = W^{k,2}(\Omega)$. The inner product between the functions $u$ and $v$ is:  
 \[
 (u, v)_{k} = \sum_{i \le k} \int_\Omega \frac{\partial^i u}{\partial x^i} \frac{\partial^i v}{\partial x^i} \,  dx.    
 \]
@@ -49,7 +49,10 @@ For the most part, we will employ the two spaces $L^2(\Omega)$ and $H^1(\Omega)$
 spaces will be used from time to time.  
 The difference between the norm in $L^2(\Omega)$ and $H^1(\Omega)$ is illustrated in the following example.   
 
-\begin{example}{Norms of $sin(k \pi x)$} \label{sc:ex1} 
+
+\kent{Need an example env easier to reference to.}
+
+\begin{exmp}{Norms of $sin(k \pi x)$} \label{sc:ex1} 
 Consider the functions $u_k = \sin(k \pi x)$ on the unit interval. Figure \ref{fig:sin} shows the function for $k=1$ and $k=10$. Clearly, the $L^2$ and $L^7$ behave similarly in the sense
 that they remain the same as $k$ increases. On the other hand, the $H^1$ norm of $u_k$
 increases dramatically as $k$ increases. The following code shows how the 
@@ -90,7 +93,7 @@ $k \backslash norm $ & $L^2$ &   $L^7$ &  $H^1$ \\ \hline
 \end{table}
 
 
-\end{example}
+\end{exmp}
 
 
 
@@ -435,7 +438,7 @@ Defining negative and fractional norms in terms of eigenvalues and eigenvectors
 is convenient for small scale problems, but eigenvalue problems are computationally
 demanding. It may, however, be tractable on subdomains, such as surfaces or interfaces 
 of larger problems. There are however more    
-efficient was of computing such norms and operators, but those are beyond the scope of this
+efficient ways of computing such norms and operators, but those are beyond the scope of this
 book. 
 
 
@@ -444,8 +447,8 @@ book.
 Let us consider $\Omega = (0,1)$ and $u_k = sin(\pi k x)$.  
 Table \ref{norms} shows the $H^1$, $L^2$, and $H^{-1}$ norms as computed
 with \eqref{qnorm} with $q=1, 0$, and $-1$, respectively.  Comparing 
-the computed norms with the norms $L^2$ and $H^1$ norms  computed
-in Example \ref{sc:ex1}, or analytically on page \pageref{sinkpnorms}  we see that the above definition \eqref{qnorm}
+	the norms computed with the below code and shown in Table \ref{table:norms} with the norms calculated 
+analytically on page \pageref{sinkpnorms},  we see that the above definition \eqref{qnorm}
 reproduces the $H^1$ and $L^2$ norms with $q=1$ and $q=0$, respectively.     
 We also remark that while the $H^1$ norm increases as
 $k$ increases, the  $H^{-1}$ norm demonstrates a corresponding decrease.  
@@ -529,7 +532,7 @@ for k in [1, 10, 100]:
 
 
 \begin{remark}{\textbf{Norms for $|q| > 1$.} } \\
-The norm \eqref{qnorm} is well defined for any $|q|$ > 1, but will not 
+The norm \eqref{qnorm} is well defined for any $|q| > 1  $, but will not 
 correspond to the corresponding Sobolev spaces.    
 \end{remark}
 
@@ -571,7 +574,7 @@ defines an inner product on $H^1_0 (\Omega)$ for $\Omega=(0,1)$.
 
 \begin{exercise}
 Compute the $H^1$ and $L^2$ norms of a random function with values
-in $(0,1)$ on meshes representing the unit interval of with $10$, $100$, and $1000$ cells.   
+in $(0,1)$ on meshes representing the unit interval of width $10$, $100$, and $1000$ cells.   
 \end{exercise}
 
 \begin{exercise}

@@ -29,7 +29,7 @@ As detailed in Chapter \ref{elliptic}, we obtain the weak formulation by 1) mult
 the equation \eqref{chp3:elliptic} with a test function $v$, 2) employing Gauss-Green's lemma, and 3) employing the 
 boundary conditions. 
 
-We arrive at the following, which including the precise definitions of the trial and test functions, source function and boundary conditions: \\
+We arrive at the following \emph{weak formulation}, which includes the precise definitions of spaces of the trial and test functions, source function and boundary conditions: \\
 Given $f\in H^{-1}_D(\Omega)$, $h\in H^{-1/2}(\partial \Omega_N)$,  
 find $u\in  H^1_{g, D} (\Omega)$ such that  
 \begin{equation}
@@ -37,7 +37,7 @@ find $u\in  H^1_{g, D} (\Omega)$ such that
 \int_\Omega (k \nabla u) \cdot \nabla v \, dx = \int_\Omega f v \, dx + \int_{\partial \Omega_N} h v \, ds, \quad    \forall v\in  H^1_{0, D} (\Omega).  
 \end{equation} 
 Here, the negative norms are similar to the negative norms introduced in the previous chapter, although we there had Dirichlet conditions
-on the complete boundary. Alernatively, and perhaps simpler from a mathematical point of view is to define it in terms of duality as
+on the complete boundary. Alternatively, and perhaps simpler from a mathematical point of view is to define it in terms of duality as
 in Remark \ref{dualnorm}. When implementing the method, we seldom need to pay attention to what space our source and boundary condition functions reside in, but we remark
 that it is sometimes useful to include functions that are not defined in points but only through integration over elements.  
 
