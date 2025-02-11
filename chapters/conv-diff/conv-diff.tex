@@ -7,25 +7,25 @@
 \section{Introduction}
 This chapter concerns convection-diffusion equations of the form: 
 \begin{eqnarray*}
--\mu\Delta u + v\cdot \nabla u  &=& f \quad \textrm{in}\ \Omega\\
+-\mu\Delta u + w\cdot \nabla u  &=& f \quad \textrm{in}\ \Omega\\
 u&=& g \quad \textrm{on}\ \partial\Omega
 \end{eqnarray*}
-Here $v$ is  typically a velocity, $\mu$ is the diffusivity,  and $u$ is the 
+Here $w$ is  the velocity, $\mu$ is the diffusivity,  and $u$ is the 
 unknown variable of interest. We assume the Dirichlet condition $u=g$ on 
 the boundary, while $f$ is a source term.  
 
-The problem is a singular perturbation problem. That is, the problem is well-posed for $\mu > 0$ but becomes over--determined as $\mu$ tends to zero. For $\mu=0$ the Dirichlet conditions should only be set on the inflow domain $\Gamma$; that is, where $n \cdot v < 0$ for the outward unit normal $n$. 
+The problem is a singular perturbation problem for $|w| \gg \mu$. That is, the problem is well-posed for $\mu > 0$ but becomes over--determined by boundary conditions  as $\mu$ tends to zero. In particular,  for $\mu=0$ the Dirichlet conditions should only be set on the inflow domain $\Gamma$; that is, where $n \cdot w < 0$ for the outward unit normal $n$. 
 
-For many practical situations $\mu>0$, but small in the sense that $\mu \ll |v|$. For such problems, the solution 
+For many practical situations $\mu>0$, but small in the sense that $\mu \ll |w|$. For such problems, the solution 
 will often be similar to the solution of the reduced problem with $\mu=0$ except close to the 
-non-inflow boundary $\partial \Omega \backslash \Gamma$. Here, there will typically be a boundary layer $\exp{(\|v\|_\infty x / \mu)}$.      
+non-inflow boundary $\partial \Omega \backslash \Gamma$. Here, there will typically be a boundary layer $\exp{(\|w\|_\infty x / \mu)}$.      
 Furthermore, discretizations often shows unphysical oscillations starting at this boundary layer.    
 
 The next example shows a 1D convection diffusion problem resulting in non-physical oscillations due to the use
 of a standard Galerkin approximation. 
 
 \begin{example}{\textbf{Standard Galerkin approximation}} \label{ex1} 
-Consider the following 1D problem convection diffusion problem, where $v=-1$ for simplicity: 
+Consider the following 1D problem convection diffusion problem, where $w=-1$ for simplicity: 
 \begin{eqnarray}
 -u_x - \mu u_{xx} = 0, \\ 
 u(0) = 0, u(1) = 1 . 
@@ -111,13 +111,13 @@ To understand Example \ref{ex1} we first remark that the discretization correspo
 central finite difference scheme: 
 \begin{eqnarray*}
 -\frac{\mu}{h^2}\left[u_{i+1}-2u_i+u_{i-1}\right] - 
-\frac{v}{2h}\left[u_{i+1}-u_{i-1}\right] &=& 0, \quad i=1,\ldots,N-1\\
+\frac{w}{2h}\left[u_{i+1}-u_{i-1}\right] &=& 0, \quad i=1,\ldots,N-1\\
 u_0=0,\quad u_N=1 &&
 \end{eqnarray*}
-Above, we kept $v$ as a variable such that we may discuss the directionality of upwinding in terms of the convection. 
+Above, we kept $w$ as a variable such that we may discuss the directionality of upwinding in terms of the convection. 
 Clearly, if $\mu=0$ then the scheme reduces to  
 \begin{eqnarray*}
--\frac{v}{2h}\left[u_{i+1}-u_{i-1}\right] &=& 0, \quad i=1,\ldots,N-1\\
+-\frac{w}{2h}\left[u_{i+1}-u_{i-1}\right] &=& 0, \quad i=1,\ldots,N-1\\
 u_0=0,\quad u_N=1 &&
 \end{eqnarray*}
 Here, it is clear that $u_{i+1}$ is coupled to $u_{i-1}$, but not to 
@@ -130,8 +130,8 @@ One cure for these oscillations is upwinding. That is, instead
 of using a central difference scheme, we employ the following difference
 scheme:   
 \begin{eqnarray*}
-\frac{du}{dx} (x_i) = \frac{1}{h}[u_{i+1}-u_{i}] \quad   \mbox{ if } \ v < 0, \\ 
-\frac{du}{dx} (x_i) = \frac{1}{h}[u_{i}-u_{i-1}] \quad  \mbox{ if } \ v > 0 .  
+\frac{du}{dx} (x_i) = \frac{1}{h}[u_{i+1}-u_{i}] \quad   \mbox{ if } \ w < 0, \\ 
+\frac{du}{dx} (x_i) = \frac{1}{h}[u_{i}-u_{i-1}] \quad  \mbox{ if } \ w > 0 .  
 \end{eqnarray*}
 Using this scheme, oscillations will disappear. The approximation will however only be first order.
 
@@ -144,7 +144,7 @@ There is a relationship between upwinding and artificial diffusion.  If we discr
 
 \noindent
 Hence, upwinding is equivalent to adding artificial diffusion with $\epsilon=h/2$; that is, in both cases we actually solve the problem
-\[-(\mu+\epsilon)u_{xx} + vu_x = f.\]
+\[-(\mu+\epsilon)u_{xx} + w \, u_x = f.\]
 using a central difference scheme. 
 
 Finite difference upwinding is difficult to express using finite elements methods, but
@@ -205,18 +205,18 @@ This leads us to streamline diffusion using the Petrov-Galerkin method.
 Our problem reads: \\ 
 Find $u$ such that 
 \begin{eqnarray*}
--\mu\Delta u + v\cdot\nabla u &=& f \quad \textrm{in}\ \Omega, \\
+-\mu\Delta u + w\cdot\nabla u &=& f \quad \textrm{in}\ \Omega, \\
 u&=& g \quad \textrm{on}\ \partial\Omega .
 \end{eqnarray*}
 The \textbf{weak formulation} reads: \\
 Find $u\in H_g^1$ such that 
 \[
-a(u,w) = b(w) \quad \forall\ w\in H_0^1, 
+a(u,v) = b(v) \quad \forall\ v\in H_0^1, 
 \]
 where
 \begin{eqnarray*}
-a(u,w) &=& \int_\Omega\mu\nabla u \cdot \nabla w \dx + \int_\Omega v \cdot \nabla uw \dx,   \\
-b(w) &=& \int_\Omega fw \dx . 
+	a(u,v) &=& \int_\Omega\mu\nabla u \cdot \nabla v \dx + \int_\Omega (w \cdot \nabla u) \, v \dx,   \\
+b(v) &=& \int_\Omega f v \dx . 
 \end{eqnarray*}
 Here, $H_g^1$ is the subspace of $H^1$ where the trace equals $g$ on the boundary $\partial \Omega$.  
 
@@ -271,48 +271,48 @@ Notice that the only difference from the standard Galerkin formulation is that t
 
 On matrix form, the standard Galerkin formulation reads: 
 \begin{equation}
-A_{ij} = a(N_i, N_j ) = \int_\Omega\mu\nabla N_i \cdot \nabla N_j \dx + \int_\Omega v \cdot \nabla N_iN_j \dx, 
+	A_{ij} = a(N_i, N_j ) = \int_\Omega\mu\nabla N_i \cdot \nabla N_j \dx + \int_\Omega (w \cdot \nabla N_i) \, N_j \dx, 
 \label{eq:wGalerkin_A}
 \end{equation}
 while for the Petrov Galerkin method, we use the test functions $L_j$: 
-\[A_{ij} = a(N_i, L_j ) = \int_\Omega\mu\nabla N_i \cdot \nabla L_j \dx + \int_\Omega v \cdot \nabla N_iL_j \dx\]
+\[A_{ij} = a(N_i, L_j ) = \int_\Omega\mu\nabla N_i \cdot \nabla L_j \dx + \int_\Omega (w \cdot \nabla N_i) \, L_j \dx\]
 A clever choice of $L_j$ will enable us to add diffusion in a consistent way. To make sure
 that the matrix is still quadratic, we should however make sure that the dimension of 
 $V_h$ and $W_h$ are equal. 
 
-Let $L_j$ be defined as $L_j = N_j + \beta h \, v\cdot\nabla N_j$. Writing out the matrix $A_{ij}$ in \eqref{eq:wGalerkin_A} now gives
+Let $L_j$ be defined as $L_j = N_j + \beta h \, (w\cdot\nabla N_j)$. Writing out the matrix $A_{ij}$ in \eqref{eq:wGalerkin_A} now gives
 \begin{eqnarray*}
-A_{ij} &=& a(N_i, N_j + \beta h \, v\cdot\nabla N_j )\\
-&=& \int_\Omega\mu\nabla N_i\cdot\nabla (N_j + \beta h \,  v\cdot\nabla N_j) \dx + \int_\Omega v \cdot \nabla N_i\cdot (N_j + \beta h \, v\cdot\nabla N_j) \dx\\
+	A_{ij} &=& a(N_i, N_j + \beta h \, (w\cdot\nabla N_j) )\\
+&=& \int_\Omega\mu\nabla N_i\cdot\nabla (N_j + \beta h \,  w\cdot\nabla N_j) \dx + \int_\Omega w \cdot \nabla N_i\cdot (N_j + \beta h \, w\cdot\nabla N_j) \dx\\
 &=&\underbrace{
 \int_\Omega\mu\nabla N_i \cdot \nabla N_j \dx + \int_\Omega v \cdot \nabla N_i\, N_j \dx}_
 {\textrm{standard Galerkin}}
 \\
 &&\lefteqn{
 +\underbrace{
-\beta h \, \int_\Omega\mu\nabla N_i\cdot\nabla(v \cdot \nabla N_j) \dx
+\beta h \, \int_\Omega\mu\nabla N_i\cdot\nabla(w \cdot \nabla N_j) \dx
 }_
 {=0\ \textrm{third order term,  for linear elements}}+
-\underbrace{\beta h \, \int_\Omega (v\cdot\nabla N_i) (v\cdot\nabla N_j) \dx}
-_{\textrm{Artificial diffusion in $v$ direction}}
+\underbrace{\beta h \, \int_\Omega (w\cdot\nabla N_i) (w\cdot\nabla N_j) \dx}
+_{\textrm{Artificial diffusion in $w$ direction}}
 }
 \end{eqnarray*}
 
 Notice that also the righthand side changes
-\[b(L_j) = \int_\Omega fL_j \dx = \int_\Omega f(N_j + \beta h \, v\cdot\nabla N_j) \dx\]
+\[b(L_j) = \int_\Omega fL_j \dx = \int_\Omega f(N_j + \beta h \, w\cdot\nabla N_j) \dx\]
 Thus, both the matrix and the righthand side are changed such that artificial diffusion is added in a consistent way. 
 
 We summarize this derivation by stating the SUPG problem. 
 Find $u_{h,sd}\in H_g^1$ such that 
 \begin{equation}
 \label{SUPG} 
-a_{sd} (u,w) = b_{sd}(w) \quad \forall w\in H_0^1, 
+a_{sd} (u,v) = b_{sd}(v) \quad \forall v\in H_0^1, 
 \end{equation}
 where
 \begin{eqnarray*}
-a_{sd}(u,w) &=& \int_\Omega\mu\nabla u \cdot \nabla w \dx + \int_\Omega v \cdot \nabla uw \dx \\
-            &+& \beta h \,  \int_\Omega (v\cdot\nabla u) (v\cdot \nabla w) \dx  + \beta h \,  \mu \sum_e \int_{\Omega_e} -\Delta u (v\cdot\nabla w) \dx ,  \\
-b_{sd} (w) &=& \int_\Omega fw \dx + \beta h \, \int_\Omega f v \cdot \nabla w \dx . 
+	a_{sd}(u,v) &=& \int_\Omega\mu\nabla u \cdot \nabla v \dx + \int_\Omega (w \cdot \nabla u) v \dx \\
+            &+& \beta h \,  \int_\Omega (w\cdot\nabla u) (w\cdot \nabla v) \dx  + \beta h \,  \mu \sum_e \int_{\Omega_e} -\Delta u (w\cdot\nabla v) \dx ,  \\
+	b_{sd} (v) &=& \int_\Omega fv \dx + \beta h \, \int_\Omega f (w \cdot \nabla v) \dx . 
 \end{eqnarray*}
 
 
@@ -368,24 +368,24 @@ equivalent the $H^1$-norm. Furthermore, this norm will be easier to
 use for our purposes.  
 
 For the convection-diffusion problem, we will consider two cases 1) incompressible flow, where
-$\nabla \cdot v = 0 $ and 2) compressible flow, where $\nabla \cdot v \not = 0 $.  
+$\nabla \cdot w = 0 $ and 2) compressible flow, where $\nabla \cdot w \not = 0 $.  
 Let us for the begin with the incompressible case.  
 Further, let 
 \begin{eqnarray*}
 b(u,w) &=& \int_\Omega\mu\nabla u\nabla w \dx\\
-c_v(u,w) &=& \int_\Omega v \cdot \nabla u \,w \dx\\
+	c_w(u,w) &=& \int_\Omega (w \cdot \nabla u) \,v \dx\\
 a(u,w) &=& a(u,w) + b(u,w)\\
 \end{eqnarray*}
-Furthermore, assuming for the moment that $u \in H^1_g, w\in H^1_0$, we have  
+Furthermore, assuming for the moment that $u \in H^1_g, v\in H^1_0$, we have  
 \begin{eqnarray*}
-c_v(u,w) &=& \int_\Omega v\cdot \nabla u\, w \dx  \\ 
-         &=&-\int_\Omega v\cdot \nabla w \, u \dx 
-- \underbrace{\int_\Omega \nabla \cdot v \, u \, w \dx}_{= 0 \textrm{ (incompressibility)}} 
-+ \underbrace{\int_\Gamma u \, w \, v \cdot n}_{ = 0  \textrm{ (Dirichlet conditions)}} \\       
-         &=& - c_v(w,u) . 
+c_w(u,v) &=& \int_\Omega w\cdot \nabla u\, v \dx  \\ 
+         &=&-\int_\Omega w\cdot \nabla v \, u \dx 
+- \underbrace{\int_\Omega \nabla \cdot w \, u \, v \dx}_{= 0 \textrm{ (incompressibility)}} 
++ \underbrace{\int_\Gamma u \, v \, w \cdot n}_{ = 0  \textrm{ (Dirichlet conditions)}} \\       
+         &=& - c_w(v,u) . 
 \end{eqnarray*}
-and therefore $c_v(\cdot, \cdot)$ is skew-symmetric. Letting $w=u$ we obtain that   
-$c_v(u,u) = -c_v(u,u)$, which means that $c_v(u,u)=0$. 
+and therefore $c_w(\cdot, \cdot)$ is skew-symmetric. Letting $v=u$ we obtain that   
+$c_w(u,u) = -c_w(u,u)$, which means that $c_w(u,u)=0$. 
 Therefore, the first condition in Lax-Milgram's theorem \eqref{LM1} is satisfied:   
 \[  
 a(u,u) = b(u,u) \ge \mu |u|_1^2 .  
@@ -394,43 +394,43 @@ a(u,u) = b(u,u) \ge \mu |u|_1^2 .
 The second condition, the boundedness of $a$ \eqref{LM2}, follows by applying Cauchy-Schwartz inequality
 if we assume bounded flow velocities $\|v\|_{\infty}$.  
 \begin{eqnarray*}
-a(u,v) &=& \int_\Omega\mu\nabla u\nabla w \dx + \int_\Omega v\nabla uw \dx\\
-       &\le& \mu |u|_1 |w|_1  + \|v\|_{\infty} |u|_1 \|w\|_0 \\   
-       &\le& (\mu + \|v\|_{\infty} C_\Omega )  |u|_1 |v|_1 .    
+	a(u,v) &=& \int_\Omega\mu\nabla u\nabla v \dx + \int_\Omega (w\nabla u) v \dx\\
+       &\le& \mu |u|_1 |v|_1  + \|w\|_{\infty} |u|_1 \|v\|_0 \\   
+       &\le& (\mu + \|w\|_{\infty} C_\Omega )  |u|_1 |v|_1 .    
 \end{eqnarray*}
 
 The third condition simply means that the right-hand side needs to be in the dual 
 space of $H^1_g$. Hence, we obtain the following bounds by Lax-Milgram's theorem:   
 \[
-|u|_1 \le \frac{ \mu + C_\Omega \|v\|_{\infty}}{\mu} \|f\|_{-1} . 
+|u|_1 \le \frac{ \mu + C_\Omega \|w\|_{\infty}}{\mu} \|f\|_{-1} . 
 \]
-Notice that for convection-dominated problems $ C_\Omega \|v\|_{\infty} \gg \mu$ 
+Notice that for convection-dominated problems $ C_\Omega \|w\|_{\infty} \gg \mu$ 
 and the stability constant will therefore be large. 
 
-In the case where $\nabla \cdot v \not = 0$, we generally obtain that $c_v(u,u) \not = 0$. 
+In the case where $\nabla \cdot w \not = 0$, we generally obtain that $c_w(u,u) \not = 0$. 
 To ensure that $a(u,u)$ is still positive, we must then put some restrictions on 
 the flow velocities. That is, we need    
 \[
-|c_v(u,u)| \le a(u,u) .  
+|c_w(u,u)| \le a(u,u) .  
 \]
-If $C_\Omega \|v\|_\infty \le D \mu$ with $D < 1$ we obtain   
+If $C_\Omega \|w\|_\infty \le D \mu$ with $D < 1$ we obtain   
 \begin{eqnarray*}
-a(u,u) &=& \int_\Omega\mu\nabla u\nabla u \dx + \int_\Omega v\nabla uu \dx\\
-       &\ge & \mu |u|_1 |v|_1  - \|v\|_{\infty} |u|_1 \|u\|_0 \\   
+	a(u,u) &=& \int_\Omega\mu\nabla u\nabla u \dx + \int_\Omega (w\nabla u)u \dx\\
+       &\ge & \mu |u|_1 |u|_1  - \|w\|_{\infty} |u|_1 \|u\|_0 \\   
        &\ge& (\mu - \|v\|_{\infty} C_\Omega )  |u|_1 |u|_1 \\    
        &\ge& (\mu (1-D))  |u|_1^2 .    
 \end{eqnarray*}
 Further, the second condition of Lax-Milgram's theorem still applies.   
-However, that $C_\Omega \|v\|_\infty \le D \mu$ is clearly very restrictive 
+However, that $C_\Omega \|w\|_\infty \le D \mu$ is clearly very restrictive 
 compared to the incompressible case.   
 
 We remark that the Lax-Milgram conditions in the presence of the SUPG clearly will not 
 be satisified in the continuous case because of the third order term
-$ -\Delta u (v\cdot\nabla w)$. With this term, the second condition of Lax-Milgram is not satisified
+$ -\Delta u (w\cdot\nabla v)$. With this term, the second condition of Lax-Milgram is not satisified
 with $C \le \infty$.  
 
 Finally, in order to make the  
-term $c_v(u,u)$ skew-symmetric, it was required that 
+term $c_w(u,u)$ skew-symmetric, it was required that 
 the boundary integral $\int_\Gamma u^2 \, w  \cdot n $ was zero.  
 This was a consequence of the Dirichlet conditions. 
  In general, this is neither needed nor possible
@@ -505,7 +505,7 @@ To obtain improved error estimates for the SUPG method, we introduce
 an alternative norm: 
 \begin{equation}
 \label{supg:norm}
-\|u\|_{sd} = \left(h\|v\cdot\nabla u\|^2 +  \mu |\nabla u|^2\right)^{1/2}
+\|u\|_{sd} = \left(h\|w\cdot\nabla u\|^2 +  \mu |\nabla u|^2\right)^{1/2}
 \end{equation}
 
 
