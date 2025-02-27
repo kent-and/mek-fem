@@ -1,0 +1,128 @@
+\chapter{Alternative Formulations}
+
+
+\section{Introduction}
+
+Most commonly, the basis for finite element methods has been the weak formulation as discussed in 
+the previous chapters. But, with the introduction of neural networks and physics-informed networks, 
+alternative formulations based on least square method principles have been made popular. Such formulations
+have also been studied earlier, but has in general received little attention as compared with stdandard weak formulations.   
+In this chapter we will therefore discuss different ways of formulating PDE problems. 
+Let us for simplicity discuss elliptic problems with Dirichlet boundary conditions of the 
+form: Find $u \in C^2(\Omega)$ given $f \in C^0(\Omega)$ of the form
+\begin{align}
+-\Delta u &= f \quad \mbox{ in } \Omega, \\ 
+ u &= g \quad \mbox{ on } \Omega .  
+\end{align}
+The weak formulation: Find $u \in H^1_g(\Omega)$, given  $f \in H^{-1}(\Omega)$ such 
+that 
+\begin{align}
+\label{weak:primal}
+\int_\Omega \nabla u \cdot \nabla v \, dx = \int_\Omega f v \, dx, \quad \forall v\in H^1_0(\Omega),       
+\end{align}
+follows directly from Gauss-Green´s lemma, as we saw in Chapter \ref{ch:elliptic2}. 
+We will refer to this formulation as the \emph{primal formulation}. 
+
+The weak formulation may alternatively be derived from energy considerations. That is, 
+consider the energy functional, 
+\begin{align}
+E (v, f) = \int_\Omega \frac{1}{2} (\nabla v)^2  - f v \, dx.   
+\end{align}
+The solution of \eqref{weak:primal} can equivalently be written as the minimizer of this energy functional. That is, 
+\begin{align}
+u = \argmin_{v \in H^1_g(\Omega) } E (v, f) .   
+\end{align}
+\kent{use u, v, $w_i$ such that both u and v can be expressed as a linear combination of $w_i$}
+To see the relationship between the two formulations we need to be able to differentiate the functional $E$ with respect 
+to functions $v$. Assume therefore that $H^1_g(\Omega)$ can be spanned by a basis $\{v_i\}^\infty_{i=1}$. Then 
+a function can be expressed as $u=\sum_i u_i v_i$ and we notice directly that
+\begin{align} 
+\frac{\partial u }{\partial u_i } = v_i .  
+\end{align} 
+Hence, 
+\begin{align} 
+\frac{\partial E }{\partial u_i } = \int_\Omega \nabla u \cdot \nabla v_i - f v_i dx  .  
+\end{align} 
+Furthermore, clearly $E(v, f)$ is minimized when the derivative is zero, i.e. 
+\begin{align} 
+\frac{\partial E }{\partial u_i } = \int_\Omega \nabla u \cdot \nabla v_i - f v_i dx = 0  .  
+\end{align} 
+which corresponds to the weak formulation. 
+
+\section{Least square formulation of primal formulation}
+
+An alternative "energy"-like functional, based on least square principles that could be minimized would  
+be  
+\begin{align}
+E_{LS} = \|-\Delta u - f\|_{L^2(\Omega)}
+\end{align}
+Again, we seek to find the minimizer
+\begin{align}
+u = \argmin_{v \in ? } E_{LS} (v, f) .   
+\end{align}
+We differentiate in order to find that 
+\begin{align} 
+\label{weak:primal:ls}
+\frac{\partial E_{LS}}{\partial u_i} = \int_\Omega \frac{\partial}{\partial u_i} (-\Delta u - f)^2 \, dx  = \\  
+2 \int_\Omega (-\Delta u - f) (-\Delta v_i) \, dx 
+\end{align} 
+By applying Gauss-Green´s lemma again we may again derive a corresponding strong formulation:
+Find $u$ such that     
+\begin{align}
+\label{strong:primal:ls}
+\Delta^2 u &= -\Delta f \quad \mbox{ in } \Omega, \\ 
+ u &= g \quad \mbox{ on } \partial \Omega,   \\ 
+ -\Delta u &= f \quad \mbox{ on } \partial \Omega .  
+\end{align}
+
+We refer \eqref{weak:primal:ls} and \eqref{strong:primal:ls} as the weak and strong formulation of the least square formulation of the
+primal problem.  
+We notice that both formulations requires more regularity than the standard weak formulation of the primal problem. In fact 
+\eqref{strong:primal:ls} reguires $u \in C^4(\Omega)$ whereas   
+\eqref{weak:primal:ls} is naturally posed in $H^2_g(\Omega)$.  
+
+\section{The Mixed formulation}
+
+To reduce the number of derivatives on the solution, a common 
+trick is to splitt the original second order equation into 
+two equations of first order. That is, we notice that
+\begin{equation} 
+\label{primal:mixed}
+-\Delta u = f 
+\end{equation} 
+may be alternatively written as 
+\begin{align}
+\label{elliptic:mixed:1}
+\psi = \nabla u, \\ 
+\label{elliptic:mixed:2}
+\nabla \cdot \psi = f . 
+\end{align}
+That is, inserting \eqref{elliptic:mixed:1} into the \eqref{elliptic:mixed:2} directly gives 
+\eqref{primal:mixed}. Here, we notice that $\psi$ is a vector field while $u$ is a scalar field.  
+
+Also this problem may be phrased as a minimization problem, although a constrained minimization problem. 
+Let the energy be 
+\[
+E_{M}(\psi) = \int_\omega \frac{1}{2} \psi^2 \, dx  
+\]
+The the solution is  
+\begin{align}
+u = \argmin_{\nabla \cdot \psi = f  } E_{M} (v) .   
+\end{align}
+The constraint $\nabla \cdot v = f$ may be enforced using a Lagrange multiplier. Then the functional
+becomes  
+\[
+L(v,\lambda, f) = \int_\Omega v^2 \, dx + \int_\Omega (\nabla \cdot v = g) \lambda  \, dx   
+\]
+and 
+\begin{align}
+u, \mu = \argmin_{v} \argmax_{\lambda} L(v, \lambda, f) .   
+\end{align}
+Again, we may differentiate (with respect to both $v$ and the Lagrange multiplier $\lambda$ to find the extremal points of $L$ 
+as 
+\begin{align}
+ \frac{\partial L (u, \lambda)}{ \partial v} =  \int_\Omega v^2 \, dx + \int_\Omega (\nabla \cdot v = g) \lambda  \, dx   
+\end{align}
+
+
+ 
