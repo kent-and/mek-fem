@@ -1,0 +1,8 @@
+A basis for the polynomial space  [1, x, x**2, x**3, x**4, x**5]
+A set of points to use for computing the nodal basis  [0.0, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0]
+The degrees of freedom, represented as symbols  (a0, a1, a2, a3, a4, a5)
+A generic function is then  a0 + a1*x + a2*x**2 + a3*x**3 + a4*x**4 + a5*x**5
+[-26.0416666666667*x**5 + 78.125*x**4 - 88.5416666666667*x**3 + 46.875*x**2 - 11.4166666666667*x + 1.0, ....]
+i,j  0 0  basis evaluation  1.000
+i,j  0 1  basis evaluation  0.000
+...
