@@ -242,5 +242,21 @@ Make a Python code that defines a Lagrange element of arbitrary order on the ref
 consisting of the vertices $(0,0)$, $(1,0)$ and $(0,1)$. Let $\mathbb{P}_k = \{ x^i y^j \} \mbox{ for } i,j \mbox{ such that } i+j \le k\} $     
 \end{exercise}
 
+\begin{exercise}
+Check that the interpolation result
+of the Bramble-Hilbert lemma \ref{bramblehilbert} applies to the Lagrange interpolation on the unit line. Consider 
+for example a function $f = sin(x)$ on the unit interval. The function $f$ is a good example as it cannot be expressed 
+as a polynomial of finite order, but can be approximated arbitrary well. 
+\end{exercise}
+
+\begin{exercise}
+Compute the condition number of the mass matrix when using the Lagrange and the Hermite basis. Compare it with the condition
+number when using the basis consisting of monomials, ie. $(1, x, x^2, \ldots)$.   
+	The mass matrix on the unit interval  is the matrix $M_{ij} = \int_0^1 \phi_i \phi_j \, dx $ where $\{\phi_i\}$ is 
+	the set of basis functions in use. 
+\end{exercise}
+
+
+
 
 
