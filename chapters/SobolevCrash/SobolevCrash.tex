@@ -536,24 +536,74 @@ The norm \eqref{qnorm} is well defined for any $|q| > 1  $, but will not
 correspond to the corresponding Sobolev spaces.    
 \end{remark}
 
-\section{Linear functionals}
+\section{Linear functionals and dual spaces}
 
-Given a function space $V$, a linear functional is an object takes a function 
+A functional on a vector space $V$ is an object $L(\cdot)$ that when given a
+vector $v\in V$, returns a real number. 
+For example if $V=\mathbb{R}^n$ then a vector $z\in \mathbb{R}^n$ together
+with the standard inner product,  i.e. let $x, y \in \mathbb{R}^n$
+the the inner-product is $<x, y> = \sum_i x_i y_i$, forms a linear functional
+$L_z(v)  = <z, v>$ for any $v\in V$. 
+Analogously, by choosing $z$ appropriately we may define linear functionals
+that for example 1) returns the $i$'th component of the vector, i.e. letting$z=e_i$ where
+$e_i$ is the $i$'th unit vector and 2) computes the sum, i.e. letting $z=(1,\ldots, 1)$. 
+The above functionals are linear, but examples of non-linear functionals may e.g. be
+sums of powers of the components, ie.  $L(v) = \sum_i v_i^p$. 
 
-\begin{remark}{\textbf{The standard definition of a dual norm}} \\
+The dual space of $V$, written as $V^*$,  is the space of all linear functionals on $V$. 
+To define we need the definition of the dual norm. 
+
+\begin{defin}{\textbf{The definition of a dual norm and the corresponding dual space.}} \\
 \label{dualnorm}
-Let $(\cdot, \cdot)_A$ be an inner product over the Hilbert
-space $V$.  The norm of the dual space is then defined by 
+Let $(\cdot, \cdot)_V$ be an inner product over the Hilbert
+space $V$ and let $f(\cdot)$ be a linear functional on $V$.   
+The dual norm of $f$ is 
 \[
-\|f\|_{A^*} = \sup_{v\in V} \frac{(f,v)}{(v,v)_A} .    
+	\|f\|_{V^*} = \sup_{v\in V} \frac{f(v)}{\sqrt{(v,v)_V}} .    
 \]
-For example, the $H^{-1}$ norm is defined as 
+The space $V^*$ consists of all $f$ such that $\|f\|_{V^*} \infty$.  
+\end{defin}
+We remark that the dual space of $\mathbb{R}^n$ is $\mathbb{R}^n$.  
+
+Things are more interesting for function spaces than for $\mathbb{R}^n$.  
+Obviously, the counter-part of the $i$'th component above is function evaluation 
+and the summation of all entries in a vector corresponds to an integral. However, 
+there are obviously functions and functionspaces in which pointwise evaluation 
+and/or integrals are not well defined. Consider for example the
+function $f(x) = x^\alpha$. Clearly, if $\alpha < 0$ then $f(0) = \infty$. Furtermore, 
+if our domain of interest is $\mathbb{R}^+$ then
 \[
-\|f\|_{-1} = \sup_{v\in H^1} \frac{(f,v)}{(v,v)_1} .    
+\int_0^\infty f(x) \, dx = \infty 
+\]
+if $\alpha \ge 0$. Hence, objects a dual space consists of is not always easy to grasp. 
+For example, 
+consider the one-dimensional function space $V$ spanned by  $x^\alpha$.  
+Then clearly, $g(x) = x^\beta$ and the associated  
+linear functional $L_g(\cdot)$ is in $V^*$ if $\alpha + \beta < -1$ since
+\[
+L_g(f) = \int_0^\infty f(x) g(x) \, dx   < \infty  
+\]
+
+The dual space of $H^1_0$ is commonly refered to as 
+$H^{-1}$. Formally, by using the above defintion  
+\[
+\|f\|_{-1} = \sup_{v\in H^1_0} \frac{(f,v)}{(v,v)_1} .    
+\]
+Clearly, the space is larger $H^{-1}$ than both $L^2$ and $H^1_0$ since
+\[
+\|f\|_{-1} = \sup_{v\in H^1_0} \frac{(f,v)}{(v,v)_1} = \frac{(f,f)_0}{(f,f)_1} .    
+\]
+However, a major result in functional analysis, Riesz representation theorem, 
+states that if $V$ is a Hilbert space with the inner product $(\cdot, \cdot)_V$ then 
+for every $f\in V^*$ there is a corresponding $u \in V$ such that
+\[
+(u, v)_V = f(v) \quad \forall v \in V.   
 \]
 
 
-\end{remark}
+
+
+
 
 \section{Exercises}
 
