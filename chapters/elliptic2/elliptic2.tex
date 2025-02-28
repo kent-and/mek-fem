@@ -174,6 +174,84 @@ we immediately have by the Bramble-Hilbert lemma \eqref{bramblehilbert} that
  \le \frac{k_1}{k_0}  C h^{m-1} |u|_{m} 
 \end{align}
 
+\begin{example}{Estimating the convergence rate}
+\label{ex:poisson1d}
+Let us consider the Poisson problem, $-\Delta u = f$, on the unit interval 
+with homogenuous Dirichlet conditions with a manufactured solution
+$u = \sin(k \pi x)$ such that we can check the convergence rate. Let us
+consider the Lagrange element of various orders. From the above Cea's lemma we an error rate of $m$ in the $H^1$-seminorm.  
+The following code implements a solver and estimates the rates. 
+\begin{python}
+from dolfin import * 
+
+def boundary (x): return x[0] < DOLFIN_EPS or x[0] > 1 -DOLFIN_EPS 
+
+f = Expression("M_PI*M_PI*sin(M_PI*x[0])", degree=P+5)
+u_analytical = Expression("sin(M_PI*x[0])", degree=P+5)
+
+Ns = [4, 8, 16, 32, 64, 128, 256]
+Ps = [1, 2, 3, 4]
+L2_errors = {} 
+
+for P in Ps: 
+    for N in Ns: 
+        mesh = UnitIntervalMesh(N) 
+        h = mesh.hmax()
+        V = FunctionSpace(mesh, "Lagrange", P) 
+        u = TrialFunction(V) 
+        v = TestFunction(V) 
+
+        # bc 
+        u0 = Constant(0)
+        bc = DirichletBC(V, u0, boundary) 
+
+        a = inner(grad(u), grad(v))*dx  
+        L = f*v*dx 
+
+        U = Function(V) 
+        solve (a ==L, U, bc) 
+
+        L2_error = assemble(pow(U-u_analytical, 2)*dx) 
+        L2_error = sqrt(L2_error) 
+
+        L2_errors[(P, N)] = (h, L2_error)  
+
+# numbers to estimate the rates 
+for P in Ps: 
+    for i in range(len(Ns)-1):  
+        print ("P ", P, L2_errors[(P, Ns[i])][1] / L2_errors[(P, Ns[i+1])][1])
+
+
+# log-log plot for assessing whether the convergence rate is 
+# polynomial and what the rate is 
+from numpy import log
+import matplotlib.pyplot as plt
+for P in Ps: 
+    hs = []
+    errors = []
+    for N in Ns: 
+        h, error = L2_errors[(P, N)]
+        hs.append(h)
+        errors.append(error)
+    plt.loglog(Ns, errors)
+plt.show()
+\end{python}
+In Fig.~\ref{fig:poisson1D:rates} we show a log-log plot of the error for different mesh resolutions and element orders. The linear relationship shows that the 
+error behaves in a polynomial fashion, except for the case with very small errors where we see stagnation due to round of errors. 
+We remark that we assess the error in $L^2$ which rather than the $H^1$. By inspection, we notice that the error rate is $m+1$, i.e. second order for linear elements. 
+\end{example} 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.85\textwidth]{chapters/elliptic2/plots/poisson1d.png}
+\caption{The error for Lagrange elements of various orders in a log-log plot.  
+The log-log plot shows a clear linear relationship for the various orders demonstrating polynomial order.   
+}
+\label{fig:poisson1D:rates}
+\end{center}
+\end{figure}
+
+
 
 \section{Exercises}
 
