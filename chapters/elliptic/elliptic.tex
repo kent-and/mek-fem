@@ -24,7 +24,11 @@ and assume $\partial \Omega = \partial \Omega_D \cup \partial \Omega_N$
 and $\partial \Omega_D \cap \partial \Omega_N = \emptyset$.
  
 
-Unusual concepts like weak or variational formulations, trial and test functions, Sobolev
+Solving this problem \emph{properly} for general $\Omega, f, g, h$, is not an easy task, but is still 
+routinely done computationally everyday in a variety of applications in science and engineering. 
+Our method of choice in this book is the finite element method - a practial, versatile and efficient method
+that also allows for rigorous error control and detailed analysis.  
+However, unusual concepts like weak or variational formulations, trial and test functions, Sobolev
 spaces etc. show up in the finite element methods and many find them troublesome and strange. To motivate
 these concepts we start with some "philosophical" considerations that lead to three challenges which 
 will be resolved by the finite element method. The first challenge: the above equation is 
@@ -52,12 +56,14 @@ A u = b .
 This leads us to our second challenge: In order to have a linear system with a well-defined solution we at least need the same number 
 of equations and unknows, ie.  
 $A$ is a $\R^{N\times N}$ matrix and $u$, $f$ are vectors in $\R^N$. How can we make numerical methods that ensure
-the same number of equations and uknowns? Is it ensured by the definition in \eqref{strong:elliptic}.  
+the same number of equations and uknowns?  
+There are infintely many points in any continuous domain. Is it the same number of unknowns in \eqref{strong:elliptic}? 
+
 A direct comparison of \eqref{strong:elliptic} and \eqref{Aub} would for instance be to assume that $i$'th equation of $A u = b$ correspond to the point $x_i$ in
 \eqref{strong:elliptic}. Hence, $\sum_j A_{ij} u_j = b_i$ corresponds
-to $-\nabla\cdot(k(x_i) \nabla u(x_i))  = f(x_i)$.   
+to $-\nabla\cdot(k(x_i) \nabla u(x_i))  = f(x_i)$ for a set of points $\{x_1, \ldots, x_n\}$.   
 Then the number of equations (or number of rows in $A$) is $N$ and equals the number
-of points in the domain.  Assuming for instance
+of points in the discrete domain.  Assuming for instance
 that $\Omega$ is the unit square with $n$ internal points (as the boundary is currently ignored) in both the $x-$ and $y-$direction 
 gives that $N=n^2$. With a slight abuse of notation\footnote{We avoid bold face notation for coordinates. }, we may then enumerate the points as
 $x_i = (x_j, y_k)$ where $i = j(N-1) + k$ for $i,j \in (1, N)$.  
@@ -83,7 +89,7 @@ explanation of the strong formulation.
 
 
 Computationally, we need to resort to finite resolutions and this brings us to our third 
-challenge. In Figure \ref{fig:dolphin} we see triangulation of domain outside a swimming dolphin. We
+challenge. In Figure \ref{fig:dolphin} we see triangulation of domain outside the drawing of a swimming dolphin. We
 can immediately see that it will be difficult to formulate a finite difference approach on this domain
 as the nodal points does not form squares. Hence, a stencil like: 
 \[
@@ -95,35 +101,36 @@ will not be able to exploit the triangulation. Furhermore, the stencil will cros
 \section{The finite element method in a nutshell}
 
 The finite element method (FEM) resolves these three challenges by combining 1) the so-called weak formulations
-to reduced the demands of differentiability of the solution with 2) 
+which reduces the demands of differentiability of the solution with 2) 
 trial and test functions constructed by the same apporach leads to $N\times N$ matrices and 3)  
 a structured approach of integration
-adjusted to the underlying meshes. Hence, before we start with FEM, let us recap some fundamental results of calculus that will lead to the weak formulation, the 
-Gauss-Green's lemma: 
+adjusted to the underlying meshes. 
+
+Hence, before we start with FEM, let us recap some fundamental results of calculus that will lead to the weak formulation, \emph{the 
+Gauss-Green's lemma:} 
 \begin{equation}
 \label{gaussgreen}
 \int_\Omega 
 -\nabla\cdot(k\nabla u) v \dx =  
 \int_\Omega (k\nabla u) \cdot \nabla v \dx  - \int_{\partial \Omega} k\frac{\partial u} {\partial n} v  \ds .  
 \end{equation}
-Here, we have two functions: the trial function $u$ and the test function $v$, and we are able to move derivatives from $u$ to $v$ and hence reduce the 
-strict requirement of $u\in C^2(\Omega)$. 
-
+Here, we have two functions $u$ and $v$. We will in the following refer to them as the the trial function  and the test function, respectively. We note that we are able to move derivatives from $u$ to $v$ and hence reduce the 
+strict requirement of $u\in C^2(\Omega)$ by a compensating requirement for $v$.  
 
 Next,   
 we apply the boundary conditions. That is, for the Dirichlet
-condition \eqref{Dirichlet} we already know that $u=g$. Hence, $u$ is not an unknown on that part of the boundary.  Therefore, it is common 
-to let $v=0$ at $\partial \Omega_D$. Hence, by inserting the Neumann condition, we obtain that  
+condition \eqref{Dirichlet} we already know that $u=g$. Hence, $u$ is not an unknown on that part of the boundary.  Therefore,  we may  
+let $v=0$ at $\partial \Omega_D$ and simply remove the associated equations at that part of the boundary. Further, by inserting the Neumann condition, we obtain that  
 \begin{align}
 	\int_{\partial \Omega} k\frac{\partial u} {\partial n} v ds &=   
 \int_{\partial \Omega_D} k\frac{\partial u} {\partial n} v ds +   \int_{\partial \Omega_N} k\frac{\partial u} {\partial n} v ds  \\   
-	&= \int_{\partial \Omega_D} k\frac{\partial u} {\partial n} \, 0 +   \int_{\partial \Omega_N} h v ds   
+	&= \int_{\partial \Omega_D} k\frac{\partial u} {\partial n} \, 0 +   \int_{\partial \Omega_N} h v \, ds   
 \end{align}
 As such we arrive at the \emph{weak formulation} of the elliptic problem: 
 Find $u$ such that 
 \begin{equation}
 \label{weakform}
-\int_\Omega k \nabla u \cdot \nabla v dx = \int_\Omega f v dx + \int_{\Omega_N} h v ds, \quad \forall v  
+\int_\Omega k \nabla u \cdot \nabla v \, dx = \int_\Omega f v \, dx + \int_{\Omega_N} h v \, ds, \quad \forall v  
 \end{equation}
 Here, we assume as mentioned that $u=g$ and $v=0$ on $\partial \Omega_D$. We will come back to what $\forall v$ means in a 
 more precise sense later.  
@@ -144,7 +151,7 @@ we apply the boundary conditions.
 \begin{remark}
 We remark that the test function $v$ plays the role of pointwise evaluation in the strong formulation \eqref{strong:elliptic}. That is,
 we evaluate (or test) the above equation with respect to many different test functions, which in the previous formulation corresponded to many different points. 
-We notice that if the test functions are Dirac delta functions then we recover the  strong formulation. However, since but we cannot differentiate the $\delta$ 
+	We notice that if the test functions are Dirac delta, $\delta$\footnote{The Dirac function associated with $x=0$,  $\delta_0$, is such that $\int_{-\infty}^\infty \delta_0 \, dx = 1$; $\delta_0(x)=0, \forall x \ne 0$; and $ \delta_0(0) = \infty$. }   ,  functions then we recover the  strong formulation. However, since but we cannot differentiate the $\delta$ 
 functions (in a classical sense) we are only able to evaluate the left-hand side of \eqref{gaussgreen}.  Using the $\delta$ functions as test functions
 and avoiding the use of Gauss-Green is often called
 the \emph{collocation method} and is used e.g. by the Runge-Kutta method. However, it is 
@@ -153,7 +160,7 @@ seldom used for FEM because of the high demands on the differentiability on $u$.
 
 
 The second challenge was to find formulations that lead to linear systems with $N\times N$ matrices. 
-The finite element method directly exploits the weak formulation. The finite element method resolves
+The finite element method resolves
 this challenge by employing the same basis functions for both the trial and the test functions. 
 That is, let 
 the trial and test functions be as follows:  
@@ -191,6 +198,10 @@ we arrive at the following linear system
 \[
 A u = b 
 \]
+We remark here that for the matrix entries $\{A_{ij}\}$ the trial function dictates the
+row-wise numbering whereas the test functions dictate the column-wise numbering. Usually, the same 
+numbering strategy is used for both and since both the trial and test spaces consists of $N$ basis functions as above, we obtain an $N\times N$ matrix. 
+Furthermore,  the matrix will be symmetric if the underlying equations are. 
 
 The following code solves the Poisson problem on the unit square
 consisting of $32\times 32$ rectangles, where each rectangle is divided
@@ -234,7 +245,9 @@ A fundamental property in both the theory of partial differential equations and 
 concept of well-posedness. In Hadamard's definition a problem is well-posed if three conditions are met for the given input.  
 The solution 1) exists, is 2) unique
 and 3) depends continuously on the input. Hence, if we have two inputs to our problem, $b_1$ and $b_2$ 
-then the difference between the unique solutions $u_1$ and $u_2$ should be bounded by the differences
+and unique solutions $u_1$ and $u_2$ constructed  such that $A u_1 = b_1$ and $A u_2 = b_2$, then 
+the difference between $u_1$ and $u_2$
+should be bounded by the differences
 between $b_1$ and $b_2$. In terms of linear algebra, we directly obtain well-posedness if
 $A$ is a non-singular matrix. That is, we directly obtain 
 \[
@@ -252,22 +265,31 @@ Hence, the difference between the solutions $u_1$ and $u_2$ in the sense
 $\|u_1 - u_2\|$ is bounded continuously both above and below by the difference in data in the sense $\|b_1 - b_2\|$.    
 In the above, the norms have not been specified, but then, in a finite dimentional setting, all vector norms are equivalent.   
 These rather simple observations on the linear algebra level does not easily extend to the continuous setting of partial differential equations. 
-For instance, an intuitive estimate given a point $x$ is  
+For instance, for Poisson problems with homogenuous Dirichlet conditions but different source terms $f_1$ and $f_2$ 
+the unique solutions $u_1$ and $u_2$ constructed such that $-\Delta u_1 = f_1$ and $-\Delta u_2 = f_2$, 
+we expect by an direct analog of the linear algebra considerations above that  
 \[
-	\|(u_1(x) - u_2(x)) \| \le \|(-\Delta)^{-1} \| \|f_1(x) - f_2(x)\|     
+	\|u_1 - u_2 \| \le \|(-\Delta)^{-1} \| \|f_1 - f_2\|     
 \]
-This bound is not trivial and in many cases not valid on the continuous level. Here, 
-
-Instead, it is useful to consider the square roots for matrices and operators. 
-We will make it more precise later, but let us assume 
-that we have a concept of 
-$A^{1/2}$ and $A^{-1/2}$. The, as we will see,  the notion 
+In contrast to the finite dimensional case, we really need to be careful with our choice of norms here. In fact, 
+the norm we will be using later on is more related to the square root of the matrix or operator. 
+We will make it more precise later, but let us remark that 
+if 
+\[
+A u = b 
+\]
+and we are able to compute the square root of the matrix $A$ then we also have directly by multiplying with $A^{-1/2}$ on both sides:    
+\[
+A^{1/2} u = A^{-1/2} b 
+\]
+Then, as we will see,  the notion 
 \[
 	\|A^{1/2}(u_1 - u_2) \| = \|A^{-1/2}(b_1 - b_2)\|     
 \]
-is extraordinary useful and gives precise estimates in a wide range of situations.  
+is what gives us  precise estimates in a wide range of situations.  
+
 We remark that $\Delta=\nabla\cdot\nabla$ and as such $\nabla$ can be interpreted
-as some kind of square root of $\Delta$. There are however some difficulties that
+as a square root of $\Delta$. There are however some difficulties that
 arise with this notion. Let us consider the problem in 1D, using FDM. The stencil 
 is then 
 \[
