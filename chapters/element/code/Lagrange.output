@@ -1,8 +1,46 @@
-A basis for the polynomial space  [1, x, x**2, x**3, x**4, x**5]
-A set of points to use for computing the nodal basis  [0.0, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0]
-The degrees of freedom, represented as symbols  (a0, a1, a2, a3, a4, a5)
-A generic function is then  a0 + a1*x + a2*x**2 + a3*x**3 + a4*x**4 + a5*x**5
-[-26.0416666666667*x**5 + 78.125*x**4 - 88.5416666666667*x**3 + 46.875*x**2 - 11.4166666666667*x + 1.0, ....]
+A polynomial space          [1, x, x**2, x**3, x**4, x**5]
+Points for the nodal basis  [0.0, 0.2, 0.4, 0.6000000000000001, 0.8, 1.0]
+The degrees of freedom (symbols)  (a0, a1, a2, a3, a4, a5)
+A generic polynomial        a0 + a1*x + a2*x**2 + a3*x**3 + a4*x**4 + a5*x**5
+basis  0   -26.0416666666667*x**5 + 78.125*x**4 - 88.5416666666667*x**3 + 46.875*x**2 - 11.4166666666667*x + 1.0
+basis  1   130.208333333333*x**5 - 364.583333333333*x**4 + 369.791666666667*x**3 - 160.416666666667*x**2 + 25.0*x
+basis  2   -260.416666666667*x**5 + 677.083333333333*x**4 - 614.583333333333*x**3 + 222.916666666667*x**2 - 25.0*x
+basis  3   260.416666666667*x**5 - 625.0*x**4 + 510.416666666667*x**3 - 162.5*x**2 + 16.6666666666667*x
+basis  4   -130.208333333333*x**5 + 286.458333333333*x**4 - 213.541666666667*x**3 + 63.5416666666667*x**2 - 6.25*x
+basis  5   26.0416666666667*x**5 - 52.0833333333333*x**4 + 36.4583333333333*x**3 - 10.4166666666667*x**2 + 1.0*x
 i,j  0 0  basis evaluation  1.000
 i,j  0 1  basis evaluation  0.000
-...
+i,j  0 2  basis evaluation  -0.000
+i,j  0 3  basis evaluation  -0.000
+i,j  0 4  basis evaluation  -0.000
+i,j  0 5  basis evaluation  -0.000
+i,j  1 0  basis evaluation  0.000
+i,j  1 1  basis evaluation  1.000
+i,j  1 2  basis evaluation  0.000
+i,j  1 3  basis evaluation  0.000
+i,j  1 4  basis evaluation  0.000
+i,j  1 5  basis evaluation  0.000
+i,j  2 0  basis evaluation  0.000
+i,j  2 1  basis evaluation  0.000
+i,j  2 2  basis evaluation  1.000
+i,j  2 3  basis evaluation  -0.000
+i,j  2 4  basis evaluation  0.000
+i,j  2 5  basis evaluation  -0.000
+i,j  3 0  basis evaluation  0.000
+i,j  3 1  basis evaluation  0.000
+i,j  3 2  basis evaluation  0.000
+i,j  3 3  basis evaluation  1.000
+i,j  3 4  basis evaluation  0.000
+i,j  3 5  basis evaluation  0.000
+i,j  4 0  basis evaluation  0.000
+i,j  4 1  basis evaluation  0.000
+i,j  4 2  basis evaluation  -0.000
+i,j  4 3  basis evaluation  0.000
+i,j  4 4  basis evaluation  1.000
+i,j  4 5  basis evaluation  0.000
+i,j  5 0  basis evaluation  0.000
+i,j  5 1  basis evaluation  0.000
+i,j  5 2  basis evaluation  -0.000
+i,j  5 3  basis evaluation  0.000
+i,j  5 4  basis evaluation  0.000
+i,j  5 5  basis evaluation  1.000

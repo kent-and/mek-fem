@@ -1,4 +1,3 @@
-
 from sympy import * 
 
 def dirac(i,j): 
@@ -13,12 +12,12 @@ basis = [x**j for j in range(0, k+1)]
 points = [j*dx for j in range(0, k+1)] 
 dofs = symbols("a:%d"%(k+1))
 
-print ("A basis for the polynomial space ", basis) 
-print ("A set of points to use for computing the nodal basis ", points) 
-print ("The degrees of freedom, represented as symbols ", dofs) 
+print ("A polynomial space         ", basis) 
+print ("Points for the nodal basis ", points) 
+print ("The degrees of freedom (symbols) ", dofs) 
 
 pol = sum([dofs[i]*basis[i] for i in range(0, (k+1))])   
-print ("A generic function is then ", pol)
+print ("A generic polynomial       ", pol)
 
 Lagrange_basis = []
 for i in range(0, (k+1)): 
@@ -31,7 +30,8 @@ for i in range(0, (k+1)):
   Nj = pol.subs(coeff)
   Lagrange_basis.append(Nj) 
 
-print (Lagrange_basis) 
+for i, basis in enumerate(Lagrange_basis): 
+    print ("basis ", i, " ", Lagrange_basis[i]) 
 
 # check that the Lagrange basis is what it is supposed to be 
 for i, basis in enumerate(Lagrange_basis): 
