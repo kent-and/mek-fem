@@ -16,7 +16,11 @@ capture different characteristics.
 
 \section{Norms, inner products and Sobolev spaces}
 
-Sobolev spaces are generalizations of $L^p$ spaces. $L^p$ spaces are function spaces defined as follows.  
+Function spaces are vector spaces where the vectors are functions. Obviously, this makes
+sense as functions can be added to each other, multiplied with scalars etc.,  so all 
+requirements for a vector space can be easily verified. 
+
+We will use $L^p$ spaces which are  defined as follows.  
 Let $u$ be a scalar valued function on the domain $\Omega$, which for 
 the moment will be assumed to be the unit interval $(0,1)$. Then the $L^p$ norm on $\Omega$ is:    
 \[
@@ -33,7 +37,10 @@ Then the Sobolev space $W^{k,p}(\Omega)$ consists of
 all functions with $\|u\|_{k,p} < \infty$. $W^{k,p}$ is a so-called Banach space - that is 
 a complete\footnote{We will not go into the details of complete spaces in this book, but remark that
 the space of real numbers is complete, while the space of rational numbers is not. } normed vector space. 
-The corresponding semi-norm, that only include the highest order derivative is 
+Notice that the derivative is defined \emph{weakly}, ie. in the sense that existence is required only in $L^p$. For instance, 
+a function may have derivatives that are infinite on zero measures, such as point-wise infinities. 
+
+The corresponding semi-norm, which only include the highest order derivative is 
 \begin{equation}
 \label{semiWpk}
 |u|_{k,p} = (\int_\Omega  |(\frac{\partial^k u}{\partial x^k})   u|^p \, dx)^{1/p} .    
@@ -52,8 +59,10 @@ The difference between the norm in $L^2(\Omega)$ and $H^1(\Omega)$ is illustrate
 
 \kent{Need an example env easier to reference to.}
 
-\begin{exmp}{Norms of $sin(k \pi x)$} \label{sc:ex1} 
-Consider the functions $u_k = \sin(k \pi x)$ on the unit interval. Figure \ref{fig:sin} shows the function for $k=1$ and $k=10$. Clearly, the $L^2$ and $L^7$ behave similarly in the sense
+\begin{exmp}{\textbf{Norms of $sin(k \pi x)$.}} \label{ex:sin:norm} 
+Consider the functions $u_k = \sin(k \pi x)$ on the unit interval. 
+The norms of $u_k$ are shown in Table \ref{ex:sin:tab:norms}, while 
+Fig. \ref{fig:sin} shows the function for $k=1$ and $k=10$. Clearly, the $L^2$ and $L^7$ behave similarly in the sense
 that they remain the same as $k$ increases. On the other hand, the $H^1$ norm of $u_k$
 increases dramatically as $k$ increases. The following code shows how the 
 norms are computed using FEniCS.         
@@ -87,8 +96,8 @@ $k \backslash norm $ & $L^2$ &   $L^7$ &  $H^1$ \\ \hline
 10  & 0.71 &   0.84    & 22    \\ \hline
 100  & 0.71 &   0.84  &  222   \\ \hline
 \end{tabular}
-\caption{ The $L^2$, $L^7$, and $H^1$ norms of $sin(k \pi x)$ for k=1, 10, and 100.   }
-\label{norms}
+\caption{ The $L^2$, $L^7$, and $H^1$ norms of $sin(k \pi x)$ for $k=1, 10, 100$.   }
+\label{ex:sin:tab:norms}
 \end{center}
 \end{table}
 
@@ -108,6 +117,25 @@ the right picture shows $\sin(10 \pi x)$. }\label{fig:sin}
 \end{figure}
 
 
+
+\section{Poincare's lemma}
+\label{sec:poincare}
+Poincare's inequality states that for $u\in  H^1_{0, D}(\Omega)$ we have
+\begin{equation} 
+\label{poincare}
+\|u\|_{L^2(\Omega)}  \le C \| \nabla u\|_{L^2(\Omega)} 
+\end{equation} 
+We will not prove this inequality in this book (see e.g. ~\cite{evans2022partial}),  
+but we note that it can be motivated by considering the Taylor series approximation. 
+From basic calculus we know that: 
+\[
+|f(x+h)|  \le |f(x)| + h \max_{x \le x^* \le x+h } \,  |f'(x^*) | 
+\]
+Chosing $x$ on $\partial \Omega_D$ makes $f(x)=0$ and hence $f(x+h)$ can be bounded by the derivative
+of $f$. Of course, Poincare's result provides a bounds on the integral rather than the pointwise sense 
+of Taylor, but the results are similar. 
+
+
 \section{Spaces and sub-spaces, norms and semi-norms}
 
 The Sobolev space with $k$ derivatives in $L_2(\Omega)$ was denoted by $H^k(\Omega)$. The subspace
@@ -123,19 +151,24 @@ On the other hand  $|\cdot|_{p,k}$ is a semi-norm, meaning
 that $|u|_{p,k} \ge  0$ for all $u$.   
 The space $H^1(\Omega)$ is defined by the norm 
 \[
-\|u\|_1 = (\int_\Omega u^2 + (\nabla u)^2 \, dx)^{1/2}  
+\|u\|_1 = \|u\|_{H^1}  = (\int_\Omega u^2 + (\nabla u)^2 \, dx)^{1/2}  
 \]
 and contains all functions for which $\|u\|_1 \le \infty$. 
-Often we consider subspaces of $H^1$ satisfying the Dirichlet boundary conditions. 
-The most common space is denoted $H^1_0$. This space contains all functions 
-in $H^1$ that are zero on the boundary.  
-The semi-norm $|\cdot|_1$ defined as 
+The space has an associated inner product. Let $u, v \in H^1(\Omega)$ then the inner product is 
 \[
-|u|_1 = (\int_\Omega  (\nabla u)^2 \, dx)^{1/2}  
+(u, v)_1 = (u, v)_{H^1}  = \int_\Omega u v  + \nabla u \nabla v  \, dx  .  
 \]
-is a norm on the subspace $H^1_0$. In fact, as we will see later, Poincare's lemma
-ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on $H^1_0$ (see Exercise \ref{ex:poincare}).  
-
+ 
+The corresponding semi-norm $|\cdot|_1$ defined as 
+\[
+|u|_1 = \|u\|_{H_0^1} =   (\int_\Omega  (\nabla u)^2 \, dx)^{1/2}  
+\]
+We will see later that Poincare's lemma
+ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on  the subspace $H^1_0$ (see Exercise \ref{ex:poincare}).  
+On $H^1_0$ we have the associated inner product  
+\[
+(u,v)_{H^1_0 } = \int_\Omega \nabla u \nabla v  \, dx  .  
+\]
 
 
 
@@ -144,17 +177,17 @@ ensures that $\|\cdot\|_1$ and  $|\cdot|_1$ are equivalent norms on $H^1_0$ (see
 
 The above functions $\sin(k \pi x)$ are smooth functions
 that for any $k$ are infinitely many times differentiable. 
-They are therefore members of any Sobolev space. 
+They are therefore members of any Sobolev space as long as $\Omega$ is bounded.  
 
 On the other had, the step function in upper picture in Figure \ref{fig:piecewise} is 
 discontinuous in $x=0.2$ and $x=0.4$. Obviously, the function is in $L^2(0,1)$, but 
 the function is not in $H^1(0,1)$ since the derivative of the function  consists of Dirac's 
-delta functions\footnote{The Dirac's delta function $\delta_x$ is 0 everywhere except at 
-$x$ where it is  $\infty$ and $\int_\Omega \delta_x \, dx = 1$. Hence, 
-Dirac's delta function is in $L^1(\Omega)$ but not in $L^2(\Omega)$.  
-} 
-that are $\infty$ at $x=0.2$ and 
-$-\infty$ in $x=0.4$. 
+delta functions $\delta_{0.2}$  and $-\delta_{0.4}$ 
+that are $\infty$ at $x=0.2$ and $-\infty$ in $x=0.4$\footnote{We remark that 
+for $y \in \Omega$ 
+$\int_\Omega \delta_y \, dx = 1 $ However, $\int_\Omega \delta^2_y \, dx = \infty $.  
+}
+. 
 
 The hat function in the lower picture in Figure \ref{fig:piecewise} is a typical
 first order finite element function. The function is in both $L^2(0,1)$ and $H^1(0,1)$ (see
@@ -167,7 +200,7 @@ are continuous on the unit interval.
 In $C^k(\Omega)$ a function and its $k$ derivatives can be evaluated at any given point in $\Omega$ and  
 the result will be a finite value. How about functions in $H^k(\Omega)$? In general only functions
 in $H^k(\Omega)$ for $k\ge 2$ allow pointwise evaluation. The exact relationship between 
-continous functions and Sobolev spaces are covered by the  Sobolev Embedding Theorem, which will not 
+continous functions and Sobolev spaces are covered by the  Sobolev Embedding Theorem~\cite{evans2022partial}, which will not 
 be covered in this book. 
 Anyways, in $L^2(\Omega)$ or $H^1(\Omega)$ we should make note and be careful when we perform pointwise evaluations. 
 \end{remark}
@@ -209,12 +242,15 @@ This property is used extensively in analysis of finite element methods and
 is called the Bramble-Hilbert lemma for $k\ge 2$. The case $k=1$ was included by a special interpolation operator by 
 Clement, the so-called Clement interpolant. 
 For proof, see e.g. \cite{braess2007finite, brenner2008mathematical}.  
-
+In Chapter \ref{element}, Example \ref{lagrange:element} we will consider an explicit construction (the Lagrange interpolation) in more detail. 
 
 
 
 \section{Eigenvalues and Finite Element Methods}
 \label{sec:eig and fem}
+
+Eigenvalues and eigenvectors are enormously useful for understanding the properties 
+of matrices and operators. Let us therefore consider how to compute these when using the finite element method. 
 
 It is well known that for $-\Delta$  with homogenous Dirichlet conditions on the unit
 interval $(0,1)$, 
@@ -224,7 +260,7 @@ are $(\pi k)^2$ and $sin(\pi k x)$, $k=1, \ldots, \infty$, respectively.
 It is natural to expect that the eigenvalues in the discrete setting
 approximate the continuous eigenvalues such that 
 the minimal eigenvalue is $\approx \pi^2$, while the maximal eigenvalue
-is $\approx \pi^2 /h^2$, where $k=1/h$ is the largest $k$ that may be represented
+is $\approx \pi^2 /h^2$, where $k=1/h$ corresponds to the highest frequency that may be represented
 on a mesh with element size $h$.  
 Computing the eigenvalues of the finite element stiffness matrix in FEniCS as\footnote{
 We use the \emp{assemble\_system} function to enforce the Dirichlet
@@ -233,23 +269,23 @@ condition in symmetric fashion.},
 A = assemble_system(inner(grad(u), grad(v))*dx, Constant(0)*v*dx, bc)
 \end{python}
 reveals that the eigenvalues are differently scaled. In fact, the minimal 
-eigenvalue is $\approx \pi^2 h$ and that the maximal eigenvalue is  $\approx \pi^2/h$.      
+eigenvalue is $\approx \pi^2 h$ and that the maximal eigenvalue is  $\approx \pi^2/h$, see Fig.\ref{fig:geneig} (red and blue curves).      
 The reason is that the finite element method introduces a mesh-dependent 
 scaling due to the fact that it is a variational method. 
 Specifically, if we want to approximate a $f$ as $\sum_j f_j N_j$ we notice
-that we may calculate $f_j$ in a variational sense as follows: 
+that we should calculate $f_j$ in a variational sense as follows: 
 \[
- \sum_j \int_\Omega f_j N_j N_i \, dx = \int_\Omega f N_i \, dx   
+ \sum_j \int_\Omega f_j N_j N_i \, dx = \int_\Omega f N_i \, dx  .  
 \]
 Hence, we notice here that, we are solving a linear system
 \[
 	M f = b, \mbox{ with } M_{ij} = \int_\Omega N_j N_i \, dx \mbox{ and } b_i = \int_\Omega f N_i \, dx  
 \]
-Both $\{f_i\}_i$ and $\{b_i\}_i$ are representations of $f$, often called the nodal and dual representations~\cite{mardal2011preconditioning}. They scale differently since
+Both $\{f_i\}_i$ and $\{b_i\}_i$ are \emph{representations} of $f$, often called the \emph{nodal} and \emph{dual} representations~\cite{mardal2011preconditioning}. They scale differently since
 the entries of the mass matrix scale with the size of the elements in the mesh. 
 
 To estimate the continuous eigenvalues, we  need to make sure that both the left- and right-hand sides are in the same representation, either nodal
-or dual. Hence, we consider the generalized eigenvalue problem, 
+or dual. Hence, for a nodal representation of the eigenvalues and eigenvectors, we should consider the generalized eigenvalue problem, 
 \begin{equation} 
 \label{geneig}
 A x = \lambda M x,   
@@ -317,32 +353,117 @@ as they correspond to the Dirichlet conditions.
 %\emp{numpy} is not trustworthy for eigenvalue computations on 
 %"large" linear systems. A description of \emp{pytave} is found in~\cite{mardal2013combining}.  
 
+\section{Linear functionals and dual spaces}
 
-\section{Boundary conditions, Traces and Fractional Sobolev Spaces }
+A functional on a vector space $V$ is an object $L(\cdot)$ that when given a
+vector $v\in V$, returns a real number. 
+For example let $V=\mathbb{R}^n$ and the inner-product in use be 
+the $l_2$ inner product, ie.  $(x, y)_{l_2} = \sum_i x_i y_i$. 
+Then any vector $z\in \mathbb{R}^n$ together
+with $l_2$ inner product forms a linear functional on $V$ as
+\[
+L_z(x)  = (z, x)_{l_2} .  
+\]
+It is easy to verify that $L_z$ is linear and bounded. 
 
-In order to make sense of for instance boundary conditions we need to 
-restrict from a domain $\Omega$ to $\partial \Omega$. Hence, for instance
-if $\Omega$ is the unit square in 2D then $\partial \Omega$ consists of the 1D lines that 
-connect the vertices at the boundary of the unit square. However, a 
-1D line is inifinitely thin and has no measure in 2D. In Sobolev spaces, which
-have extra smoothness in terms of the extra derivatives, the   
-values at lower dimentional manifolds may be used. In fact, their use is required 
-in terms of boundary conditions. In order to make sense of values at lower 
-dimensional manifolds we need the mathematical constructs of traces and fractional 
-Sobolev spaces. Specifically, let $T:\Omega \rightarrow \partial \Omega$ be the 
-the so-called trace operator and $u \in H^k(\Omega)$ then 
-$Tu \in H^{k-1/2} (\partial \Omega)$. Typically, when finite element methods
-are used for single-physics problems then there is no need to pay attention to 
-the fractional norms when implementing the boundary conditions. Boundary conditions
-are assigned at the boundary in a straightforward way as will be discussed in the next
-chapter. However, for multi-physics problems, care may be required for efficient and
-accurate simulation.   
+By choosing $z$ appropriately we may define linear functionals
+that for example 1) returns the $i$'th component of the vector, i.e. by letting $z=e_i$ where
+$e_i$ is the $i$'th unit vector or 2) computes the sum of a vector, i.e. by letting $z=(1,\ldots, 1)$. 
+The mentioned functionals 1) and 2) are linear, but examples of non-linear functionals may e.g. be
+sums of powers of the components, ie.  
+\[
+L_p (v) = \sum_i v_i^p. 
+\]
+
+The dual space of $V$, written as $V^*$,  is the space of all linear functionals on $V$. 
+To define we need the definition of the dual norm. 
+
+\begin{defin}{\textbf{The dual norm and the corresponding dual space.}} \\
+\label{dualnorm}
+\noindent
+Let $(\cdot, \cdot)_V$ be an inner product over the Hilbert
+space $V$ and let $f(\cdot)$ be a linear functional on $V$.   
+The dual norm of $f$ is 
+\[
+	\|f\|_{V^*} = \sup_{v\in V} \frac{f(v)}{\sqrt{(v,v)_V}} .    
+\]
+The space $V^*$ consists of all $f$ such that $\|f\|_{V^*} < \infty$.  
+\end{defin}
+
+We remark that the dual space of $\mathbb{R}^n$ is $\mathbb{R}^n$, ie. $(\mathbb{R}^n)^* = \mathbb{R}^n$. 
+In general however, the dual space $V^*$ may in general be different from $V$.   
+
+Functionals on function spaces are analogous to functionals on $\mathbb{R}^n$. For example, the
+example functionals 1) and 2) above directly maps to corresponding functionals on function spaces
+with the $l_2$ inner product replaced by the $L^2(\Omega)$ inner product. 
+That is, for example the counter-part of example 1) above, the $i$'th component of a vector, is function evaluation in a point $x_i$.  
+The corresponding functional is: 
+\[
+L_1 (u)  = \int_\Omega u (x) \delta_{x_i} (x) \, dx   , 
+\]
+with $\delta_{x_i}$ being the Dirac delta function associated with $x_i$.  Similarly, the example 2) 
+the summation of all entries in a vector simply corresponds to the integral of the function 
+\[
+L_2 (u)  = \int_\Omega u (x)  \, dx   .  
+\]
+
+
+We notice immediately that the situation is more complicated for function spaces than for $\mathbb{R}^n$. 
+There are obviously functions in which pointwise evaluation 
+and/or integrals are not well defined. Consider for example the
+function $f(x) = x^\alpha$. Clearly, if $\alpha < 0$ then $f(0) = \infty$. Furtermore, 
+if $\alpha \ge 0$ and  our domain of interest is $\mathbb{R}^+$ then
+\[
+\int_0^\infty f(x) \, dx = \infty .  
+\]
+Hence, which linear functionals that belongs to which dual spaces are not always easy to grasp 
+and may require careful considerations. 
+Let us for example, 
+consider the one-dimensional function space $V$ spanned by  $x^\alpha$ and associated with the $L^2$ inner product.   
+Then clearly, $g(x) = x^\beta$ and the associated  
+linear functional $L_g(\cdot)$ is in $V^*$ if $\alpha + \beta < -1$ since
+\[
+L_g(f) = \int_0^\infty f(x) g(x) \, dx   < \infty  
+\]
+
+The dual space of $H^1_0$ with respect to the $L^2$ inner product 
+is commonly refered to as 
+$H^{-1}$. Formally, by using the above defintion, its norm is  
+\[
+\|f\|_{-1} = \sup_{v\in H^1_0} \frac{f(v)}{|v|_1} .    
+\]
+Clearly, the  $H^{-1} \subset L^2$, using 
+the inequalities
+of 
+Cauchy–Schwarz and  
+Poincare, see Sec. \ref{sec:poincare}, since
+\[
+\|f\|_{-1} = \sup_{v\in H^1_0} \frac{f(v)}{|v|_1} = \sup_{v\in H^1_0} \frac{\int_\Omega fv \,  dx}{\sqrt{\int_\Omega (\nabla v)^2 \, dx }}  \le  \sup_{v\in H^1_0} \frac{\|f \|_{0} \|v\|_0}{|v|_1} \le C \|f \|_{0}     
+\]
+In fact, $H_0^1(\Omega) \subset L^2 (\Omega) \subset H^{-1}(\Omega)$.   
+
+A major result in functional analysis, the \emph{Riesz representation theorem}, 
+states that if $V$ is a Hilbert space with the inner product $(\cdot, \cdot)_V$ then 
+for every $f\in V^*$ there is a corresponding $u \in V$ such that
+\[
+(u, v)_V = f(v), \quad \forall v \in V.   
+\]
+Furthermore, 
+\[
+\|u\|_V = \|f\|_{V^*} . 
+\]
+
 
 \section{Negative and Fractional Norms}
 
 As will be discussed more thoroughly later, 
-$-\Delta$ is a symmetric positive operator and can be thought of 
+$-\Delta$ is a symmetric positive operator on $H^1_0$ and can be thought of 
 as an infinite dimensional matrix that is symmetric and positive.  
+Indeed, in the concrete case of $\Omega = (0,1)$, in Sec.~\ref{sec:eig and fem} we discussed the spectral 
+decomposition of $-\Delta$ in the continuous case along with the corresponding discretization using finite elements. 
+Let us exploit the spectral decomposition of $-\Delta$ to make sense of negative, fractional and dual norms in 
+the simple example where we have special decomposition. 
+
 It is also know from Riesz representation theorem that if
 $u$ solves the problem
 \begin{eqnarray*}
@@ -357,9 +478,11 @@ then
 This implicitly define the $H^{-1}$ norm, although
 the definition then requires the solution of a Poisson problem.   
 For example, in the previous example where
-$u_k = sin(k\pi x)$, we  have already estimated  
+$u_k = sin(k\pi x)$
+and the associated right hand side corresponding to the eigenfuction is  $f_k = -\Delta u_k = (k \pi)^2 sin(k\pi x) = (k \pi)^2 u_k $. 
+We  have already estimated  
 that $|u_k|_1 = \frac{\pi k}{\sqrt{2}}$ and therefore 
-$\|u_k\|_{-1} = |(-\Delta)^{-1} u_k|_1 = \frac{1}{\sqrt{2} k \pi }$.  
+$\|u_k\|_{-1} =  \frac{1}{\sqrt{2} k \pi }$.  
 We notice that the $\|\cdot\|_1$ norm weights high frequency oscillations heavily (linear in $k$), whereas
 the $\|\cdot\|_{-1}$ does not (it scales as $1/k$). On the other hand $L^2$ weights oscillations at all frequencies
 equally.   \label{sinkpnorms} 
@@ -445,9 +568,9 @@ book.
 \begin{example}{Computing the $H^1$, $L^2$, and $H^{-1}$ norms} \label{sc:ex2} 
 
 Let us consider $\Omega = (0,1)$ and $u_k = sin(\pi k x)$.  
-Table \ref{norms} shows the $H^1$, $L^2$, and $H^{-1}$ norms as computed
+Table \ref{table:H1L2Hm1:norms} shows the $H^1$, $L^2$, and $H^{-1}$ norms as computed
 with \eqref{qnorm} with $q=1, 0$, and $-1$, respectively.  Comparing 
-	the norms computed with the below code and shown in Table \ref{table:norms} with the norms calculated 
+	the norms computed with the below code and shown in Table \ref{ex:sin:tab:norms} with the norms calculated 
 analytically on page \pageref{sinkpnorms},  we see that the above definition \eqref{qnorm}
 reproduces the $H^1$ and $L^2$ norms with $q=1$ and $q=0$, respectively.     
 We also remark that while the $H^1$ norm increases as
@@ -464,7 +587,7 @@ $k \backslash norm $ & $H^1, \ q=1  $ &   $L^2, \ q=0$ &  $H^{-1}, \ q=-1$ \\ \h
 100  & 222 &   0.71  & 0.0022   \\ \hline
 \end{tabular}
 \caption{ The $L^2$, $L^7$, and $H^1$ norms of $sin(k \pi x)$ for k=1, 10, and 100.   }
-\label{table:norms}
+\label{table:H1L2Hm1:norms}
 \end{center}
 \end{table}
 
@@ -536,69 +659,34 @@ The norm \eqref{qnorm} is well defined for any $|q| > 1  $, but will not
 correspond to the corresponding Sobolev spaces.    
 \end{remark}
 
-\section{Linear functionals and dual spaces}
 
-A functional on a vector space $V$ is an object $L(\cdot)$ that when given a
-vector $v\in V$, returns a real number. 
-For example if $V=\mathbb{R}^n$ then a vector $z\in \mathbb{R}^n$ together
-with the standard inner product,  i.e. let $x, y \in \mathbb{R}^n$
-the the inner-product is $<x, y> = \sum_i x_i y_i$, forms a linear functional
-$L_z(v)  = <z, v>$ for any $v\in V$. 
-Analogously, by choosing $z$ appropriately we may define linear functionals
-that for example 1) returns the $i$'th component of the vector, i.e. letting$z=e_i$ where
-$e_i$ is the $i$'th unit vector and 2) computes the sum, i.e. letting $z=(1,\ldots, 1)$. 
-The above functionals are linear, but examples of non-linear functionals may e.g. be
-sums of powers of the components, ie.  $L(v) = \sum_i v_i^p$. 
+\section{Boundary conditions, Traces and Fractional Sobolev Spaces }
 
-The dual space of $V$, written as $V^*$,  is the space of all linear functionals on $V$. 
-To define we need the definition of the dual norm. 
+In order to make sense of for instance boundary conditions we need to 
+restrict from a domain $\Omega$ to its lower dimensional boundary $\partial \Omega$. 
+Hence, for instance
+if $\Omega$ is the unit square in 2D then $\partial \Omega$ consists of the 1D lines that 
+connect the vertices at the boundary of the unit square. However, a 
+1D line is inifinitely thin and has no measure in 2D. 
+As such, in $L^p(\Omega)$ the values at $\partial \Omega$ can be anything and still have no 
+measurable impact on the $L_p(\Omega)$ norm of the function since the measure is zero. 
 
-\begin{defin}{\textbf{The definition of a dual norm and the corresponding dual space.}} \\
-\label{dualnorm}
-Let $(\cdot, \cdot)_V$ be an inner product over the Hilbert
-space $V$ and let $f(\cdot)$ be a linear functional on $V$.   
-The dual norm of $f$ is 
-\[
-	\|f\|_{V^*} = \sup_{v\in V} \frac{f(v)}{\sqrt{(v,v)_V}} .    
-\]
-The space $V^*$ consists of all $f$ such that $\|f\|_{V^*} \infty$.  
-\end{defin}
-We remark that the dual space of $\mathbb{R}^n$ is $\mathbb{R}^n$.  
+However, functions in the Sobolev spaces $W^{k,p}$ have extra smoothness in terms of the requirements on derivatives. 
+Therefore,
+values at lower dimensional manifolds may sometimes be well-defined. In fact, we need to 
+be able to assign values on lower dimensional manifolds to enforce Dirichlet conditions. 
+In order to make sense of values at lower 
+dimensional manifolds we need the mathematical constructs of traces and fractional 
+Sobolev spaces. Specifically, let $T:\Omega \rightarrow \partial \Omega$ be the 
+the so-called trace operator and $u \in w^{k,p}(\Omega)$ then from Sobolev space theory
+it is well known that $Tu \in W^{k-1/2, p} (\partial \Omega)$ \cite{evans2022partial}. 
+Typically, when finite element methods
+are used for single-physics problems then there is no need to pay attention to 
+the fractional norms when implementing the boundary conditions. Boundary conditions
+are assigned at the boundary in a straightforward way as will be discussed in the next
+chapter. However, for multi-physics problems, care may be required for efficient and
+accurate simulation.   
 
-Things are more interesting for function spaces than for $\mathbb{R}^n$.  
-Obviously, the counter-part of the $i$'th component above is function evaluation 
-and the summation of all entries in a vector corresponds to an integral. However, 
-there are obviously functions and functionspaces in which pointwise evaluation 
-and/or integrals are not well defined. Consider for example the
-function $f(x) = x^\alpha$. Clearly, if $\alpha < 0$ then $f(0) = \infty$. Furtermore, 
-if our domain of interest is $\mathbb{R}^+$ then
-\[
-\int_0^\infty f(x) \, dx = \infty 
-\]
-if $\alpha \ge 0$. Hence, objects a dual space consists of is not always easy to grasp. 
-For example, 
-consider the one-dimensional function space $V$ spanned by  $x^\alpha$.  
-Then clearly, $g(x) = x^\beta$ and the associated  
-linear functional $L_g(\cdot)$ is in $V^*$ if $\alpha + \beta < -1$ since
-\[
-L_g(f) = \int_0^\infty f(x) g(x) \, dx   < \infty  
-\]
-
-The dual space of $H^1_0$ is commonly refered to as 
-$H^{-1}$. Formally, by using the above defintion  
-\[
-\|f\|_{-1} = \sup_{v\in H^1_0} \frac{(f,v)}{(v,v)_1} .    
-\]
-Clearly, the space is larger $H^{-1}$ than both $L^2$ and $H^1_0$ since
-\[
-\|f\|_{-1} = \sup_{v\in H^1_0} \frac{(f,v)}{(v,v)_1} = \frac{(f,f)_0}{(f,f)_1} .    
-\]
-However, a major result in functional analysis, Riesz representation theorem, 
-states that if $V$ is a Hilbert space with the inner product $(\cdot, \cdot)_V$ then 
-for every $f\in V^*$ there is a corresponding $u \in V$ such that
-\[
-(u, v)_V = f(v) \quad \forall v \in V.   
-\]
 
 
 
