@@ -213,15 +213,139 @@ As such the finite element engines may perform all the computations on the refer
 \section{The connectivity of the mesh and the corresponding finite element space}
 
 The Lagrange element of order 5 was illustrated in Fig.~\ref{fig:Lagrange5}. We observe here that the basis function $0$ and $5$ are associated
-with the edges $x=0$ and $x=1$, whereas the other functions are all zero at the edges. Hence, the basis function $1, \ldots, 4$ do not connect 
+with the edges $x=0$ and $x=1$, respectively. The other functions are all zero at the edges. Hence, the basis function $1, \ldots, 4$ do not connect 
 to any other element, whereas the basis $0$ would directly connect to the a corresponding element on the left whereas basis $5$ connects to the 
 an element on the right, if present. Hence the edge nodes defines the connectivity and hereby the continuity towards the neighbouring elements. 
+
+The situation is more complicated in 2D and 3D. Consider the Lagrange element of 1, 2, and 3 order in Fig.~\ref{fig:lagrangeelement13}. Black, blue and red circles mark
+the vertex, edge and interal nodes, which through the connectivity of the mesh defines the connectivity of the finite element filed. 
+Consider the mesh in Fig.~\ref{fig:Lagrange8elements}. Clearly, the vertex node in the center, marked by a black circle is connected to all the 8 neighbouring elements. 
+Hence, the corresponding basis function ties these eight elements together. 
+
+
+\begin{figure}
+\begin{tikzpicture}[scale=3]
+
+  % Define the vertices of the reference triangle
+  \coordinate (A) at (0,0);
+  \coordinate (B) at (1,0);
+  \coordinate (C) at (0,1);
+
+  \fill[black] (A) circle (0.04);
+  \fill[black] (B) circle (0.04);
+  \fill[black] (C) circle (0.04);
+
+
+
+  % Draw the triangle
+  \draw[thick] (A) -- (B) -- (C) -- cycle;
+  % Add labels for clarity
+%  \node[below left] at (A) {A};
+%  \node[below right] at (B) {B};
+%  \node[above left] at (C) {C};
+
+  % done first triangle 
+
+  % Define the vertices of the reference triangle
+  \coordinate (A) at (1.5,0);
+  \coordinate (B) at (2.5,0);
+  \coordinate (C) at (1.5,1);
+
+  % Draw the triangle
+  \draw[thick] (A) -- (B) -- (C) -- cycle;
+
+  % Define and draw the order 3 Lagrange nodes
+  \coordinate (D) at (2.0,0);
+  \coordinate (E) at (1.5,0.5);
+  \coordinate (F) at (2.0,0.5);
+
+  % Vertex nodes
+  \fill[black] (A) circle (0.04);
+  \fill[black] (B) circle (0.04);
+  \fill[black] (C) circle (0.04);
+
+  % Edge nodes
+  \fill[blue] (D) circle (0.04);
+  \fill[blue] (E) circle (0.04);
+  \fill[blue] (F) circle (0.04);
+
+
+  % Add labels for clarity
+%  \node[below left] at (A) {A};
+%  \node[below right] at (B) {B};
+%  \node[above left] at (C) {C};
+
+%  \node[below] at (D) {1/3};
+%  \node[below] at (E) {2/3};
+%  \node[right] at (F) {2/3};
+%  \node[left] at (G) {1/3};
+
+%  \node[above left] at (H) {1/3};
+%  \node[above left] at (I) {2/3};
+
+% Label the internal node
+%  \node at (J) {(1/3, 1/3)};
+
+
+  % Define the vertices of the reference triangle
+  \coordinate (A) at (3,0);
+  \coordinate (B) at (4,0);
+  \coordinate (C) at (3,1);
+
+  % Draw the triangle
+  \draw[thick] (A) -- (B) -- (C) -- cycle;
+
+  % Define and draw the order 3 Lagrange nodes
+  \coordinate (D) at (3.333,0);
+  \coordinate (E) at (3.667,0);
+  \coordinate (F) at (3.667,0.333);
+  \coordinate (G) at (3.333,0.667);
+  
+  \coordinate (H) at (3,0.333);
+  \coordinate (I) at (3,0.667);
+  \coordinate (J) at (3.333,0.333);
+
+  % Vertex nodes
+  \fill[black] (A) circle (0.04);
+  \fill[black] (B) circle (0.04);
+  \fill[black] (C) circle (0.04);
+
+  % Edge nodes
+  \fill[blue] (D) circle (0.04);
+  \fill[blue] (E) circle (0.04);
+  \fill[blue] (H) circle (0.04);
+  \fill[blue] (I) circle (0.04);
+  \fill[blue] (F) circle (0.04);
+  \fill[blue] (G) circle (0.04);
+
+  % Internal node
+  \fill[red] (J) circle (0.04);
+
+  % Add labels for clarity
+%  \node[below left] at (A) {A};
+%  \node[below right] at (B) {B};
+%  \node[above left] at (C) {C};
+
+%  \node[below] at (D) {1/3};
+%  \node[below] at (E) {2/3};
+%  \node[right] at (F) {2/3};
+%  \node[left] at (G) {1/3};
+
+%  \node[above left] at (H) {1/3};
+%  \node[above left] at (I) {2/3};
+
+% Label the internal node
+%  \node at (J) {(1/3, 1/3)};
+
+\end{tikzpicture}
+\label{fig:lagrangeelement13}
+\caption{The Lagrange element of order 1, 2, 3 on the reference triangle in 2D. Black circles mark the vertex nodes, blue the edge nodes and red the internal nodes. }
+\end{figure}
 
 
 
 \begin{figure}
-\begin{center}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=3]
 \draw[black, thick] (0,0) -- (1,1) -- (0,1.5) -- cycle;
 \draw[black, thick] (0,0) -- (1,1) -- (1.5,0) -- cycle;
 \draw[black, thick] (0,0) -- (1,-1) -- (1.5,0) -- cycle;
@@ -230,14 +354,26 @@ an element on the right, if present. Hence the edge nodes defines the connectivi
 \draw[black, thick] (0,0) -- (-1,-1) -- (0,-1.5) -- cycle;
 \draw[black, thick] (0,0) -- (-1,1) -- (0,1.5) -- cycle;
 \draw[black, thick] (0,0) -- (-1,1) -- (-1.5,0) -- cycle;
+
+\coordinate (A) at (0,0);
+\coordinate (B) at (0,0.75);
+\coordinate (C) at (0.3,0.8);
+\fill[black] (A) circle (0.04);
+\fill[blue] (B) circle (0.04);
+\fill[red] (C) circle (0.04);
+
+%\node[below left] at (A) {A};
+%\node[below left] at (B) {B};
 \end{tikzpicture}
-\caption{
-A simple mesh with 8 triangles all meeting at a common point.}
-\label{fig:Lagrange5}
-\end{center}
+\label{fig:Lagrange8elements}
+\caption{A simple mesh with 8 triangles all meeting at a common point. 
+Here, we have marked (only) three nodes associated with a third order Lagrange element: A vertex node (black), an edge node(blue) and an internal node (red).  
+Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nodes.  }
 \end{figure}
 
 
+
+\kent{Describe also briefly CR, RT, Nedelec, MTW elements}
 
 
 \section{Exercises}
