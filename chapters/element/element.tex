@@ -9,20 +9,21 @@ the method by rather simple examples before we discuss some of the general featu
 The formal definition of a finite element, according to Ciarlet~\cite{ciarlet2002finite} is: 
 
 \begin{defin}
-A finite element is defined by a triplet $(T, V, L)$, where 
+A finite element is defined by a triplet $(T, V, D)$, where 
 \begin{itemize}
 \item $T$ is a bounded domain in $\mathbb{R}^d$, most typically a polyhedron; 
 \item $V = \{\psi_i\}_{i=1}^n$ is a set of linearly independent basis functions on $T$; 
 \item $D = \{d_i\}^n_{i=1}$ is a set of (linearly independent) 
-  degrees of freedom (formally bounded linear functionals on $T$) 
+	degrees of freedom defined in terms of linear functionals on $V$. (We remark for $v\in V$ we may evaluate $d_i(v)$ 
+		since $d_i$ is a linear functional on $V$.) 
 \end{itemize}
 \end{defin}
-As we see, the term "finite element" refers not only to the cells of the mesh, but also the function space and associated degrees of freedom. The definition is quite abstract, but as we will see, the definition encapsulate precisely what is needed in order to definite a numerical method on a mesh. 
+As we see, the term "finite element" refers not only to the cells of the mesh, but also the function space and associated degrees of freedom. The definition is quite abstract, but as we will see, the definition encapsulates precisely what is needed in order to define a numerical method on a mesh. 
 
 Further, most finite elements are implemented in terms of its \emph{nodal basis}. The nodal basis is defined as follows: 
 \begin{defin}
 \label{nodal:basis}
-The nodal basis for the triplet  $(T, V, L)$ is defined as the set of basis functions
+The nodal basis for the triplet  $(T, V, D)$ is defined as the set of basis functions
 $\{\phi_i\}^n_{i=1}$ that satisfies  
 \[
 	d_j(\phi_i) = \delta_{ij}, \quad \mbox{ for } 1 \le i,j \le n. 
