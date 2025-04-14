@@ -3,9 +3,9 @@
 
 \section{Introduction}
 
-There is a jungle of finite elements that have been invented since the early 1940s, and we
-will not here give a comprehensive description of the topic. Instead, we will try to motivate
-the method by rather simple examples before we discuss some of the general features. 
+There is a jungle of finite elements that have been invented since the early 1940s. We
+will not here give a comprehensive description of all of these elements, but 
+rather try to illustrate the concept and show some simple examples before we discuss some of the general features. 
 The formal definition of a finite element, according to Ciarlet~\cite{ciarlet2002finite} is: 
 
 \begin{defin}
@@ -18,7 +18,10 @@ A finite element is defined by a triplet $(T, V, D)$, where
 		since $d_i$ is a linear functional on $V$.) 
 \end{itemize}
 \end{defin}
-As we see, the term "finite element" refers not only to the cells of the mesh, but also the function space and associated degrees of freedom. The definition is quite abstract, but as we will see, the definition encapsulates precisely what is needed in order to define a numerical method on a mesh. 
+As we see, the term "finite element" refers not only to the cells of the mesh, but also an associated function space and its degrees of freedom. 
+The function space is defined locally, with respect to each cell of the mesh, but will as we will see later be tied together through 
+the degrees of freedom. 
+The definition is quite abstract, but as we will see, the definition encapsulates precisely what is needed in order to define a numerical method on a mesh. 
 
 Further, most finite elements are implemented in terms of its \emph{nodal basis}. The nodal basis is defined as follows: 
 \begin{defin}
@@ -34,21 +37,24 @@ The $\{d_j\}^n_{i=1}$ is often called the dual basis of the finite element.
 \section{Some example finite elements: Lagrange and Hermite on the unit interval. }
 Let us now try to make this concrete in a couple of simple examples. First we notice that  
 in the above, we have two function spaces $\{\psi_i\}$ and $\{\phi_i\}$. Clearly, 
-\[
+\begin{equation}
+\label{fem:abstract:nodal}
 \phi_i = \sum \alpha_{ij}\psi_j,  
-\]
+\end{equation}
 where the matrix $\alpha_{ij}$ is determined such that 
 \[
 d_i(\phi_j) = d_i(\sum \alpha_{ij} \psi_j) = \delta_{ij}. 
 \]
 Hence, let then $V=\mathbb{P}_k$, the space of polynomials of order up to $k$,  and lets consider the Lagrange and Hermite elements, defined in terms
 of Lagrange and Hermite interpolation, respectively.  
-On the unit interval
+In 1D, 
 \[
 \mathbb{P}_k = \{1, x, \ldots, x^k\}. 
 \]
 Clearly, $\mathbb{P}_k$ has $k+1$ basis functions  and they are all linearly independent. 
-The Lagrange and Hermite elements are then defined in the examples below. 
+Below we calculate the $\alpha_{ij}$ in terms of Lagrange and Hermite interpolation in 
+order to definite the Lagrange and Hermite elements, respectively. 
+
 \begin{exmp}[\textbf{The Lagrange element in 1D.}]
 \label{lagrange:element}
 Lagrange interpolation is defined simply by nodal values in a set of points. Hence, 
@@ -56,7 +62,8 @@ let
 \[
 x_j = j \Delta x, \quad \Delta x = \frac{1}{k}, \quad  j= 0, \dots, k 
 \]
-	Then the j'th Lagrange function $L_j(x)$ can be written as a linear combination of the basis of $\mathbb{P}_k$ as 
+The Lagrange element of order $k$ should span $\mathbb{P}_k$, but its degrees of freedom should the nodal values of the above mentioned points. Hence,   
+the j'th Lagrange function $L_j(x)$ can according to \eqref{fem:abstract:nodal} be written as a linear combination of the basis of $\mathbb{P}_k$ as 
 \[ 
 L_j(x) = \sum_{i=0}^k \alpha_{ij} x^i 
 \]
@@ -65,12 +72,11 @@ where $\alpha_{ij}$ are determined by
 d_i(L_j) = L_j(x_i) = \sum_{i=0}^k \alpha_{ij} x^i_i = \delta_{ij} . 
 \]
 From this linear system we may calculate the $\alpha_{ij}$ for each specific basis function. 
-
 In 1D, an explicit formulation can be derived for $L_j$, namely 
 \[
 L_j(x) = \frac{x-x_0}{x_j-x_0} \ldots \frac{x-x_{j-1}}{x_j-x_{j-1}} \ldots \frac{x-x_{j+1}}{x_j-x_{j+1}} \ldots \frac{x-x_k}{x_j-x_k}  
 \]
-Clearly, for instance $L_j(x_0) = 0$ whereas  $L_j(x_j) = 1$.  
+By inspecting the above formula, it is clear that for instance $L_j(x_0) = 0, j\not= 0$ whereas  $L_j(x_j) = 1$.  
 \end{exmp}
 The Lagrange element  can be written up in terms of an explicit formula in 1D, but is harder in higher dimensions.
 Therefore, we provide a simple code here that illustrates how such elements may be implemented. 
@@ -145,8 +151,9 @@ The basis function of the Lagrange element of order 5. }
 \end{figure}
 
 
-The Hermite interpolation generalize the Lagrange interpolation by including also the first order derivative. As such 
-the Hermite element is defined in terms of the Hermite interpolation. This is detailed in the following example: 
+The Hermite interpolation generalize the Lagrange interpolation by including also the first order derivative. 
+The Hermite element is defined in terms of the Hermite interpolation. This is detailed in the following example. 
+
 \begin{exmp}{\textbf{The Hermite element in 1D}.} 
 \label{hermite:element}
 Let us consider the Hermite interpolation onto $k+1$ points.  
@@ -178,15 +185,16 @@ d_i(H_j) &= H'_j(x) |_{x=x_i} &= \delta_{ij}, \quad \mbox{ odd } i,j
 
 \section{Mapping a reference element onto a physical element. }
 
-There are a couple of observations that makes the above definition of the finite element really useful.
-First, lets consider the mappings from a reference element to a physical element. A crucial observation
-is the fact that 
-the mapping between an arbitrary cell of a general mesh and the reference cell can be generalized to 
+There are a two concepts that needs to be introduced before the above definition of the finite element is really useful.
+The first concept is the mapping from a \emph{reference element} to a \emph{physical element}. 
+A crucial observation is the fact that the mapping between an arbitrary cell of a general mesh and the reference cell can be generalized to 
 a mapping between an arbitrary finite element on the mesh and a corresponding reference element.  
 This observation is detailed below. 
 
-Let $x$ and $\hat{x}$ be coordiates in the domains $T$ and $\hat{T}$, respectively, and  
-for simplicity we assume an affine mapping between the coordinates:  
+Let $x$ and $\hat{x}$ be coordiates in the domains $T$ and $\hat{T}$, respectively. 
+The domains $T$ and $\hat{T}$ are assumed of similar shape (isomorphic) 
+and here we  
+for simplicity assume an affine mapping between the coordinates:  
 \[
 x = F_T(\hat{x}) = A_T \hat{x} + x_0   
 \]
@@ -213,15 +221,18 @@ As such the finite element engines may perform all the computations on the refer
 
 \section{The connectivity of the mesh and the corresponding finite element space}
 
-The Lagrange element of order 5 was illustrated in Fig.~\ref{fig:Lagrange5}. We observe here that the basis function $0$ and $5$ are associated
+The second concept that needs to be dealt with is how to tie the finite elements together. 
+Consider for example the Lagrange element of order 5 in 1D that was illustrated in Fig.~\ref{fig:Lagrange5}. We observe here that the basis function $0$ and $5$ are associated
 with the edges $x=0$ and $x=1$, respectively. The other functions are all zero at the edges. Hence, the basis function $1, \ldots, 4$ do not connect 
 to any other element, whereas the basis $0$ would directly connect to the a corresponding element on the left whereas basis $5$ connects to the 
 an element on the right, if present. Hence the edge nodes defines the connectivity and hereby the continuity towards the neighbouring elements. 
 
-The situation is more complicated in 2D and 3D. Consider the Lagrange element of 1, 2, and 3 order in Fig.~\ref{fig:lagrangeelement13}. Black, blue and red circles mark
+The situation is more complicated in 2D and 3D. Consider the Lagrange element of order 1, 2, and 3 in Fig.~\ref{fig:lagrangeelement13}. Black, blue and red circles mark
 the vertex, edge and interal nodes, which through the connectivity of the mesh defines the connectivity of the finite element filed. 
 Consider the mesh in Fig.~\ref{fig:Lagrange8elements}. Clearly, the vertex node in the center, marked by a black circle is connected to all the 8 neighbouring elements. 
-Hence, the corresponding basis function ties these eight elements together. 
+Hence, the corresponding basis function ties these eight elements together. On the other hand the edge degrees of freedom marked in 
+blue only connect the two elements with common face. Finally, the internal degree of freedom does connect to any other elements and is often refered to as a bubble
+function. 
 
 
 \begin{figure}
@@ -453,8 +464,10 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 \includegraphics[width=5cm]{chapters/element/nedlec.pdf}
 \includegraphics[width=5cm]{chapters/element/cr.pdf}
 \includegraphics[width=5cm]{chapters/element/mtw.pdf}
-\caption{Left picture shows $\sin(\pi x)$ on the unit interval, while 
-the right picture shows $\sin(10 \pi x)$. }\label{fig:sin}
+	\caption{Illustration of the Raviart-Thomas element (upper left), the  Nedelec element (upper right), the Crouizeix-Raviart element (lower left), and the Mardal-Tai-Winther (lower right), all of the lowest order possible. 
+Face normal vectors are colored in blue, whereas face tangents are colored in red. Black arrows are  
+align with the underlying coordinate system. 
+}%\label{fig:sin}
 \end{center}
 
 \end{figure}
