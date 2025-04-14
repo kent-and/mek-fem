@@ -453,7 +453,75 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 
 
 
-\kent{Describe also briefly CR, RT, Nedelec, MTW elements}
+
+
+
+\section{Approximation in different function spaces, $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ }
+
+The function spaces 
+$L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ 
+have different requirement with respect to continuity across cell boundaries (within a cell, all common finite elements are 
+polynomials and hence $C^\infty$). In $L^2$ no continuity is required and as such there is no need to tie vertex or face
+degrees of freedom together. Hence, for example, in Fig. \ref{fig:dgcg} we have a mesh in 1D consisting of two cells $(0, 0.5)$ and
+$(0.5, 1.0)$. Locally, the first order Lagrange element is defined in terms of the vertices, ie. for the first element the points
+$x=0.0$ and $x=0.5$ whereas for the second element the points are $x=0.5$ and $x=1.0$. Both a discontinuous and a continuous
+function is shown in Fig. \ref{fig:dgcg}, corresponding to discontinuous and continuous Lagrange elements on this simple mesh. 
+A crucial difference between fields is whether the function is continuous at $x=0.5$ or not. 
+We notice further that the discontinuous field has four degrees of freedom $x=0.0$, $x=0.5-$, $x=0.5+$, and $x=1.0$, whereas
+the continuous field only has three degrees of freedom $x=0.0$, $x=0.5$, and $x=1.0$. 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=5cm]{chapters/element/dg.pdf}
+\includegraphics[width=5cm]{chapters/element/cg.pdf}
+\caption{Piecewise discontinuous and continuous first order polynomials defined in terms of two cells in 1D. }  
+\label{fig:dgcg}
+\end{center}
+\end{figure}
+
+
+
+It is clear that the piecewise discontinuous and continuous field shown  in Fig. \ref{fig:dgcg} are contained in $L^2(0,1)$. 
+However, computing the derivative of the leftmost field would yield a postive number in the interval $x=(0,0.5)$ and a negative number
+in the interval $x=(0.5,1)$. However, for $x=0.5$ the derivative is minus infinity. Hence, the $H^1$ norm of the function would be
+infinity and the function is not contained in $H^1(0,1)$. 
+In general piecewise discontinuous polynomials are contained in $L^2$ on bounded domains, whereas 
+piecewise continuous polynomials are contained in $H^1$. Further, piecewise polynomials with continuous derivatives are contained in $H^2$.   
+Hence, Hermite elements can be used to make approximations in $H^2$ if tied together such that the derivatives are continuous. However, even
+though the nodal derivatives are degrees of freedom it is still challenging to tie many elements together and maintain continuous derivatives. 
+The Hermite element is therefore typically on used for tensor product meshes. 
+
+Elements that are contained in a Soblev space are call \emph{conforming}. For instance, the continuous Lagrange elements  described above are $H^1$-conforming (and $L^2$-conforming). 
+
+Up until now, our Sobolev space and approximations have been scalar valued. However, it is straightforward to generalized the concepts from scalar fields to vector field. 
+For instance, if our finite element approximation of a scalar field is 
+\[
+u_h = \sum_{i=1}^N u_i N_i,  
+\]
+then a corresponding approximation of a vector field could be 
+\[
+u_h = \sum_{i=1}^N \sum_{d=1}^D  u^d_i N_i e^d,  
+\]
+where $e^d$ is the unit vector in $\mathbb{R}^D$. We notice that the vector field has $D N$ degrees of freedom while the scalar field has $N$.  
+However, vector field may also be defined in terms of finite elements that are defined in terms of degrees of freedom that
+correspond to vectors.  The spaces $H(\mbox{div})$ and $H(\mbox{curl})$ are important in this setting.  
+
+To motivate the spaces $H(\mbox{div})$ and $H(\mbox{curl})$ let us first notice that we have the
+following identity  in 3D (which may be verified by direct compuation)
+\[
+\Delta = \nabla \nabla \cdot - \nabla\times \nabla \times.   
+\]
+Here, we note that $\nabla$ is the gradient, $\nabla\cdot$ the divergence, and $\nabla\times$ the curl.  
+Furthermore $\Delta = \nabla^2 = \nabla\cdot\nabla$. Assuming homogenuous Dirichlet conditions
+it directly follows that 
+\[
+(\nabla u, \nabla v) = (\nabla \cdot u, \nabla \cdot v)  + (\nabla\times u,  \nabla \times v), \quad u\in H^1(\Omega), v\in H_0^1(\Omega)     
+\]
+It follows that
+\begin{align*}
+H^1 \subset H(\mbox{div}) \subset L^2, \\   
+H^1 \subset H(\mbox{curl}) \subset L^2   
+\end{align*}
 
 
 
@@ -471,27 +539,9 @@ align with the underlying coordinate system.
 
 \end{figure}
 
-\section{Approximation in different function spaces, $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ }
-
-The function spaces 
-$L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ 
-have different requirement with respect to continuity across cell boundaries (within a cell, all common finite elements are 
-polynomials and hence $C^\infty$). In $L^2$ no continuity is required and as such there is no need to tie vertex or face
-degrees of freedom together. Hence, for example, in Fig. \ref{fig:dgcg} we have a mesh in 1D consisting of two cells $(0, 0.5)$ and
-$(0.5, 1.0)$. Locally, the first order Lagrange element is defined in terms of the vertices, ie. for the first element the points
-$x=0.0$ and $x=0.5$ whereas for the second element the points are $x=0.5$ and $x=1.0$. Both a discontinuous and a continuous
-function is shown in Fig. \ref{fig:dgcg}, corresponding to discontinuous and continuous Lagrange elements on this simple mesh. 
-A crucial difference between them is whether the function is continuous at $x=0.5$ or not. 
 
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=5cm]{chapters/element/dg.pdf}
-\includegraphics[width=5cm]{chapters/element/cg.pdf}
-\caption{Piecewise discontinuous and continuous first order polynomials defined in terms of two cells in 1D. }  
-\label{fig:dgcg}
-\end{center}
-\end{figure}
+
 
 
 
