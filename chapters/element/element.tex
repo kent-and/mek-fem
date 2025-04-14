@@ -458,7 +458,6 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 
 
 \begin{figure}
-\label{fig:sin}
 \begin{center}
 \includegraphics[width=5cm]{chapters/element/rt.pdf}
 \includegraphics[width=5cm]{chapters/element/nedlec.pdf}
@@ -467,10 +466,34 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 	\caption{Illustration of the Raviart-Thomas element (upper left), the  Nedelec element (upper right), the Crouizeix-Raviart element (lower left), and the Mardal-Tai-Winther (lower right), all of the lowest order possible. 
 Face normal vectors are colored in blue, whereas face tangents are colored in red. Black arrows are  
 align with the underlying coordinate system. 
-}%\label{fig:sin}
+} \label{fig:rtetc}
 \end{center}
 
 \end{figure}
+
+\section{Approximation in different function spaces, $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ }
+
+The function spaces 
+$L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ 
+have different requirement with respect to continuity across cell boundaries (within a cell, all common finite elements are 
+polynomials and hence $C^\infty$). In $L^2$ no continuity is required and as such there is no need to tie vertex or face
+degrees of freedom together. Hence, for example, in Fig. \ref{fig:dgcg} we have a mesh in 1D consisting of two cells $(0, 0.5)$ and
+$(0.5, 1.0)$. Locally, the first order Lagrange element is defined in terms of the vertices, ie. for the first element the points
+$x=0.0$ and $x=0.5$ whereas for the second element the points are $x=0.5$ and $x=1.0$. Both a discontinuous and a continuous
+function is shown in Fig. \ref{fig:dgcg}, corresponding to discontinuous and continuous Lagrange elements on this simple mesh. 
+A crucial difference between them is whether the function is continuous at $x=0.5$ or not. 
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=5cm]{chapters/element/dg.pdf}
+\includegraphics[width=5cm]{chapters/element/cg.pdf}
+\caption{Piecewise discontinuous and continuous first order polynomials defined in terms of two cells in 1D. }  
+\label{fig:dgcg}
+\end{center}
+\end{figure}
+
+
 
 \section{Exercises}
 
