@@ -447,133 +447,15 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 
 
 \begin{figure}
-\begin{tikzpicture}[scale=3]
-    % Define the vertices of the reference triangle
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (1,0);
-    \coordinate (C) at (0,1);
-    \coordinate (N1) at (0.5,0);
-    \coordinate (N2) at (0,0.5);
-    \coordinate (N3) at (0.5,0.5);
-
-    \draw[black, thick] (A) -- (B) -- (C) -- cycle;
-
-    \draw[->, blue, thick] (0.5, 0) -- (0.5, -0.4);   
-    \draw[->, blue, thick] (0.5, 0.5) -- (0.783,0.783);   
-    \draw[->, blue, thick] (0, 0.5) -- (-0.4, 0.5);  
-
-    \fill[blue] (N1) circle (0.04);
-    \fill[blue] (N2) circle (0.04);
-    \fill[blue] (N3) circle (0.04);
-
-\end{tikzpicture}
-
-\begin{tikzpicture}[scale=3]
-    % Define the vertices of the reference triangle
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (1,0);
-    \coordinate (C) at (0,1);
-
-    \coordinate (N1) at (0.5,0);
-    \coordinate (N2) at (0,0.5);
-    \coordinate (N3) at (0.5,0.5);
-
-
-
-    % Draw the triangle
-    \draw[black, thick] (A) -- (B) -- (C) -- cycle;
-
-    % Label the vertices
-%    \node[below left] at (A) {$A$};
-%    \node[below right] at (B) {$B$};
-%    \node[above left] at (C) {$C$};
-
-    % Draw vector fields with arrows
-	\draw[->, red, thick] (0.5, 0) -- (0.9, 0.0);   
-	\draw[->, red, thick] (0.5, 0.5) -- (0.9,0.1);   
-	\draw[->, red, thick] (0, 0.5) -- (0.0, 0.9);  
-
-    % Local coordinate system within the triangle
-%    \node at (1.5,1) {$\mathbf{u}(x,y) = \begin{pmatrix} a + bx \\ c + dy \end{pmatrix}$};
-
-    \fill[red] (N1) circle (0.04);
-    \fill[red] (N2) circle (0.04);
-    \fill[red] (N3) circle (0.04);
-
-
-
-\end{tikzpicture}
-
-\begin{tikzpicture}[scale=3]
-    % Define the vertices of the reference triangle
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (1,0);
-    \coordinate (C) at (0,1);
-    \coordinate (N1) at (0.5,0);
-    \coordinate (N2) at (0,0.5);
-    \coordinate (N3) at (0.5,0.5);
-
-    \draw[black, thick] (A) -- (B) -- (C) -- cycle;
-
-    \draw[->, black, thick] (0.5, 0) -- (0.5, -0.4);   
-    \draw[->, black, thick] (0.5, 0) -- (0.9, 0);   
-    \draw[->, black, thick] (0.5, 0.5) -- (0.5,0.9);   
-    \draw[->, black,  thick] (0.5, 0.5) -- (0.9,0.5);   
-    \draw[->, black, thick] (0, 0.5) -- (-0.4, 0.5);  
-    \draw[->, black, thick] (0, 0.5) -- (0.0, 0.9);  
-
-    \fill[black] (N1) circle (0.04);
-    \fill[black] (N2) circle (0.04);
-    \fill[black] (N3) circle (0.04);
-
-\end{tikzpicture}
-
-\begin{tikzpicture}[scale=3]
-    % Define the vertices of the reference triangle
-    \coordinate (A) at (0,0);
-    \coordinate (B) at (1,0);
-    \coordinate (C) at (0,1);
-    \coordinate (T1) at (0.5,0);
-    \coordinate (T2) at (0,0.5);
-    \coordinate (T3) at (0.5,0.5);
-    \coordinate (N1) at (0.33,0);
-    \coordinate (N2) at (0.66,0);
-    \coordinate (N3) at (0.33,0.66);
-    \coordinate (N4) at (0.66,0.33);
-    \coordinate (N5) at (0,0.33);
-    \coordinate (N6) at (0,0.66);
-
-
-
-
-    \draw[black, thick] (A) -- (B) -- (C) -- cycle;
-
-    \draw[->, red, thick] (0.5, 0) -- (0.9, 0);   
-    \draw[->, red, thick] (0, 0.5) -- (0, 0.9);   
-    \draw[->, red, thick] (0.5, 0.5) -- (0.1,0.9);   
-    \draw[->, blue, thick] (0.33, 0.0) -- (0.33,-0.5);   
-    \draw[->, blue, thick] (0.66, 0.0) -- (0.66,-0.5);   
-    \draw[->, blue, thick] (0, 0.33) -- (-0.4, 0.33);  
-    \draw[->, blue, thick] (0, 0.66) -- (-0.4, 0.66);  
-    \draw[->, blue, thick] (0.33, 0.66) -- (0.63, 0.96);  
-    \draw[->, blue, thick] (0.66, 0.33) -- (0.96, 0.63);  
-
-    \fill[red] (T1) circle (0.04);
-    \fill[red] (T2) circle (0.04);
-    \fill[red] (T3) circle (0.04);
-    \fill[blue] (N1) circle (0.04);
-    \fill[blue] (N2) circle (0.04);
-    \fill[blue] (N3) circle (0.04);
-    \fill[blue] (N4) circle (0.04);
-    \fill[blue] (N5) circle (0.04);
-    \fill[blue] (N6) circle (0.04);
-
-
-
-
-\end{tikzpicture}
-
-
+\label{fig:sin}
+\begin{center}
+\includegraphics[width=5cm]{chapters/element/rt.pdf}
+\includegraphics[width=5cm]{chapters/element/nedelec.pdf}
+\includegraphics[width=5cm]{chapters/element/cr.pdf}
+\includegraphics[width=5cm]{chapters/element/mtw.pdf}
+\caption{Left picture shows $\sin(\pi x)$ on the unit interval, while 
+the right picture shows $\sin(10 \pi x)$. }\label{fig:sin}
+\end{center}
 
 \end{figure}
 

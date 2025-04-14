@@ -3,27 +3,30 @@
 \usepackage{amsmath}
 
 \begin{document}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=2]
     % Define the vertices of the reference triangle
     \coordinate (A) at (0,0);
     \coordinate (B) at (1,0);
     \coordinate (C) at (0,1);
+    \coordinate (N1) at (0.5,0);
+    \coordinate (N2) at (0,0.5);
+    \coordinate (N3) at (0.5,0.5);
 
-    % Draw the triangle
+    \coordinate (G0) at (-0.5,-0.5);  
+    \coordinate (G1) at (-0.5,1.5);  
+    \coordinate (G2) at (1.5,1.5);  
+    \coordinate (G3) at (1.5,-0.5);  
+    \draw[white, thick] (G0) -- (G1) -- (G2) -- (G3) -- cycle;
+
     \draw[black, thick] (A) -- (B) -- (C) -- cycle;
 
-    % Label the vertices
-%    \node[below left] at (A) {$A$};
-%    \node[below right] at (B) {$B$};
-%    \node[above left] at (C) {$C$};
+    \draw[->, blue, thick] (0.5, 0) -- (0.5, -0.4);   
+    \draw[->, blue, thick] (0.5, 0.5) -- (0.783,0.783);   
+    \draw[->, blue, thick] (0, 0.5) -- (-0.4, 0.5);  
 
-    % Draw vector fields with arrows
-	\draw[->, black, thick] (0.5, 0) -- (0.5, -0.4);   
-	\draw[->, black, thick] (0.5, 0.5) -- (0.783,0.783);   
-	\draw[->, black, thick] (0, 0.5) -- (-0.4, 0.5);  
-
-    % Local coordinate system within the triangle
-%    \node at (1.5,1) {$\mathbf{u}(x,y) = \begin{pmatrix} a + bx \\ c + dy \end{pmatrix}$};
+    \fill[blue] (N1) circle (0.04);
+    \fill[blue] (N2) circle (0.04);
+    \fill[blue] (N3) circle (0.04);
 
 \end{tikzpicture}
 \end{document}
