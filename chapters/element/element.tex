@@ -219,7 +219,7 @@ where $det J$ is the determinant of $J$.  Furthermore, derivatives of the basis 
 \]
 As such the finite element engines may perform all the computations on the reference cells, which makes the implementation easy and efficient. 
 
-\section{The connectivity of the mesh and the corresponding finite element space}
+\section{The connectivity of the mesh and its finite element space}
 
 The second concept that needs to be dealt with is how to tie the finite elements together. 
 Consider for example the Lagrange element of order 5 in 1D that was illustrated in Fig.~\ref{fig:Lagrange5}. We observe here that the basis function $0$ and $5$ are associated
@@ -456,7 +456,7 @@ Marking all nodes would yield 9 vertex nodes,  16 edge nodes, and 8 internal nod
 
 
 
-\section{Approximation in different function spaces, $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ }
+\section{Approximation in  $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ }
 
 The function spaces 
 $L^2$, $H^1$, $H^2$, $H(\mbox{div})$, and $H(\mbox{curl})$ 
@@ -514,15 +514,41 @@ following identity  in 3D (which may be verified by direct compuation)
 Here, we note that $\nabla$ is the gradient, $\nabla\cdot$ the divergence, and $\nabla\times$ the curl.  
 Furthermore $\Delta = \nabla^2 = \nabla\cdot\nabla$. Assuming homogenuous Dirichlet conditions
 it directly follows that 
-\[
+\begin{align}
 (\nabla u, \nabla v) = (\nabla \cdot u, \nabla \cdot v)  + (\nabla\times u,  \nabla \times v), \quad u\in H^1(\Omega), v\in H_0^1(\Omega)     
-\]
+\label{graddivcurl}
+\end{align}
 It follows that
 \begin{align*}
 H^1 \subset H(\mbox{div}) \subset L^2, \\   
-H^1 \subset H(\mbox{curl}) \subset L^2   
+H^1 \subset H(\mbox{curl}) \subset L^2 .    
 \end{align*}
+In fact, on simple domains, 
+\[
+H_0^1 = H_0(\mbox{div}) \cap H_0(\mbox{curl}) .  
+\]
+as indicated by the identity \eqref{graddivcurl}. 
+Integration by parts of the operators $\nabla$, $\nabla\cdot$ and 
+$\nabla \times$ are governed by the Green's lemma, divergence theorem
+and Stokes' theorem respectively. The divergence theorem states 
+that for a vector field $f$ we have 
+\[
+	\int_\Omega \nabla \cdot f\, dx = \int_{\partial \Omega} f \cdot n \, ds  .  
+\]
+In other words, the divergence of a function within a domain, or in our case a mesh cell, is
+related to the normal component of the edges of the mesh cell. As such a discretization
+in $H(\mbox{div})$ is usually based on the normal components on the element faces that ensures continuity in the normal direction, while jumps
+in the tangents are permitted. 
+In Fig. ~\ref{fig:rtetc} (upper left), we see the lowest order Raviart-Thomas element, one of the most common finite elements used to approximate $H(\mbox{div})$. 
 
+Similarly, as the divergence theorem relates divergence to normal vectors, the Stokes' theorem relates the curl operator to edge tangent vectors. The lowest order Nedelec element, one of the most common finite elements in  $H(\mbox{curl})$  is shown Fig. ~\ref{fig:rtetc} (upper right). The Nedelec element uses the tangent degrees of freedom to ensure continuity in the tangent direction across element boundaries. 
+
+The Raviart-Thomas element are conforming in $H(\mbox{div})$ while 
+the Nedelec element is conforming in $H(\mbox{curl})$. Just as for the Lagrange element, these elements may be defined of arbitrary order, and they are all available in FEniCS. The theory of    $H(\mbox{div})$ and $H(\mbox{curl})$ is somewhat more complicated that $H^1$ but there are excellent books~\cite{arnold2018finite, boffi2013mixed}. 
+
+Finally, motivated by the identity \ref{graddivcurl} one may be motivated to define an $H^1$ element in terms of edge normals and tangent vectors. The Crouizeix-Raviart and the Mardal-Tai-Winther elements are both efforts in this direction. We remark, that although not obvious from the above reasoning, both elements are non-conforming, but both elements still constitute approximations of $H^1$ of the expected order.  
+A detailed description of the implementation  of these and other elements 
+in FEniCS and Firedrake can be found in \cite{aznaran2022transformations, scroggs2022basix}
 
 
 \begin{figure}
