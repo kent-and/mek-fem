@@ -3,89 +3,118 @@
 
 \section{Introduction}
 
-Most commonly, the basis for finite element methods has been the weak formulation as discussed in 
-the previous chapters. But, with the introduction of neural networks and physics-informed networks, 
-alternative formulations based on least square method principles have been made popular. Such formulations
-have also been studied earlier, but has in general received little attention as compared with stdandard weak formulations.   
+Finite element methods are most commonly based on the the weak formulation as discussed in 
+the previous chapters. However, several other formulations are possible.  
+For instance, mixed methods have the advantage of mass conservation at the expense of larger linear systems.  
+Furthermore, the introduction  of physics-informed networks are typically based on least square formulations.  
 In this chapter we will therefore discuss different ways of formulating PDE problems. 
-Let us for simplicity discuss elliptic problems with Dirichlet boundary conditions of the 
-form: Find $u \in C^2(\Omega)$ given $f \in C^0(\Omega)$ of the form
+
+\section{The primal formulation}
+The formulation introduced in Chapter \ref{ch:elliptic2} is often called the \emph{primal formulation}
+and is equivalent with the weak formulation of the strong form.  
+Let us briefly review the formulation. For simplicity of notation we only discuss elliptic problems 
+with pure Dirichlet boundary conditions here.  
+The \emph{strong formulation} is: Find $u_S \in C^2(\Omega)$, given $f \in C^0(\Omega)$, such that  
 \begin{align}
--\Delta u &= f \quad \mbox{ in } \Omega, \\ 
- u &= g \quad \mbox{ on } \Omega .  
+\label{ch:alt:strong1}
+-\Delta u_S &= f \quad \mbox{ in } \Omega, \\ 
+\label{ch:alt:strong2}
+ u_S &= g \quad \mbox{ on } \partial \Omega .  
 \end{align}
-The weak formulation: Find $u \in H^1_g(\Omega)$, given  $f \in H^{-1}(\Omega)$ such 
+The corresponding \emph{weak formulation}: Find $u_W \in H^1_g(\Omega)$, given  $f \in H^{-1}(\Omega)$, such 
 that 
 \begin{align}
-\label{weak:primal}
-\int_\Omega \nabla u \cdot \nabla v \, dx = \int_\Omega f v \, dx, \quad \forall v\in H^1_0(\Omega),       
+\label{ch:alt:weak:primal}
+\int_\Omega \nabla u_W \cdot \nabla v \, dx = \int_\Omega f v \, dx, \quad \forall v\in H^1_0(\Omega).       
 \end{align}
+The weak formulation  
 follows directly from Gauss-Green´s lemma, as we saw in Chapter \ref{ch:elliptic2}. 
 We will refer to this formulation as the \emph{primal formulation}. 
 
-The weak formulation may alternatively be derived from energy considerations. That is, 
-consider the energy functional, 
+The weak formulation may be derived as the minimizer of an energy functional. To see this, let us  
+consider the energy functional: 
 \begin{align}
 E (v, f) = \int_\Omega \frac{1}{2} (\nabla v)^2  - f v \, dx.   
 \end{align}
-The solution of \eqref{weak:primal} can equivalently be written as the minimizer of this energy functional. That is, 
+The solution $u_W$ of \eqref{ch:alt:weak:primal} can equivalently be written as the minimizer of this energy functional. That is, 
 \begin{align}
-u = \argmin_{v \in H^1_g(\Omega) } E (v, f) .   
+u_W = \argmin_{v \in H^1_g(\Omega) } E (v, f) .   
 \end{align}
-\kent{use u, v, $w_i$ such that both u and v can be expressed as a linear combination of $w_i$}
 To see the relationship between the two formulations we need to be able to differentiate the functional $E$ with respect 
-to functions $v$. Assume therefore that $H^1_g(\Omega)$ can be spanned by a basis $\{v_i\}^\infty_{i=1}$. Then 
-a function can be expressed as $u=\sum_i u_i v_i$ and we notice directly that
+to functions $v$. Assume therefore that $H^1_g(\Omega)$ can be spanned by the basis $\{\psi_i\}^\infty_{i=1}$.
+We remark that the mathematical term for spaces that can be spanned in terms of a countable basis is that 
+the space is separable. It is known that $H^1_g(\Omega)$ is separable. Then 
+any function $v$ in $H^1_g(\Omega)$ can be expressed as $v=\sum_i v_i \psi_i$.  We notice directly that
 \begin{align} 
-\frac{\partial u }{\partial u_i } = v_i .  
+\frac{\partial v }{\partial v_i } = \psi_i .  
 \end{align} 
-Hence, 
+From basic calculus we know that
+if $u_W$ is a minimizer of $E$ then   $\frac{\partial E}{\partial u_W} = 0 $.
+Considering now  $u_W=\sum_i u^W_i \psi_i$ this means that   
 \begin{align} 
-\frac{\partial E }{\partial u_i } = \int_\Omega \nabla u \cdot \nabla v_i - f v_i dx  .  
+\frac{\partial E }{\partial u^W_i } = \int_\Omega \nabla u_W \cdot \nabla \psi_i - f \psi_i dx  = 0 .    
 \end{align} 
-Furthermore, clearly $E(v, f)$ is minimized when the derivative is zero, i.e. 
-\begin{align} 
-\frac{\partial E }{\partial u_i } = \int_\Omega \nabla u \cdot \nabla v_i - f v_i dx = 0  .  
-\end{align} 
-which corresponds to the weak formulation. 
+which is exactly weak formulation, except the test functions are here termed $\psi_i$. 
+We remark that there are more general and abstract ways of 
+differentiating functionals such as the 
+Gateaux derivative or the Fréchet derivative,  but these are not required in our setting. 
 
 \section{Least square formulation of primal formulation}
 
-An alternative "energy"-like functional, based on least square principles that could be minimized would  
+An alternative functional, based on a least square formulation, is: 
 be  
 \begin{align}
-E_{LS} = \|-\Delta u - f\|_{L^2(\Omega)}
+E_{LS}(v, f) = \int_\Omega (-\Delta v - f)^2 \, dx .  
 \end{align}
-Again, we seek to find the minimizer
+Clearly, if $u_S$ is the strong solution of \eqref{ch:alt:strong1}-\eqref{ch:alt:strong2} then $u_S$ would minimize $E_{LS}$ since
+$E_{LS}(u_s, f) = 0$.    
+It is, however, also clear that if $u_w$ is the weak solution of \ref{ch:alt:weak:primal}
+without any additional regularity, then $E_{LS}(u_w, f) = \infty$ since $u_W$ only permits one spatial derivative.     
+Hence, let us therefore assume higher regularity, ie assume that the solution $u_{LS} \in H^2_g(\Omega)$. That
+is the, least square minimization problem becomes: 
 \begin{align}
-u = \argmin_{v \in ? } E_{LS} (v, f) .   
+u_{LS} = \argmin_{v \in H^2_g(\Omega)} E_{LS} (v, f) .   
 \end{align}
-We differentiate in order to find that 
+As before we note that $H^2_g(\Omega)$ with the basis $\{\psi_i\}$   
+such that $u_{LS} = \sum_i  u^{LS}_i \psi_i$ .  
+Then as before, we may differentiate and obtain a linear system of equations that determine the solution. In detail,  
 \begin{align} 
 \label{weak:primal:ls}
-\frac{\partial E_{LS}}{\partial u_i} = \int_\Omega \frac{\partial}{\partial u_i} (-\Delta u - f)^2 \, dx  = \\  
-2 \int_\Omega (-\Delta u - f) (-\Delta v_i) \, dx 
+\frac{\partial E_{LS}}{\partial u^{LS}_i} = \int_\Omega \frac{\partial}{\partial u^{LS}_i} (-\Delta u_{LS} - f)^2 \, dx  = \\  
+2 \int_\Omega (-\Delta u_{LS} - f) (-\Delta \psi_i) \, dx = 0 .   
 \end{align} 
-By applying Gauss-Green´s lemma again we may again derive a corresponding strong formulation:
-Find $u$ such that     
-\begin{align}
-\label{strong:primal:ls}
-\Delta^2 u &= -\Delta f \quad \mbox{ in } \Omega, \\ 
- u &= g \quad \mbox{ on } \partial \Omega,   \\ 
- -\Delta u &= f \quad \mbox{ on } \partial \Omega .  
-\end{align}
+We remark here that this problem is clearly different from \eqref{ch:alt:weak:primal} in the sense that there is a higher 
+number of spatial derivatives involved. 
 
-We refer \eqref{weak:primal:ls} and \eqref{strong:primal:ls} as the weak and strong formulation of the least square formulation of the
-primal problem.  
-We notice that both formulations requires more regularity than the standard weak formulation of the primal problem. In fact 
-\eqref{strong:primal:ls} reguires $u \in C^4(\Omega)$ whereas   
+In order to understand the problem  \eqref{weak:primal:ls} we derive a strong formulation of the correponsing
+problem. That means that all spatial derivatives must be transfered from the test function to the trial function. 
+By applying Gauss-Green´s lemma twice, we arrive at the corresponding strong formulation
+of the primal form of the least square formulation:
+Find $u_{LS}$ such that     
+\begin{align}
+\label{strong:primal:ls1}
+\Delta^2 u_{LS} &= -\Delta f \quad \mbox{ in } \Omega, \\ 
+\label{strong:primal:ls2}
+ u_{LS} &= g \quad \mbox{ on } \partial \Omega,   \\ 
+\label{strong:primal:ls3}
+ -\Delta u_{LS} &= f \quad \mbox{ on } \partial \Omega .  
+\end{align}
+We notice that the formulation requires more regularity than the standard weak formulation of the primal problem. In fact 
+\eqref{strong:primal:ls1} reguires $u \in C^4(\Omega)$ whereas   
 \eqref{weak:primal:ls} is naturally posed in $H^2_g(\Omega)$.  
+We also remark that since \eqref{strong:primal:ls1} is fourth order problem then two 
+boundary conditions \eqref{strong:primal:ls2} and \eqref{strong:primal:ls3} are required.  
+The condition \eqref{strong:primal:ls2} was present also in 
+\eqref{ch:alt:strong1}, but here also  \eqref{strong:primal:ls3} appears as a condition through 
+the application of Green´s lemma. While this condition appears natural, it is simply an extention
+such that underlying PDE is valid also on the boundary, in general we cannot assume that the PDE is 
+valid on the boundary.  
 
 \section{The Mixed formulation}
 
-To reduce the number of derivatives on the solution, a common 
-trick is to splitt the original second order equation into 
-two equations of first order. That is, we notice that
+The mixed formulation of \eqref{ch:alt:strong1} reduced the requirement in terms of
+differentiability by splitting the second order equation into two first order equations. 
+That is, we notice that
 \begin{equation} 
 \label{primal:mixed}
 -\Delta u = f 
@@ -93,36 +122,86 @@ two equations of first order. That is, we notice that
 may be alternatively written as 
 \begin{align}
 \label{elliptic:mixed:1}
-\psi = \nabla u, \\ 
+v = \nabla u, \\ 
 \label{elliptic:mixed:2}
-\nabla \cdot \psi = f . 
+\nabla \cdot v = f . 
 \end{align}
-That is, inserting \eqref{elliptic:mixed:1} into the \eqref{elliptic:mixed:2} directly gives 
-\eqref{primal:mixed}. Here, we notice that $\psi$ is a vector field while $u$ is a scalar field.  
+It is easily verified,  by inserting \eqref{elliptic:mixed:1} into \eqref{elliptic:mixed:2} 
+that we obtain \eqref{primal:mixed} directly. Here, we notice that $v = \nabla u$ is a vector field since $u$ is a scalar field.  
+
+The weak formulation of \eqref{elliptic:mixed:1}--\eqref{elliptic:mixed:2} is interesting as
+it becomes: 
+Find $v \in H(\mbox{div}, \Omega), u \in L^2(\Omega)$ such that  
+\begin{align}
+\label{mixed:darcy:1}
+\int_\Omega v \cdot \psi \, \dx + \int_\Omega u \, \nabla \cdot \, \psi \, dx &= \int_{\partial \Omega} g \, \psi \cdot n \, ds, \quad \psi \in H(\mbox{div}, \Omega), \\  
+\label{mixed:darcy:2}
+\int_\Omega \nabla \cdot v \, \xi \, dx &= \int_{\Omega} f \, \xi \, dx, \quad  u \in L^2(\Omega) .  
+\end{align}
+
+The problem is a saddle-point problem and the Brezzi conditions, as discussed in Chapter \ref{chap-stokes} are
+required for a well-posed problem. We notice, however, that the Brezzi conditions are   
+in $H(\mbox{div}, \Omega) \times L^2(\Omega)$ rather than in $H^1(\Omega) \times L^2(\Omega)$ as it
+was for the Stokes problem.  The Brezzi conditions, and most notably the inf-sup condition 
+is well-known for a number of finite elements such as for example Raviart-Thomas and Brezzi-Douglas-Marini.   
+
+We notice that through Green´s lemma the derivative of $u$ in \eqref{elliptic:mixed:1} is
+moved to the test function $\psi$ and hence the regularity requirement is signficantly reduced in the sense
+that only $v \in H(\mbox{div}, \Omega)$ is required. We further notice that the Dirichlet condition $u = g$ in 
+in the strong formulation and weak formulation of the primal problem now appears naturally as a boundary integral.   
+In fact, a Dirichlet condition for the primal problem turns into a Neumann condition for the mixed problem, while 
+a Neumann condition for the primal problem becomes a Dirichlet condition for the mixed problem. 
 
 Also this problem may be phrased as a minimization problem, although a constrained minimization problem. 
 Let the energy be 
 \[
-E_{M}(\psi) = \int_\omega \frac{1}{2} \psi^2 \, dx  
+E_{M}(w) = \int_\omega \frac{1}{2} w^2 \, dx  
 \]
 The the solution is  
 \begin{align}
-u = \argmin_{\nabla \cdot \psi = f  } E_{M} (v) .   
+v = \argmin_{w \in H(\mbox{div}, \Omega) \mbox{ such that }  \nabla \cdot w = f  } E_{M} (w) .   
 \end{align}
-The constraint $\nabla \cdot v = f$ may be enforced using a Lagrange multiplier. Then the functional
+The constraint $\nabla \cdot w = f$ may be enforced using a Lagrange multiplier. Then the functional
 becomes  
 \[
-L(v,\lambda, f) = \int_\Omega v^2 \, dx + \int_\Omega (\nabla \cdot v = g) \lambda  \, dx   
+L(w,\lambda, f) = \int_\Omega v^2 \, dx + \int_\Omega (\nabla \cdot v - g) \lambda  \, dx - \int_{\partial \Omega} (w\cdot n) \,  g)  \, ds   
 \]
 and 
 \begin{align}
-u, \mu = \argmin_{v} \argmax_{\lambda} L(v, \lambda, f) .   
+v, u = \argmin_{w} \argmax_{\lambda} L(v, \lambda, f) .   
 \end{align}
-Again, we may differentiate (with respect to both $v$ and the Lagrange multiplier $\lambda$ to find the extremal points of $L$ 
-as 
+Letting  $v = \sum_i v_i \psi_i$    and $u = \sum_j u_i \xi_j$ we may differentiate $L$ to find the 
+linear system of equations that the extreme points must satisify.     
+The system becomes:  
 \begin{align}
- \frac{\partial L (u, \lambda)}{ \partial v} =  \int_\Omega v^2 \, dx + \int_\Omega (\nabla \cdot v = g) \lambda  \, dx   
+ \frac{\partial L (v, u, f)}{ \partial v_i} =  \int_\Omega v \cdot \psi_i \, dx + \int_\Omega (\nabla \cdot \psi_i ) u \, dx  -  
+ \int_{\partial \Omega} (w\cdot n) \,  g)  \, ds = 0, \\    
+ \frac{\partial L (v, u, f)}{ \partial u_j} = ( \int_\Omega \nabla \cdot v \,   \xi_j \, dx  = 0 .    
 \end{align}
+which is recognized as 
+\eqref{mixed:darcy:1}--\eqref{mixed:darcy:2} with test functions $\psi$ and $\xi$ replaced by  $\psi_i$ and $\xi_j$, respectively.  
+
+
+\section{The Least Square formulation of the Mixed Problem}
+The least square formulation of the primal problem had the disadvantage of requiring high regularity whereas
+the mixed formulations requires special elements satisfying the Brezzi conditions. Hence, how about
+creating a least square formulation based on the mixed fomrulation. The natural cost functional is then 
+a slight reformulation of the Lagrangian, namely (ignoring the boundary conditions for now)    
+\[
+E_{LSM}(w,\lambda, f) = \int_\Omega (w-\nabla \lambda)^2 \, dx + \int_\Omega (\nabla \cdot w - f)^2   \, dx    
+\]
+The solution $v, u$ becomes  
+\[
+v, u = \argmin_{v, \lambda} E_{LSM}(w,\lambda, f) 
+\]
+The linear system can again be written as a system  
+\begin{align}
+ \frac{\partial E_{LMS} (v, u, f)}{ \partial v_i} =  \int_\Omega (v - \nabla u) \cdot \psi_i \, dx + \int_\Omega \nabla \cdot v \,  \nabla \cdot \psi_i  \, dx    
+ \int_{\partial \Omega} (w\cdot n) \,  g)  \, ds = 0, \\    
+ \frac{\partial E_{LMS} (v, u, f)}{ \partial u_j} = ( \int_\Omega (v - \nabla  u)\cdot(-\nabla \xi_j) \, dx  = 0 .    
+\end{align}
+which is recognized as 
+\eqref{mixed:darcy:1}--\eqref{mixed:darcy:2} with test functions $\psi$ and $\xi$ replaced by  $\psi_i$ and $\xi_j$, respectively.  
 
 
  
