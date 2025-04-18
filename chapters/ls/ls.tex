@@ -196,12 +196,67 @@ v, u = \argmin_{v, \lambda} E_{LSM}(w,\lambda, f)
 \]
 The linear system can again be written as a system  
 \begin{align}
- \frac{\partial E_{LMS} (v, u, f)}{ \partial v_i} =  \int_\Omega (v - \nabla u) \cdot \psi_i \, dx + \int_\Omega \nabla \cdot v \,  \nabla \cdot \psi_i  \, dx    
+\label{mixed:ls:1}
+ \frac{\partial E_{LMS} (v, u, f)}{ \partial v_i} &=  \int_\Omega (v - \nabla u) \cdot \psi_i \, dx + \int_\Omega \nabla \cdot v \,  \nabla \cdot \psi_i  \, dx  \\   
+\label{mixed:ls:2}
  \int_{\partial \Omega} (w\cdot n) \,  g)  \, ds = 0, \\    
- \frac{\partial E_{LMS} (v, u, f)}{ \partial u_j} = ( \int_\Omega (v - \nabla  u)\cdot(-\nabla \xi_j) \, dx  = 0 .    
+ \frac{\partial E_{LMS} (v, u, f)}{ \partial u_j} &= ( \int_\Omega (v - \nabla  u)\cdot(-\nabla \xi_j) \, dx  = 0 .    
 \end{align}
 which is recognized as 
 \eqref{mixed:darcy:1}--\eqref{mixed:darcy:2} with test functions $\psi$ and $\xi$ replaced by  $\psi_i$ and $\xi_j$, respectively.  
 
+\section{Least Square formulation of the primal form and Dirichlet boundary conditions}
 
+One of the interesting features of physics-informed neural networks is that it has popularized 
+least square formulations of both the PDE and the boundary conditions. Hence, as
+an alternative formulation of \eqref{ch:alt:strong1} -- \eqref{ch:alt:strong2}   
+\begin{align}
+E_{LSB}(v, f) = \int_\Omega (-\Delta v - f)^2 \, dx + \alpha^2 \int_{\partial \Omega} (v - g)^2 \, ds .  
+\end{align}
+Here, $\alpha$ is a parameter that enables a different weighting of the boundary term.  
+
+As earlier, the solution is defined as the minimizer: 
+\begin{align}
+\label{ch:alt:lsb}
+u_{LSB} = \argmin_{v \in H^2(\Omega)} E_{LSB} (v, f) .   
+\end{align}
+which we may differentiate to find the corresponding weak formulation. 
+
+After arriving at the weak form, we use Green´s lemma to arrive at the 
+corresponding strong problem. The problem is a bi-harmonic problem that reads: 
+Find $u$ such that 
+\newcommand{\partialn}{\partial_{\mathbf{n}}}
+\begin{align}
+\label{L1strong1Alt}
+\Delta^2 u &= -\Delta f, \quad &\mbox{ in } \ \Omega, \\
+\label{L1strong2Alt}
+         \alpha^2 u - \partialn \Delta u &= \alpha^2 g + \partialn f, \quad &\mbox{ on } \ \partial \Omega, \\
+\label{L1strong3Alt}
+         -\Delta u &= f, \quad &\mbox{ on } \ \partial \Omega. 
+\end{align}
+The well-posedness of the problem is complicated by the fact that the solution is sought in $H^2$ 
+as in with the least square formulation of the primal problem.  
+However, for $u \in H^2(\Omega)$ we have  $T u \|_{\partial \Omega} \in H^{3/2}(\partial \Omega)$, but
+we are not able to enforce the boundary conditions in the strong $H^{3/2}(\partial \Omega)$ sense
+only in  $L^{2}(\partial \Omega)$. Therefore, since the boundary conditions are only enforced in this
+weak sense, there is potentially a loss of regularity near the boundary. The 
+loss of regularity may be partially resolved by weakening the coersivity~\cite{zeinhofer2024unified} 
+or by strengthening the regularity at the boundary~\cite{bonito2025convergence}.  
+
+
+
+
+
+\section{Exercises}
+
+\begin{exercise}
+Calculate the \emph{strong} form of \eqref{mixed:ls:1}  -- \eqref{mixed:ls:2}.  
+\end{exercise}
+
+\begin{exercise}
+Calculate the \emph{weak}  form  of 
+\eqref{ch:alt:lsb} and show that the strong form is
+\eqref{L1strong1Alt}  -- \eqref{mixed:ls:2}.  
+\end{exercise}
+ 
  
