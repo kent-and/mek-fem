@@ -215,7 +215,7 @@ With this definition we may easily evaluate integrals involving the basis functi
 \]
 where $det J$ is the determinant of $J$.  Furthermore, derivatives of the basis functions are readily available by using the chain-rule:  
 \[
-\frac{\partial \phi}{\partial x_i } = \sum_j  \frac{\partial \hat{\phi}}{\partial \hat{x}_j } \frac{\partial \hat{x}_j}{\partial \hat{x}_i } 
+\frac{\partial \phi}{\partial x_i } = \sum_j  \frac{\partial \hat{\phi}}{\partial \hat{x}_j } \frac{\partial \hat{x}_j}{\partial x_i } 
 \]
 As such the finite element engines may perform all the computations on the reference cells, which makes the implementation easy and efficient. 
 
